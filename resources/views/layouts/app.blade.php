@@ -13,6 +13,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        
     </style>
     <title>Athaya Shop</title>
 </head>

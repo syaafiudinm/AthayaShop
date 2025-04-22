@@ -53,7 +53,7 @@
                 </div>
                 <div class="mt-12">
                     <h3 class="font-semibold">Total Koleksi Baju</h3>
-                    <span class="text-5xl font-bold">{{$categories->count()}}</span>
+                    <span class="text-5xl font-bold">{{$categories->total()}}</span>
                 </div>
             </div>
         
@@ -69,7 +69,7 @@
                 </div>
                 <div class="mt-12">
                     <h3 class="font-semibold">Total Koleksi Baju</h3>
-                    <span class="text-5xl font-bold">{{$categories->count()}}</span>
+                    <span class="text-5xl font-bold">{{$categories->total()}}</span>
                 </div>
             </div>
         
@@ -85,7 +85,7 @@
                 </div>
                 <div class="mt-12">
                     <h3 class="font-semibold">Total Koleksi Baju</h3>
-                    <span class="text-5xl font-bold">{{$categories->count()}}</span>
+                    <span class="text-5xl font-bold">{{$categories->total()}}</span>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
                 <tbody>
                     @foreach ($categories as $category)
                         <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
-                            <td class="px-4 py-2 font-semibold">{{$loop->iteration}}</td>
+                            <td class="px-4 py-2 font-semibold">{{$loop->iteration + ($categories->currentPage() - 1) * $categories->perPage()}}</td>
                             <td class="px-4 py-2 font-medium ">{{ $category->name }}</td>
                             <td class="px-4 py-2 font-medium">
                                 {{ $category->description }}
@@ -136,10 +136,16 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>            
+            </table>
+            @if ($categories->isNotEmpty())
+            <div class="mt-6 mx-auto">
+                {{ $categories->links() }}
+            </div>                          
+            @endif       
         </div>
     </div>
 
+    
     @include('components.createModal')
     @include('components.editModal')
 
