@@ -95,38 +95,54 @@
                 </div>
             </div>
         </div>
-        
-
         <div>
-            <table class="w-full mt-4">
-                <thead>
+            <table class="w-full mt-6 border-separate border-spacing-y-3">
+                <thead class="bg-[#A5A5A5]">
                     <tr>
-                        <th class="text-left px-4 py-2">Name</th>
-                        <th class="text-left px-4 py-2">Description</th>
-                        <th class="text-left px-4 py-2">Created At</th>
-                        <th class="text-left px-4 py-2">Updated At</th>
-                        <th class="text-left px-4 py-2">Action</th>
+                        <th class="text-left px-4 py-2 rounded-l-lg">ID Kategori</th>
+                        <th class="text-left px-4 py-2">Nama Kategori</th>
+                        <th class="text-left px-4 py-2">Deskripsi</th>
+                        <th class="text-left px-4 py-2">Tanggal Dibuat</th>
+                        <th class="text-left px-4 py-2 rounded-r-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($categories as $category)
-                        <tr>
-                            <td class="px-4 py-2">{{$category->name}}</td>
-                            <td class="px-4 py-2">{{$category->description}}</td>
-                            <td class="px-4 py-2">{{$category->created_at}}</td>
-                            <td class="px-4 py-2">{{$category->updated_at}}</td>
+                        <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
+                            <td class="px-4 py-2 font-semibold">{{$loop->iteration}}</td>
+                            <td class="px-4 py-2 font-medium ">{{ $category->name }}</td>
+                            <td class="px-4 py-2 font-medium">
+                                {{ $category->description }}
+                            </td>
+                            <td class="px-4 py-2 font-medium">
+                                {{ $category->created_at->format('d F Y') }}
+                            </td>
                             <td class="px-4 py-2">
-                                <a href="{{route('categories.edit', $category->id)}}">Edit</a>
-                                <form action="{{route('categories.destroy', $category->id)}}" method="POST" class="inline-block delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit">Delete</button>
-                                </form>
+                                <div class="flex items-center gap-2">
+                                    <a href="{{ route('categories.edit', $category->id) }}" class="text-black hover:text-blue-600">
+                                        <!-- Edit Icon -->
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5 15.9999L4 19.9999L8 18.9999L19.586 7.41394C19.9609 7.03889 20.1716 6.53027 20.1716 5.99994C20.1716 5.46961 19.9609 4.961 19.586 4.58594L19.414 4.41394C19.0389 4.039 18.5303 3.82837 18 3.82837C17.4697 3.82837 16.9611 4.039 16.586 4.41394L5 15.9999Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M5 16L4 20L8 19L18 9L15 6L5 16Z" fill="black"/>
+                                            <path d="M15 6L18 9M13 20H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>                                            
+                                    </a>
+                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-black hover:text-red-600">
+                                            <!-- Delete Icon -->
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7 21C6.45 21 5.97933 20.8043 5.588 20.413C5.19667 20.0217 5.00067 19.5507 5 19V6H4V4H9V3H15V4H20V6H19V19C19 19.55 18.8043 20.021 18.413 20.413C18.0217 20.805 17.5507 21.0007 17 21H7ZM9 17H11V8H9V17ZM13 17H15V8H13V17Z" fill="black"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-            </table>
+            </table>            
         </div>
     </div>
 @endsection
