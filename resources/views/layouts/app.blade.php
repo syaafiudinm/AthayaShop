@@ -20,7 +20,7 @@
     <div class="flex min-h-screen bg-white">
         <!-- Sidebar -->
         <div class="w-64 bg-[#A5A5A5] shadow-md px-4 py-8">
-          <h2 class="text-2xl font-bold text-white">ATHAYA S</h2>
+          <h2 class="text-2xl font-bold text-white">ATHAYA SHOP</h2>
           <p class="mb-12 text-xs text-white">Dashboard System</p>
           <ul class="space-y-10">
             <li>

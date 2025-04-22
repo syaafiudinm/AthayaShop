@@ -35,7 +35,7 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
-            return redirect()->route('categories.create')->withInput()->withErrors($validator);
+            return redirect()->back()->withErrors($validator)->withInput()->with('modal', 'create');
         }
 
         $category = new Category();
