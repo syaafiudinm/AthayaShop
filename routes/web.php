@@ -21,3 +21,4 @@ Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name(
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 
 Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers');
+Route::post('/suppliers/create', [SupplierController::class, 'store'])->name('suppliers.store');

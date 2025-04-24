@@ -4,7 +4,7 @@
     <div class="flex-1 p-8">
         <h1 class="text-3xl font-semibold mb-4">Supplier</h1>
         <div class="flex gap-2">
-            <a href="{{ route('products') }}" class="flex items-center border border-gray-300 p-2 rounded-md gap-2 mt-1">
+            <a href="{{ route('suppliers') }}" class="flex items-center border border-gray-300 p-2 rounded-md gap-2 mt-1">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11.15 3.36878C11.3254 3.48823 11.4461 3.67245 11.4856 3.88092C11.5252 4.08938 11.4803 4.30502 11.3608 4.48038C11.2413 4.65574 11.0571 4.77646 10.8487 4.816C10.6402 4.85553 10.4246 4.81063 10.2492 4.69118C9.51062 4.18909 8.62525 3.94861 7.73415 4.00805C6.84305 4.0675 5.99747 4.42345 5.33213 5.01919C4.66679 5.61494 4.21995 6.41621 4.06281 7.29536C3.90566 8.1745 4.04725 9.08096 4.46502 9.8703C4.88278 10.6596 5.55269 11.2865 6.36802 11.6509C7.18335 12.0154 8.0972 12.0965 8.96398 11.8814C9.83076 11.6662 10.6006 11.1672 11.1509 10.4638C11.7012 9.76039 12.0002 8.89306 12.0004 7.99998C12.0004 7.7878 12.0847 7.58432 12.2347 7.43429C12.3847 7.28426 12.5882 7.19998 12.8004 7.19998C13.0126 7.19998 13.2161 7.28426 13.3661 7.43429C13.5161 7.58432 13.6004 7.7878 13.6004 7.99998C13.6002 9.25037 13.1815 10.4647 12.4111 11.4496C11.6407 12.4344 10.5628 13.1331 9.34922 13.4342C8.13564 13.7354 6.85618 13.6218 5.71469 13.1114C4.57319 12.601 3.63534 11.7233 3.05056 10.6181C2.46578 9.51289 2.26772 8.24375 2.48792 7.0129C2.70813 5.78205 3.33394 4.66031 4.26564 3.82639C5.19734 2.99248 6.38134 2.49438 7.62897 2.41144C8.87661 2.32851 10.1161 2.66552 11.15 3.36878Z" fill="black"/>
                     <path d="M10.8319 10.0048C10.7434 10.0614 10.6446 10.1 10.5412 10.1185C10.4377 10.1369 10.3317 10.1348 10.229 10.1123C10.1264 10.0897 10.0292 10.0472 9.94303 9.98707C9.85685 9.92697 9.78334 9.85048 9.72672 9.76197C9.67009 9.67346 9.63145 9.57466 9.61301 9.47122C9.59456 9.36777 9.59668 9.26171 9.61922 9.15908C9.64177 9.05646 9.68431 8.95927 9.74441 8.87309C9.80451 8.7869 9.88101 8.71339 9.96952 8.65677L12.7551 6.87517C12.9338 6.76457 13.1489 6.72874 13.3538 6.77541C13.5587 6.82208 13.737 6.94751 13.8502 7.12459C13.9634 7.30167 14.0023 7.51617 13.9586 7.72174C13.915 7.9273 13.7921 8.10742 13.6167 8.22317L10.8319 10.0048Z" fill="black"/>
@@ -12,7 +12,7 @@
                 </svg>
                 Refresh                 
             </a>
-            <button onclick="openModal('createModal')" class="flex items-center border border-gray-300 px-3 py-1 rounded-md gap-1 mt-1">
+            <button onclick="openModal('createSupplierModal')" class="flex items-center border border-gray-300 px-3 py-1 rounded-md gap-1 mt-1">
                 Tambah Supplier
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9.167 10.8334H5.00033C4.76422 10.8334 4.56644 10.7534 4.407 10.5934C4.24755 10.4334 4.16755 10.2356 4.167 10C4.16644 9.76447 4.24644 9.56669 4.407 9.40669C4.56755 9.24669 4.76533 9.16669 5.00033 9.16669H9.167V5.00002C9.167 4.76391 9.24699 4.56613 9.40699 4.40669C9.567 4.24725 9.76477 4.16725 10.0003 4.16669C10.2359 4.16613 10.4339 4.24613 10.5945 4.40669C10.7551 4.56725 10.8348 4.76502 10.8337 5.00002V9.16669H15.0003C15.2364 9.16669 15.4345 9.24669 15.5945 9.40669C15.7545 9.56669 15.8342 9.76447 15.8337 10C15.8331 10.2356 15.7531 10.4336 15.5937 10.5942C15.4342 10.7547 15.2364 10.8345 15.0003 10.8334H10.8337V15C10.8337 15.2361 10.7537 15.4342 10.5937 15.5942C10.4337 15.7542 10.2359 15.8339 10.0003 15.8334C9.76477 15.8328 9.567 15.7528 9.40699 15.5934C9.24699 15.4339 9.167 15.2361 9.167 15V10.8334Z" fill="black"/>
@@ -31,26 +31,31 @@
                     class="w-full bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-500 text-gray-700" />
             </form>
         </div>
+
+        <div class="mt-4 mb-4">
+            @include('components.alert')
+        </div>
+
         <div>
             <table class="w-full mt-6 border-separate border-spacing-y-3">
                 <thead class="bg-primary">
                     <tr>
-                        <th class="text-left px-6 py-3 rounded-l-lg">ID Kategori</th>
-                        <th class="text-left px-6 py-3">Nama Kategori</th>
-                        <th class="text-left px-6 py-3">Deskripsi</th>
-                        <th class="text-left px-6 py-3">Tanggal Dibuat</th>
+                        <th class="text-left px-6 py-3 rounded-l-lg border-l-2">ID Supplier</th>
+                        <th class="text-left px-6 py-3">Nama Supplier</th>
+                        <th class="text-left px-6 py-3">Kontak</th>
+                        <th class="text-left px-6 py-3">alamat</th>
                         <th class="text-left px-6 py-3 rounded-r-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                         <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
                             <td class="px-4 py-2 font-semibold">1</td>
-                            <td class="px-4 py-2 font-medium ">product 1</td>
+                            <td class="px-4 py-2 font-medium ">PT Jaya Abadi</td>
                             <td class="px-4 py-2 font-medium">
-                                desc
+                                08219000000
                             </td>
                             <td class="px-4 py-2 font-medium">
-                                tanggal sekian
+                                Jl. Jaya Abadi
                             </td>
                             <td class="px-4 py-2">
                                 <div class="flex items-center gap-5">
@@ -77,4 +82,18 @@
             </table>       
         </div>
     </div>
+
+    @include('components.createSupplierModal')
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
+        }
+    
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+    </script>
 @endsection

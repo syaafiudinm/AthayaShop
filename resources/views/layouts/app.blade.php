@@ -67,7 +67,7 @@
               </a>
             </li>
             <li>
-              <a href="#" class="flex items-center gap-2 text-white">
+              <a href="{{route('suppliers')}}" class="flex items-center gap-2 text-white">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 1C10.8065 1 9.66193 1.47411 8.81802 2.31802C7.97411 3.16193 7.5 4.30653 7.5 5.5V7H3V23H21V7H16.5V5.5C16.5 4.30653 16.0259 3.16193 15.182 2.31802C14.3381 1.47411 13.1935 1 12 1ZM14.5 5.5V7H9.5V5.5C9.5 4.83696 9.76339 4.20107 10.2322 3.73223C10.7011 3.26339 11.337 3 12 3C12.663 3 13.2989 3.26339 13.7678 3.73223C14.2366 4.20107 14.5 4.83696 14.5 5.5ZM7.5 12V9H9.5V12H7.5ZM14.5 12V9H16.5V12H14.5Z" fill="white"/>
                 </svg> 

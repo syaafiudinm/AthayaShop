@@ -22,9 +22,6 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories', 'search'));
     }
 
-    public function create(){
-        return view('categories.create');
-    }
 
     public function store(Request $request){
         $rules = [
