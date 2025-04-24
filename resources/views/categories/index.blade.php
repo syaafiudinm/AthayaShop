@@ -138,8 +138,8 @@
                 </tbody>
             </table>
             @if ($categories->isNotEmpty())
-            <div class="mt-6 mx-auto">
-                {{ $categories->links() }}
+            <div class="mt-6">
+                {{ $categories->links('pagination::tailwind') }}
             </div>                          
             @endif       
         </div>

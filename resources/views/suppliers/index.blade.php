@@ -48,18 +48,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($suppliers as $supplier)
                         <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
-                            <td class="px-4 py-2 font-semibold">1</td>
-                            <td class="px-4 py-2 font-medium ">PT Jaya Abadi</td>
+                            <td class="px-4 py-2 font-semibold">{{$loop->iteration}} </td>
+                            <td class="px-4 py-2 font-medium ">{{ $supplier->name }}</td>
                             <td class="px-4 py-2 font-medium">
-                                08219000000
+                                {{$supplier->contact}}
                             </td>
                             <td class="px-4 py-2 font-medium">
-                                Jl. Jaya Abadi
+                                {{$supplier->address}}
                             </td>
                             <td class="px-4 py-2">
                                 <div class="flex items-center gap-5">
-                                    <a href="" class="text-black hover:text-blue-600">
+                                    <a href="javascript:;" onclick="openEditModal('{{ $supplier->id }}', '{{ $supplier->name }}', '{{ $supplier->contact }}', '{{ $supplier->address }}')" class="text-black hover:text-blue-600">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M5 15.9999L4 19.9999L8 18.9999L19.586 7.41394C19.9609 7.03889 20.1716 6.53027 20.1716 5.99994C20.1716 5.46961 19.9609 4.961 19.586 4.58594L19.414 4.41394C19.0389 4.039 18.5303 3.82837 18 3.82837C17.4697 3.82837 16.9611 4.039 16.586 4.41394L5 15.9999Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M5 16L4 20L8 19L18 9L15 6L5 16Z" fill="black"/>
@@ -67,7 +68,9 @@
                                         </svg>
                                     </a>
                                     
-                                    <form action="" method="" class="delete-form">
+                                    <form action="{{ route('suppliers.destroy', $supplier->id) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
                                         <button type="submit" class="text-black hover:text-red-600 mt-3">
                                             <!-- Delete Icon -->
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,12 +81,14 @@
                                 </div>
                             </td>
                         </tr>
+                    @endforeach
                 </tbody>
             </table>       
         </div>
     </div>
 
     @include('components.createSupplierModal')
+    @include('components.editSupplierModal')
 
     <script>
         function openModal(id) {
@@ -95,5 +100,30 @@
             document.getElementById(id).classList.add('hidden');
             document.getElementById(id).classList.remove('flex');
         }
+
+        function openEditModal(id, name, contact, address) {
+        const form = document.getElementById('editForm');
+        form.action = `/suppliers/edit/${id}`;
+        document.getElementById('editName').value = name;
+        document.getElementById('editContact').value = contact;
+        document.getElementById('editAddress').value = address;
+
+        // Reset error
+        resetEditErrors();
+
+        openModal('editModal');
+    }
+
+    function resetEditErrors() {
+        document.getElementById('editName').classList.remove('border-red-500');
+        document.getElementById('editContact').classList.remove('border-red-500');
+        document.getElementById('editAddress').classList.remove('border-red-500');
+        document.getElementById('editLabelName').classList.remove('text-red-500');
+        document.getElementById('editLabelContact').classList.remove('text-red-500');
+        document.getElementById('editLabelAddress').classList.remove('text-red-500');
+        document.getElementById('editErrorName').classList.add('hidden');
+        document.getElementById('editErrorContact').classList.add('hidden');
+        document.getElementById('editErrorAddress').classList.add('hidden');
+    }
     </script>
 @endsection

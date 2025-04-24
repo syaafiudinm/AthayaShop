@@ -43,10 +43,6 @@ class CategoryController extends Controller
         return redirect()->route('categories')->with('success', 'Category created successfully');
     }
 
-    public function edit(int $id){
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
-    }  
 
     public function update(int $id, Request $request){
         
