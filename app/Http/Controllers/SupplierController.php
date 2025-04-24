@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 
-        $suppliers = Supplier::all();
+        $search = $request->query('search');
+
+        $suppliers = Supplier::when($search, function ($query, $search) {
+            return $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('contact', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
+        })->paginate(5)->withQueryString();
 
         return view('suppliers.index', compact('suppliers'));
     }

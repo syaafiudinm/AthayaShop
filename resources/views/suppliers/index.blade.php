@@ -18,7 +18,7 @@
                     <path d="M9.167 10.8334H5.00033C4.76422 10.8334 4.56644 10.7534 4.407 10.5934C4.24755 10.4334 4.16755 10.2356 4.167 10C4.16644 9.76447 4.24644 9.56669 4.407 9.40669C4.56755 9.24669 4.76533 9.16669 5.00033 9.16669H9.167V5.00002C9.167 4.76391 9.24699 4.56613 9.40699 4.40669C9.567 4.24725 9.76477 4.16725 10.0003 4.16669C10.2359 4.16613 10.4339 4.24613 10.5945 4.40669C10.7551 4.56725 10.8348 4.76502 10.8337 5.00002V9.16669H15.0003C15.2364 9.16669 15.4345 9.24669 15.5945 9.40669C15.7545 9.56669 15.8342 9.76447 15.8337 10C15.8331 10.2356 15.7531 10.4336 15.5937 10.5942C15.4342 10.7547 15.2364 10.8345 15.0003 10.8334H10.8337V15C10.8337 15.2361 10.7537 15.4342 10.5937 15.5942C10.4337 15.7542 10.2359 15.8339 10.0003 15.8334C9.76477 15.8328 9.567 15.7528 9.40699 15.5934C9.24699 15.4339 9.167 15.2361 9.167 15V10.8334Z" fill="black"/>
                 </svg>                    
             </button>
-            <form method="GET" action="{{ route('categories') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
+            <form method="GET" action="{{ route('suppliers') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
                 <!-- Search Icon -->
                 <span class="text-gray-500 mr-2">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -83,7 +83,12 @@
                         </tr>
                     @endforeach
                 </tbody>
-            </table>       
+            </table>
+            @if ($suppliers->isNotEmpty())
+            <div class="mt-6">
+                {{ $suppliers->links('pagination::tailwind') }}
+            </div>                          
+            @endif  
         </div>
     </div>
 
