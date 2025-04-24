@@ -41,7 +41,7 @@
 
         <div class="flex flex-wrap gap-4">
             <!-- CARD 1 -->
-            <div class="w-full md:w-1/4 px-5 py-5 bg-[#A5A5A5] rounded-lg shadow-lg">
+            <div class="w-full md:w-1/4 px-5 py-5 bg-primary rounded-lg shadow-lg border-2 border-black">
                 <div class="flex">
                     <div>
                         <!-- ICON -->
@@ -58,7 +58,7 @@
             </div>
         
             <!-- CARD 2 -->
-            <div class="w-full md:w-1/4 px-5 py-5 bg-[#A5A5A5] rounded-lg shadow-lg">
+            <div class="w-full md:w-1/4 px-5 py-5 bg-primary rounded-lg shadow-lg border-2 border-black">
                 <div class="flex">
                     <div>
                         <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -74,7 +74,7 @@
             </div>
         
             <!-- CARD 3 -->
-            <div class="w-full md:w-1/4 px-5 py-5 bg-[#A5A5A5] rounded-lg shadow-lg">
+            <div class="w-full md:w-1/4 px-5 py-5 bg-primary rounded-lg shadow-lg border-2 border-black">
                 <div class="flex">
                     <div>
                         <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,7 @@
         </div>
         <div>
             <table class="w-full mt-6 border-separate border-spacing-y-3">
-                <thead class="bg-[#A5A5A5]">
+                <thead class="bg-primary">
                     <tr>
                         <th class="text-left px-6 py-3 rounded-l-lg">ID Kategori</th>
                         <th class="text-left px-6 py-3">Nama Kategori</th>
