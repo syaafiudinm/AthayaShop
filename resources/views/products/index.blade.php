@@ -75,7 +75,7 @@
                 <!-- Duplicate above div for other cards -->
             </div>            
         </div>
-        @include('components.createProductModal')
+        {{-- @include('components.createProductModal') --}}
     </div>
 
 @endsection
