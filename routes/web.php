@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,3 +17,4 @@ Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('
 Route::put('/categories/edit/{id}', [CategoryController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
+Route::get('/products', [ProductController::class, 'index'])->name('products');
