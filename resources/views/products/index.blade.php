@@ -42,11 +42,15 @@
         </div>
         {{-- End Search Form --}}
 
+        <div class="mt-4">
+            @include('components.alert')
+        </div>
+
         {{-- Product List --}}
         <div class="mt-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Add Product Card -->
-                <button href="#" class="bg-primary p-4 rounded-lg shadow-lg">
+                <button onclick="openModal()" class="bg-primary p-4 rounded-lg shadow-lg">
                     <div class="border-dashed border-2 border-black rounded-md h-[300px] mb-4 flex justify-center items-center">
                         <div class="text-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto mb-2">
@@ -57,25 +61,80 @@
                     </div>
                 </button>
             
+                @foreach ($products as $product )
+                    <div class="bg-primary p-4 rounded-lg shadow-lg">
+                        <div class="h-40 bg-gray-200 mb-4">
+                            <img src="{{ asset('uploads/produk/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-md">
+                        </div>
+                        <h3 class="font-bold text-lg">{{ $product->name }}</h3>
+                        <p class="text-sm text-black">{{ $product->description }}</p>
+                        <div class="mb-9 mt-1">
+                            <span class="bg-green-500 text-white px-3 py-2 rounded-full text-sm">{{ $product->stock}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <p class="font-semibold mt-2">Harga {{ $product->price }}</p>
+                            <p class="text-xs text-gray-600 text-center mt-4">{{$product->supplier->name}}</p>
+                        </div>
+                    </div>
+                @endforeach
                 <!-- Product Cards -->
-                <div class="bg-primary p-4 rounded-lg shadow-lg">
-                    <div class="h-40 bg-gray-200 mb-4">
-                        <!-- Add image here if required -->
-                    </div>
-                    <h3 class="font-bold text-lg">Shimer-Shimer Dress</h3>
-                    <p class="text-sm text-black">BAJU - #349201</p>
-                    <div class="mb-9 mt-1">
-                        <span class="bg-green-500 text-white px-2 py-1 rounded-full text-sm">Stock 5</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <p class="font-semibold mt-2">Harga Rp50.000</p>
-                        <p class="text-xs text-gray-600 text-center mt-4">PT Indah Berkah</p>
-                    </div>
-                </div>
                 <!-- Duplicate above div for other cards -->
             </div>            
         </div>
-        {{-- @include('components.createProductModal') --}}
+        @include('components.createProductModal',['submissionToken' => $submissionToken])
     </div>
+    <script>
+        function openModal() {
+            document.getElementById('productModal').classList.remove('hidden');
+            document.getElementById('productModal').classList.add('flex');
+        }
+    
+        function closeModal() {
+            document.getElementById('productModal').classList.add('hidden');
+            document.getElementById('productModal').classList.remove('flex');
+        }
 
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const message = document.getElementById('message');
+        const preview = document.getElementById('preview');
+        const imagePreview = document.getElementById('imagePreview');
+
+        // Drag and Drop Events
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('border-blue-500', 'bg-blue-50');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('border-blue-500', 'bg-blue-50');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-blue-500', 'bg-blue-50');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                previewImage(files[0]);
+            }
+        });
+
+        // File Input Change Event
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                previewImage(fileInput.files[0]);
+            }
+        });
+
+        // Preview Image
+        function previewImage(file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                imagePreview.src = reader.result;
+                preview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
 @endsection

@@ -50,7 +50,7 @@
                 <tbody>
                     @foreach ($suppliers as $supplier)
                         <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
-                            <td class="px-4 py-2 font-semibold">{{$loop->iteration}} </td>
+                            <td class="px-4 py-2 font-semibold">{{$loop->iteration + ($suppliers->currentPage() - 1) * $suppliers->perPage()}} </td>
                             <td class="px-4 py-2 font-medium ">{{ $supplier->name }}</td>
                             <td class="px-4 py-2 font-medium">
                                 {{$supplier->contact}}
