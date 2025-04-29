@@ -20,7 +20,7 @@
 <body>
     <div class="flex min-h-screen bg-white">
         <!-- Sidebar -->
-        <div class="w-64 bg-[#A5A5A5] shadow-md px-4 py-8">
+        <div class="w-64 bg-primary shadow-md px-4 py-8">
           <h2 class="text-2xl font-bold text-white">ATHAYA SHOP</h2>
           <p class="mb-12 text-xs text-white">Dashboard System</p>
           <ul class="space-y-10">
@@ -49,7 +49,7 @@
               </a>
             </li>
             <li>
-              <a href="{{route('categories')}}" class="flex items-center gap-2 text-white {{ request()->routeIs('categories') ? 'text-blue-600 font-semibold bg-gray-300 p-2 rounded-md' : 'text-white' }}">
+              <a href="{{route('categories')}}" class="flex items-center gap-2 text-white">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M11.1501 3.39998L7.43012 9.47998C7.02012 10.14 7.50012 11 8.28012 11H15.7101C16.4901 11 16.9701 10.14 16.5601 9.47998L12.8501 3.39998C12.7617 3.25362 12.637 3.13256 12.4881 3.04853C12.3392 2.9645 12.1711 2.92035 12.0001 2.92035C11.8291 2.92035 11.661 2.9645 11.5121 3.04853C11.3632 3.13256 11.2385 3.25362 11.1501 3.39998Z" fill="white"/>
                   <path d="M17.5 22C19.9853 22 22 19.9853 22 17.5C22 15.0147 19.9853 13 17.5 13C15.0147 13 13 15.0147 13 17.5C13 19.9853 15.0147 22 17.5 22Z" fill="white"/>
@@ -87,6 +87,34 @@
                 Absensi
               </a>
             </li>
+              <div class="relative mt-8">
+                <div class="flex items-center space-x-4 cursor-pointer" onclick="toggleDropdown()">
+                    <!-- Avatar -->
+                    <div class="w-8 h-8 bg-gray-700 rounded-full"></div>
+            
+                    <!-- Nama dan Role -->
+                    <div class="text-white mt-4">
+                        <div class="font-semibold text-sm">{{ Auth::user()->name }}</div>
+                        <div class="text-gray-400 text-xs">{{ ucfirst(Auth::user()->role) }}</div>
+                    </div>
+            
+                    <!-- Icon -->
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            
+                <!-- Dropdown -->
+                <div id="dropdownMenu" class="absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50 transform scale-95 opacity-0 transition-all duration-200 ease-out hidden">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:rounded-md font-semibold">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+              </div>
         </ul>
         </div>
       
@@ -117,6 +145,37 @@
             });
         });
     });
+
+    function toggleDropdown() {
+        const dropdown = document.getElementById('dropdownMenu');
+
+        if (dropdown.classList.contains('hidden')) {
+            dropdown.classList.remove('hidden');
+            setTimeout(() => {
+                dropdown.classList.remove('scale-95', 'opacity-0');
+                dropdown.classList.add('scale-100', 'opacity-100');
+            }, 10); // Delay kecil untuk memicu transition
+        } else {
+            dropdown.classList.remove('scale-100', 'opacity-100');
+            dropdown.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                dropdown.classList.add('hidden');
+            }, 200); // Delay pas sesuai transition durasi
+        }
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.closest('.relative')) {
+            const dropdown = document.getElementById('dropdownMenu');
+            if (dropdown && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.remove('scale-100', 'opacity-100');
+                dropdown.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    dropdown.classList.add('hidden');
+                }, 200);
+            }
+        }
+    }
   </script>
 </body>
 </html>

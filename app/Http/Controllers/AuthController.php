@@ -60,8 +60,13 @@ class AuthController extends Controller
         ])){
             return redirect()->route('beranda');
         }else{
-            return redirect()->route('account.login')->with('error', 'Either email or password is incorrect');
+            return redirect()->route('login')->with('error', 'Either email or password is incorrect');
         }
 
     } 
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('login');
+    }
 }

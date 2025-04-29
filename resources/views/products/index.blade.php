@@ -50,8 +50,8 @@
         <div class="mt-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Add Product Card -->
-                <button onclick="openModal()" class="bg-primary p-4 rounded-lg shadow-lg">
-                    <div class="border-dashed border-2 border-black rounded-md h-[300px] mb-4 flex justify-center items-center">
+                <button onclick="openModal()" class="p-4 rounded-lg shadow-lg border border-gray-300">
+                    <div class="border-dashed border-2 border-gray-400 rounded-md h-[300px] mb-4 flex justify-center items-center">
                         <div class="text-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto mb-2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -62,8 +62,8 @@
                 </button>
             
                 @foreach ($products as $product )
-                    <div class="bg-primary p-4 rounded-lg shadow-lg">
-                        <div class="h-40 bg-gray-200 mb-4">
+                    <div class="p-4 rounded-lg shadow-lg border border-gray-300">
+                        <div class="h-40 bg-gray-200 rounded-md mb-4">
                             <img src="{{ asset('uploads/produk/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-md">
                         </div>
                         <h3 class="font-bold text-lg">{{ $product->name }}</h3>

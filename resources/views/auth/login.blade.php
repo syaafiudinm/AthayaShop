@@ -44,13 +44,8 @@
                     @enderror
                 </div>
 
-                <!-- Forgot Password link -->
-                <div class="mb-6 flex justify-between">
-                    <a href="#" class="text-sm text-gray-500">Lupa Kata Sandi?</a>
-                </div>
-
                 <!-- Submit Button -->
-                <button type="submit" class="w-full border-2 border-black bg-primary text-black py-3 rounded-lg mb-4 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Masuk</button>
+                <button type="submit" class="w-full border-2 border-black bg-primary text-white py-3 rounded-lg mb-4 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Masuk</button>
             </form>
         </div>
 
