@@ -24,6 +24,15 @@ class CategoryController extends Controller
 
 
     public function store(Request $request){
+
+        $submissionToken = $request->input('submission_token');
+
+        if(session()->has("submission_token_{$submissionToken}")){
+            return redirect()->route('categories')->with('error', 'Duplicate submission detected!');
+        }
+
+        session()->put("submission_token_{$submissionToken}", true);
+
         $rules = [
             'name' => 'required',
             'description' => 'required'

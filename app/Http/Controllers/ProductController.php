@@ -8,6 +8,9 @@ use App\Models\Supplier;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
 
 class ProductController extends Controller
 {
@@ -58,11 +61,21 @@ class ProductController extends Controller
             $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/produk'), $fileName);
             $product->image = $fileName;
+
+            $manager = new ImageManager(Driver::class);
+
+            $img = $manager->read(public_path('uploads/produk/' . $fileName));
+            $img->resize(300, 170);
+            $img->save(public_path('uploads/produk/thumb/' . $fileName));
         }
 
         $product->save();
 
         return redirect()->route('products')->with('success', 'Product created successfully'); 
+    }
+
+    public function update(int $id, Request $request){
+        
     }
 
 }

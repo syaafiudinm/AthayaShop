@@ -63,8 +63,8 @@
             
                 @foreach ($products as $product )
                     <div class="p-4 rounded-lg shadow-lg border border-gray-300">
-                        <div class="h-40 bg-gray-200 rounded-md mb-4">
-                            <img src="{{ asset('uploads/produk/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover rounded-md">
+                        <div class=" bg-gray-200 rounded-md mb-4">
+                            <img src="{{ asset('uploads/produk/thumb/'.$product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
                         </div>
                         <h3 class="font-bold text-lg">{{ $product->name }}</h3>
                         <p class="text-sm text-black">{{ $product->description }}</p>
