@@ -1,8 +1,8 @@
-<div id="productModal" class="fixed inset-0 bg-black bg-opacity-50  justify-center items-center {{ $errors->any() && session('modal') == 'create' ? 'flex' : 'hidden' }}">
+<div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center {{ $errors->any() && session('modal') == 'create' ? 'flex' : 'hidden' }}">
     <div class="bg-white rounded-lg p-6 w-[400px]">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Tambah Produk</h2>
-            <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">&times;</button>
+            <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">×</button>
         </div>
         <!-- Modal Form -->
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">

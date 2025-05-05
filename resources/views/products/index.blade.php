@@ -61,19 +61,33 @@
                     </div>
                 </button>
             
-                @foreach ($products as $product )
+                @foreach ($products as $product)
                     <div class="p-4 rounded-lg shadow-lg border border-gray-300">
-                        <div class=" bg-gray-200 rounded-md mb-4">
-                            <img src="{{ asset('uploads/produk/thumb/'.$product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
+                        <div class="bg-gray-200 rounded-md mb-4">
+                            <img src="{{ asset('Uploads/produk/thumb/'.$product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
                         </div>
                         <h3 class="font-bold text-lg">{{ $product->name }}</h3>
                         <p class="text-sm text-black">{{ $product->description }}</p>
                         <div class="mb-9 mt-1">
-                            <span class="bg-green-500 text-white px-3 py-2 rounded-full text-sm">{{ $product->stock}}</span>
+                            <span class="bg-green-500 text-white px-3 py-2 rounded-full text-sm">{{ $product->stock }}</span>
                         </div>
                         <div class="flex justify-between">
                             <p class="font-semibold mt-2">Harga {{ $product->price }}</p>
-                            <p class="text-xs text-gray-600 text-center mt-4">{{$product->supplier->name}}</p>
+                            <p class="text-xs text-gray-600 text-center mt-4">{{ $product->supplier->name }}</p>
+                        </div>
+                        <div class="flex justify-end mt-2 gap-2">
+                            <a href="javascript:void(0)" onclick="openEditModal({
+                                id: '{{ $product->id }}',
+                                name: '{{ $product->name }}',
+                                price: '{{ $product->price }}',
+                                description: '{{ $product->description }}',
+                                stock: '{{ $product->stock }}',
+                                category_id: '{{ $product->category_id }}',
+                                supplier_id: '{{ $product->supplier_id }}',
+                                image: '{{ asset('Uploads/produk/thumb/'.$product->image) }}'
+                            })" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                Edit
+                            </a>
                         </div>
                     </div>
                 @endforeach
@@ -82,59 +96,152 @@
             </div>            
         </div>
         @include('components.createProductModal',['submissionToken' => $submissionToken])
+        @include('components.editProductModal', ['submissionToken' => $submissionToken])
     </div>
+    
     <script>
+        // Open Create Modal
         function openModal() {
             document.getElementById('productModal').classList.remove('hidden');
-            document.getElementById('productModal').classList.add('flex');
         }
     
+        // Close Create Modal
         function closeModal() {
             document.getElementById('productModal').classList.add('hidden');
-            document.getElementById('productModal').classList.remove('flex');
+            // Reset create form
+            document.querySelector('#productModal form').reset();
+            document.getElementById('preview').classList.add('hidden');
+            document.getElementById('imagePreview').src = '';
+            document.getElementById('message').textContent = '';
         }
-
+    
+        // Close Edit Modal
+        function closeEditModal() {
+            document.getElementById('editProductModal').classList.add('hidden');
+            // Reset edit form
+            document.querySelector('#editProductModal form').reset();
+            document.getElementById('editPreview').classList.add('hidden');
+            document.getElementById('editImagePreview').src = '';
+            document.getElementById('editMessage').textContent = '';
+        }
+    
+        // Open Edit Modal and Populate Fields
+        function openEditModal(product) {
+            const modal = document.getElementById('editProductModal');
+            const form = document.getElementById('editProductForm');
+            
+            // Set form action to update route
+            form.action = `/products/edit/${product.id}`;
+    
+            // Populate form fields
+            document.getElementById('editProductName').value = product.name || '';
+            document.getElementById('editProductCategory').value = product.category_id || '';
+            document.getElementById('editProductPrice').value = product.price || '';
+            document.getElementById('editProductStock').value = product.stock || '';
+            document.getElementById('editProductSupplier').value = product.supplier_id || '';
+            document.getElementById('editProductDescription').value = product.description || '';
+    
+            // Handle existing image preview
+            const editPreview = document.getElementById('editPreview');
+            const editImagePreview = document.getElementById('editImagePreview');
+            if (product.image) {
+                editPreview.classList.remove('hidden');
+                editImagePreview.src = product.image;
+            } else {
+                editPreview.classList.add('hidden');
+                editImagePreview.src = '';
+            }
+    
+            // Show modal
+            modal.classList.remove('hidden');
+        }
+    
+        // Handle Drag and Drop for Create Modal
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
-        const message = document.getElementById('message');
         const preview = document.getElementById('preview');
         const imagePreview = document.getElementById('imagePreview');
-
-        // Drag and Drop Events
-        dropzone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropzone.classList.add('border-blue-500', 'bg-blue-50');
-        });
-
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('border-blue-500', 'bg-blue-50');
-        });
-
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.classList.remove('border-blue-500', 'bg-blue-50');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                previewImage(files[0]);
+        const message = document.getElementById('message');
+    
+        if (dropzone && fileInput) {
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('border-blue-500');
+            });
+    
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.classList.remove('border-blue-500');
+            });
+    
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('border-blue-500');
+                const file = e.dataTransfer.files[0];
+                handleFile(file);
+            });
+    
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                handleFile(file);
+            });
+        }
+    
+        function handleFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    preview.classList.remove('hidden');
+                    imagePreview.src = reader.result;
+                    message.textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                message.textContent = 'Please upload a valid image file';
             }
-        });
-
-        // File Input Change Event
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                previewImage(fileInput.files[0]);
+        }
+    
+        // Handle Drag and Drop for Edit Modal
+        const editDropzone = document.getElementById('editDropzone');
+        const editFileInput = document.getElementById('editFileInput');
+        const editPreview = document.getElementById('editPreview');
+        const editImagePreview = document.getElementById('editImagePreview');
+        const editMessage = document.getElementById('editMessage');
+    
+        if (editDropzone && editFileInput) {
+            editDropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                editDropzone.classList.add('border-blue-500');
+            });
+    
+            editDropzone.addEventListener('dragleave', () => {
+                editDropzone.classList.remove('border-blue-500');
+            });
+    
+            editDropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                editDropzone.classList.remove('border-blue-500');
+                const file = e.dataTransfer.files[0];
+                handleEditFile(file);
+            });
+    
+            editFileInput.addEventListener('change', () => {
+                const file = editFileInput.files[0];
+                handleEditFile(file);
+            });
+        }
+    
+        function handleEditFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    editPreview.classList.remove('hidden');
+                    editImagePreview.src = reader.result;
+                    editMessage.textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                editMessage.textContent = 'Please upload a valid image file';
             }
-        });
-
-        // Preview Image
-        function previewImage(file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                imagePreview.src = reader.result;
-                preview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
         }
     </script>
 @endsection

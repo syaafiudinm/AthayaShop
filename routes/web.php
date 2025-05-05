@@ -23,11 +23,13 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/products', [ProductController::class, 'index'])->name('products');
     Route::post('/products/create', [ProductController::class, 'store'])->name('products.store');
+    Route::put('/products/edit/{id}', [ProductController::class, 'update'])->name('products.update');
     
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers');
     Route::post('/suppliers/create', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::put('/suppliers/edit/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
 });    
 
 
