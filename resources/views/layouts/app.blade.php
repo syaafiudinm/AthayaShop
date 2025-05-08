@@ -130,7 +130,7 @@
             // Menampilkan SweetAlert2 konfirmasi
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: "Kategori ini akan dihapus secara permanen!",
+                text: "ini akan dihapus secara permanen!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

@@ -90,7 +90,7 @@
                             </span>
                             <span>
                                 Watch video tutorials at
-                                <a href="https://instagram.com/zzifahykaz" target="_blank" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-[#f53003] dark:text-[#FF4433] ml-1">
+                                <a href="https://www.xnxx.com/video-xv65jd6/widow_and_ex-husband_s_friend" target="_blank" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-[#f53003] dark:text-[#FF4433] ml-1">
                                     <span>Laracasts</span>
                                     <svg
                                         width="10"

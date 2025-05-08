@@ -14,11 +14,27 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
-    public function index(){
-        $products = Product::with('category', 'supplier')->get();
+    public function index(Request $request){
         $categories = Category::all();
         $suppliers = Supplier::all();
         $submissionToken = Str::random(32);
+
+        $search = $request->query('search');
+        
+        $products = Product::when($search, function ($query, $search) {
+            return $query
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('supplier', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%");
+                    });
+                    
+                })
+                
+                ->paginate(7)->withQueryString();
 
         return view('products.index', compact('products', 'categories', 'suppliers', 'submissionToken'));
     }
@@ -120,4 +136,9 @@ class ProductController extends Controller
         return redirect()->route('products')->with('success', 'Product updated successfully'); 
     }
 
+    public function destroy(int $id) {
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route('products')->with('success', 'Product deleted successfully!');
+    }
 }

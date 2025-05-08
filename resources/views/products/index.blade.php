@@ -27,7 +27,7 @@
                 aksesoris                
             </a>
             <!-- Search Form (Move to the right) -->
-            <form method="GET" action="{{ route('categories') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
+            <form method="GET" action="{{ route('products') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
                 <!-- Search Icon -->
                 <span class="text-gray-500 mr-2">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -88,12 +88,20 @@
                             })" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                                 Edit
                             </a>
+                            <form action="{{route('products.destroy', $product->id)}}" class="delete-form" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Hapus</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
-                <!-- Product Cards -->
-                <!-- Duplicate above div for other cards -->
-            </div>            
+            </div>
+            @if ($products->isNotEmpty())
+            <div class="mt-6">
+                {{ $products->links('pagination::tailwind') }}
+            </div>                          
+            @endif
         </div>
         @include('components.createProductModal',['submissionToken' => $submissionToken])
         @include('components.editProductModal', ['submissionToken' => $submissionToken])
