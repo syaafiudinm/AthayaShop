@@ -5,7 +5,7 @@
     <div class="flex-1 p-8">
         <h1 class="text-3xl font-semibold mb-6">Produk</h1>
         <div class="flex gap-4">
-            <!-- Refresh Button -->
+             <!-- Category Filter Dropdown -->
             <a href="{{ route('products') }}" class="flex items-center border border-gray-300 p-2 rounded-md gap-2 mt-1">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11.15 3.36878C11.3254 3.48823 11.4461 3.67245 11.4856 3.88092C11.5252 4.08938 11.4803 4.30502 11.3608 4.48038C11.2413 4.65574 11.0571 4.77646 10.8487 4.816C10.6402 4.85553 10.4246 4.81063 10.2492 4.69118C9.51062 4.18909 8.62525 3.94861 7.73415 4.00805C6.84305 4.0675 5.99747 4.42345 5.33213 5.01919C4.66679 5.61494 4.21995 6.41621 4.06281 7.29536C3.90566 8.1745 4.04725 9.08096 4.46502 9.8703C4.88278 10.6596 5.55269 11.2865 6.36802 11.6509C7.18335 12.0154 8.0972 12.0965 8.96398 11.8814C9.83076 11.6662 10.6006 11.1672 11.1509 10.4638C11.7012 9.76039 12.0002 8.89306 12.0004 7.99998C12.0004 7.7878 12.0847 7.58432 12.2347 7.43429C12.3847 7.28426 12.5882 7.19998 12.8004 7.19998C13.0126 7.19998 13.2161 7.28426 13.3661 7.43429C13.5161 7.58432 13.6004 7.7878 13.6004 7.99998C13.6002 9.25037 13.1815 10.4647 12.4111 11.4496C11.6407 12.4344 10.5628 13.1331 9.34922 13.4342C8.13564 13.7354 6.85618 13.6218 5.71469 13.1114C4.57319 12.601 3.63534 11.7233 3.05056 10.6181C2.46578 9.51289 2.26772 8.24375 2.48792 7.0129C2.70813 5.78205 3.33394 4.66031 4.26564 3.82639C5.19734 2.99248 6.38134 2.49438 7.62897 2.41144C8.87661 2.32851 10.1161 2.66552 11.15 3.36878Z" fill="black"/>
@@ -14,18 +14,23 @@
                 </svg>
                 Refresh                 
             </a>
-            <a href="{{ route('categories') }}" class="flex items-center border border-gray-300 px-4 rounded-md gap-2 mt-1">
-                semua                
-            </a>
-            <a href="{{ route('categories') }}" class="flex items-center border border-gray-300 px-4 rounded-md gap-2 mt-1">
-                baju               
-            </a>
-            <a href="{{ route('categories') }}" class="flex items-center border border-gray-300 px-4 rounded-md gap-2 mt-1">
-                celana                
-            </a>
-            <a href="{{ route('categories') }}" class="flex items-center border border-gray-300 px-4 rounded-md gap-2 mt-1">
-                aksesoris                
-            </a>
+            <form method="GET" action="{{ route('products') }}" id="categoryFilterForm" class="flex items-center border border-gray-300 rounded-md px-4 py-2 mt-1">
+                <span class="text-gray-500 mr-2">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 4H14C14.5523 4 15 3.55228 15 3C15 2.44772 14.5523 2 14 2H2C1.44772 2 1 2.44772 1 3C1 3.55228 1.44772 4 2 4ZM2 9H14C14.5523 9 15 8.55228 15 8C15 7.44772 14.5523 7 14 7H2C1.44772 7 1 7.44772 1 8C1 8.55228 1.44772 9 2 9ZM2 14H14C14.5523 14 15 13.5523 15 13C15 12.4477 14.5523 12 14 12H2C1.44772 12 1 12.4477 1 13C1 13.5523 1.44772 14 2 14Z" fill="black"/>
+                    </svg>
+                </span>
+                <select name="category" onchange="this.form.submit()" class="bg-transparent border-none focus:ring-0 focus:outline-none text-gray-700">
+                    <option value="all" {{ request('category') == 'all' || !request('category') ? 'selected' : '' }}>Semua</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <!-- Preserve search query -->
+                @if (request('search'))
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                @endif
+            </form>
             <!-- Search Form (Move to the right) -->
             <form method="GET" action="{{ route('products') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
                 <!-- Search Icon -->
@@ -62,19 +67,32 @@
                 </button>
             
                 @foreach ($products as $product)
-                    <div class="p-4 rounded-lg shadow-lg border border-gray-300">
-                        <div class="bg-gray-200 rounded-md mb-4">
-                            <img src="{{ asset('Uploads/produk/thumb/'.$product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
+                    <div class="p-4 rounded-lg shadow-lg border border-gray-300 relative">
+                        <!-- Clickable area for the entire card, excluding buttons -->
+                        <div class="cursor-pointer" onclick="openDetailModal({
+                            id: '{{ $product->id }}',
+                            name: '{{ $product->name }}',
+                            price: '{{ $product->price }}',
+                            description: '{{ $product->description }}',
+                            stock: '{{ $product->stock }}',
+                            category_id: '{{ $product->category_id }}',
+                            supplier_name: '{{ $product->supplier->name }}',
+                            image: '{{ asset('Uploads/produk/thumb/' . $product->image) }}'
+                        })">
+                            <div class="bg-gray-200 rounded-md mb-4">
+                                <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
+                            </div>
+                            <h3 class="font-bold text-lg">{{ $product->name }}</h3>
+                            <p class="text-sm text-black">{{ $product->description }}</p>
+                            <div class="mb-9 mt-1">
+                                <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <p class="font-semibold mt-2">Harga {{ $product->price }}</p>
+                                <p class="text-xs text-gray-600 text-center mt-4">{{ $product->supplier->name }}</p>
+                            </div>
                         </div>
-                        <h3 class="font-bold text-lg">{{ $product->name }}</h3>
-                        <p class="text-sm text-black">{{ $product->description }}</p>
-                        <div class="mb-9 mt-1">
-                            <span class="bg-green-500 text-white px-3 py-2 rounded-full text-sm">{{ $product->stock }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <p class="font-semibold mt-2">Harga {{ $product->price }}</p>
-                            <p class="text-xs text-gray-600 text-center mt-4">{{ $product->supplier->name }}</p>
-                        </div>
+                        <!-- Edit and Delete Buttons -->
                         <div class="flex justify-end mt-2 gap-2">
                             <a href="javascript:void(0)" onclick="openEditModal({
                                 id: '{{ $product->id }}',
@@ -84,14 +102,14 @@
                                 stock: '{{ $product->stock }}',
                                 category_id: '{{ $product->category_id }}',
                                 supplier_id: '{{ $product->supplier_id }}',
-                                image: '{{ asset('Uploads/produk/thumb/'.$product->image) }}'
-                            })" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                image: '{{ asset('Uploads/produk/thumb/' . $product->image) }}'
+                            })" class="px-4 py-2 text-gray-600 border border-1 border-gray-300 rounded-md">
                                 Edit
                             </a>
-                            <form action="{{route('products.destroy', $product->id)}}" class="delete-form" method="POST">
+                            <form action="{{ route('products.destroy', $product->id) }}" class="delete-form" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Hapus</button>
+                                <button type="submit" class="px-4 py-2 text-gray-600 border border-1 border-gray-300 rounded-md">Hapus</button>
                             </form>
                         </div>
                     </div>
@@ -105,6 +123,7 @@
         </div>
         @include('components.createProductModal',['submissionToken' => $submissionToken])
         @include('components.editProductModal', ['submissionToken' => $submissionToken])
+        @include('components.ProductDetail')
     </div>
     
     <script>
@@ -121,7 +140,7 @@
             document.getElementById('preview').classList.add('hidden');
             document.getElementById('imagePreview').src = '';
             document.getElementById('message').textContent = '';
-        }
+        }   
     
         // Close Edit Modal
         function closeEditModal() {
@@ -250,6 +269,29 @@
             } else {
                 editMessage.textContent = 'Please upload a valid image file';
             }
+        }
+
+        function openDetailModal(product) {
+        // Populate modal fields
+        document.getElementById('detailImage').src = product.image;
+        document.getElementById('detailName').textContent = product.name;
+        document.getElementById('detailDescription').textContent = product.description;
+        document.getElementById('detailStock').querySelector('span:nth-child(2)').textContent = product.stock;
+        document.getElementById('detailPrice').innerHTML = `<span class="font-semibold">Harga:</span> ${product.price}`;
+        document.getElementById('detailSupplier').innerHTML = `<span class="font-semibold">Supplier:</span> ${product.supplier_name}`;
+        document.getElementById('detailCategory').innerHTML = `<span class="font-semibold">Kategori:</span> ${
+            @json(\App\Models\Category::pluck('name', 'id')->toArray())[product.category_id] || 'Unknown'
+        }`;
+
+            // Show modal
+            document.getElementById('productDetailModal').classList.remove('hidden');
+            document.getElementById('productDetailModal').classList.add('flex');
+        }
+
+        // Close Modal by ID (for Detail and Edit Modals)
+        function closeModalById(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
         }
     </script>
 @endsection

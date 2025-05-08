@@ -40,11 +40,11 @@
             <table class="w-full mt-6 border-separate border-spacing-y-3">
                 <thead class="bg-primary">
                     <tr>
-                        <th class="text-left px-6 py-3 rounded-l-lg border-l-2">ID Supplier</th>
-                        <th class="text-left px-6 py-3">Nama Supplier</th>
-                        <th class="text-left px-6 py-3">Kontak</th>
-                        <th class="text-left px-6 py-3">alamat</th>
-                        <th class="text-left px-6 py-3 rounded-r-lg">Aksi</th>
+                        <th class="text-left px-6 py-3 text-white font-normal rounded-l-lg border-l-2">ID Supplier</th>
+                        <th class="text-left px-6 py-3 text-white font-normal">Nama Supplier</th>
+                        <th class="text-left px-6 py-3 text-white font-normal">Kontak</th>
+                        <th class="text-left px-6 py-3 text-white font-normal">alamat</th>
+                        <th class="text-left px-6 py-3 text-white font-normal rounded-r-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

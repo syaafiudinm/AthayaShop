@@ -20,6 +20,7 @@ class ProductController extends Controller
         $submissionToken = Str::random(32);
 
         $search = $request->query('search');
+        $category = $request->query('category');
         
         $products = Product::when($search, function ($query, $search) {
             return $query
@@ -33,8 +34,11 @@ class ProductController extends Controller
                     });
                     
                 })
-                
-                ->paginate(7)->withQueryString();
+                ->when($category && $category !== 'all', function ($query) use ($category) {
+                    return $query->where('category_id', $category);
+                })
+                ->paginate(7)
+                ->withQueryString();
 
         return view('products.index', compact('products', 'categories', 'suppliers', 'submissionToken'));
     }

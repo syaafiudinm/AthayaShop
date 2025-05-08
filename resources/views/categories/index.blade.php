@@ -39,65 +39,54 @@
             @include('components.alert')
         </div>
 
-        <div class="flex flex-wrap gap-4">
-            <!-- CARD 1 -->
-            <div class="w-full md:w-1/4 px-5 py-5 bg-primary rounded-lg shadow-lg border-2 border-black">
-                <div class="flex">
-                    <div>
-                        <!-- ICON -->
-                        <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 5C0 3.67392 0.526784 2.40215 1.46447 1.46447C2.40215 0.526784 3.67392 0 5 0C5.482 0 5.938 0.17 6.114 0.667C6.25216 1.05674 6.50768 1.39411 6.84541 1.63271C7.18314 1.87131 7.58649 1.99942 8 1.99942C8.41351 1.99942 8.81686 1.87131 9.15459 1.63271C9.49232 1.39411 9.74784 1.05674 9.886 0.667C10.063 0.17 10.519 0 11 0C12.3261 0 13.5979 0.526784 14.5355 1.46447C15.4732 2.40215 16 3.67392 16 5V5.5C16 5.89782 15.842 6.27936 15.5607 6.56066C15.2794 6.84196 14.8978 7 14.5 7H12C12 7.77 11.924 8.554 12.438 9.197L14.466 11.732C15.459 12.9732 16 14.5154 16 16.105V17C16 17.7956 15.6839 18.5587 15.1213 19.1213C14.5587 19.6839 13.7956 20 13 20H3C2.20435 20 1.44129 19.6839 0.87868 19.1213C0.316071 18.5587 0 17.7956 0 17V16.105C-7.39962e-06 14.5154 0.540989 12.9732 1.534 11.732L3.562 9.197C4.076 8.554 4 7.771 4 7H1.5C1.10218 7 0.720644 6.84196 0.43934 6.56066C0.158035 6.27936 0 5.89782 0 5.5V5Z" fill="black"/>
-                        </svg>                            
-                    </div>
-                    <a href="#" class="ml-auto">Lihat Produk</a>
-                </div>
-                <div class="mt-12">
-                    <h3 class="font-semibold">Total Koleksi Baju</h3>
-                    <span class="text-5xl font-bold">{{$categories->total()}}</span>
-                </div>
-            </div>
-        
-            <!-- CARD 2 -->
-            <div class="w-full md:w-1/4 px-5 py-5 bg-primary rounded-lg shadow-lg border-2 border-black">
-                <div class="flex">
-                    <div>
-                        <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 5C0 3.67392 0.526784 2.40215 1.46447 1.46447C2.40215 0.526784 3.67392 0 5 0C5.482 0 5.938 0.17 6.114 0.667C6.25216 1.05674 6.50768 1.39411 6.84541 1.63271C7.18314 1.87131 7.58649 1.99942 8 1.99942C8.41351 1.99942 8.81686 1.87131 9.15459 1.63271C9.49232 1.39411 9.74784 1.05674 9.886 0.667C10.063 0.17 10.519 0 11 0C12.3261 0 13.5979 0.526784 14.5355 1.46447C15.4732 2.40215 16 3.67392 16 5V5.5C16 5.89782 15.842 6.27936 15.5607 6.56066C15.2794 6.84196 14.8978 7 14.5 7H12C12 7.77 11.924 8.554 12.438 9.197L14.466 11.732C15.459 12.9732 16 14.5154 16 16.105V17C16 17.7956 15.6839 18.5587 15.1213 19.1213C14.5587 19.6839 13.7956 20 13 20H3C2.20435 20 1.44129 19.6839 0.87868 19.1213C0.316071 18.5587 0 17.7956 0 17V16.105C-7.39962e-06 14.5154 0.540989 12.9732 1.534 11.732L3.562 9.197C4.076 8.554 4 7.771 4 7H1.5C1.10218 7 0.720644 6.84196 0.43934 6.56066C0.158035 6.27936 0 5.89782 0 5.5V5Z" fill="black"/>
-                        </svg>                            
-                    </div>
-                    <a href="#" class="ml-auto">Lihat Produk</a>
-                </div>
-                <div class="mt-12">
-                    <h3 class="font-semibold">Total Koleksi Baju</h3>
-                    <span class="text-5xl font-bold">{{$categories->total()}}</span>
+        <!-- Category Carousel -->
+        <div class="relative mb-4">
+            <div class="overflow-hidden">
+                <div id="categoryCarousel" class="flex transition-transform duration-300">
+                    @foreach ($categories as $category)
+                        <div class="w-full md:w-1/4 px-5 py-5 bg-[#C7EEFF] rounded-lg shadow-lg border-2 border-gray-300 flex-none mx-2">
+                            <div class="flex">
+                                <div>
+                                    <!-- ICON -->
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11.1501 3.39998L7.43012 9.47998C7.02012 10.14 7.50012 11 8.28012 11H15.7101C16.4901 11 16.9701 10.14 16.5601 9.47998L12.8501 3.39998C12.7617 3.25362 12.637 3.13256 12.4881 3.04853C12.3392 2.9645 12.1711 2.92035 12.0001 2.92035C11.8291 2.92035 11.661 2.9645 11.5121 3.04853C11.3632 3.13256 11.2385 3.25362 11.1501 3.39998Z" fill="black"/>
+                                        <path d="M17.5 22C19.9853 22 22 19.9853 22 17.5C22 15.0147 19.9853 13 17.5 13C15.0147 13 13 15.0147 13 17.5C13 19.9853 15.0147 22 17.5 22Z" fill="black"/>
+                                        <path d="M4 21.5H10C10.55 21.5 11 21.05 11 20.5V14.5C11 13.95 10.55 13.5 10 13.5H4C3.45 13.5 3 13.95 3 14.5V20.5C3 21.05 3.45 21.5 4 21.5Z" fill="black"/>
+                                    </svg>                            
+                                </div>
+                                <a href="{{ route('products', ['category' => $category->id]) }}" class="ml-auto">Lihat Produk</a>
+                            </div>
+                            <div class="mt-12">
+                                <h3 class="font-semibold">Total Koleksi {{ $category->name }}</h3>
+                                <span class="text-5xl font-bold">{{ $category->products->count() }}</span>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-        
-            <!-- CARD 3 -->
-            <div class="w-full md:w-1/4 px-5 py-5 bg-primary rounded-lg shadow-lg border-2 border-black">
-                <div class="flex">
-                    <div>
-                        <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 5C0 3.67392 0.526784 2.40215 1.46447 1.46447C2.40215 0.526784 3.67392 0 5 0C5.482 0 5.938 0.17 6.114 0.667C6.25216 1.05674 6.50768 1.39411 6.84541 1.63271C7.18314 1.87131 7.58649 1.99942 8 1.99942C8.41351 1.99942 8.81686 1.87131 9.15459 1.63271C9.49232 1.39411 9.74784 1.05674 9.886 0.667C10.063 0.17 10.519 0 11 0C12.3261 0 13.5979 0.526784 14.5355 1.46447C15.4732 2.40215 16 3.67392 16 5V5.5C16 5.89782 15.842 6.27936 15.5607 6.56066C15.2794 6.84196 14.8978 7 14.5 7H12C12 7.77 11.924 8.554 12.438 9.197L14.466 11.732C15.459 12.9732 16 14.5154 16 16.105V17C16 17.7956 15.6839 18.5587 15.1213 19.1213C14.5587 19.6839 13.7956 20 13 20H3C2.20435 20 1.44129 19.6839 0.87868 19.1213C0.316071 18.5587 0 17.7956 0 17V16.105C-7.39962e-06 14.5154 0.540989 12.9732 1.534 11.732L3.562 9.197C4.076 8.554 4 7.771 4 7H1.5C1.10218 7 0.720644 6.84196 0.43934 6.56066C0.158035 6.27936 0 5.89782 0 5.5V5Z" fill="black"/>
-                        </svg>                            
-                    </div>
-                    <a href="#" class="ml-auto">Lihat Produk</a>
-                </div>
-                <div class="mt-12">
-                    <h3 class="font-semibold">Total Koleksi Baju</h3>
-                    <span class="text-5xl font-bold">{{$categories->total()}}</span>
-                </div>
-            </div>
+            <!-- Navigation Arrows -->
+            <button id="prevButton" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+            <button id="nextButton" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
         </div>
+
+        {{-- Category Table --}}
         <div>
             <table class="w-full mt-6 border-separate border-spacing-y-3">
                 <thead class="bg-primary">
                     <tr>
-                        <th class="text-left px-6 py-3 rounded-l-lg">ID Kategori</th>
-                        <th class="text-left px-6 py-3">Nama Kategori</th>
-                        <th class="text-left px-6 py-3">Deskripsi</th>
-                        <th class="text-left px-6 py-3">Tanggal Dibuat</th>
-                        <th class="text-left px-6 py-3 rounded-r-lg">Aksi</th>
+                        <th class="text-left px-6 py-3 text-white font-normal rounded-l-lg">ID Kategori</th>
+                        <th class="text-left px-6 py-3 text-white font-normal">Nama Kategori</th>
+                        <th class="text-left px-6 py-3 text-white font-normal">Deskripsi</th>
+                        <th class="text-left px-6 py-3 text-white font-normal">Tanggal Dibuat</th>
+                        <th class="text-left px-6 py-3 text-white font-normal rounded-r-lg">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -181,5 +170,39 @@
         document.getElementById('editErrorName').classList.add('hidden');
         document.getElementById('editErrorDesc').classList.add('hidden');
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.getElementById('categoryCarousel');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const slides = carousel.children;
+        const slidesPerView = 3;
+        let currentIndex = 0;
+        const maxIndex = Math.max(0, slides.length - slidesPerView);
+
+        function updateCarousel() {
+            const slideWidth = 100 / slidesPerView;
+            carousel.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < maxIndex) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        // Set each slide width to account for 3 cards per view
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.width = `${100 / slidesPerView}%`;
+        }
+    });
 </script>
     
