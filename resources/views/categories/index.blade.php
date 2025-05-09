@@ -44,7 +44,7 @@
             <div class="overflow-hidden">
                 <div id="categoryCarousel" class="flex transition-transform duration-300">
                     @foreach ($categories as $category)
-                        <div class="w-full md:w-1/4 px-5 py-5 bg-[#C7EEFF] rounded-lg shadow-lg border-2 border-gray-300 flex-none mx-2">
+                        <div class="w-full md:w-1/4 px-5 py-5 bg-[#C7EEFF] rounded-lg shadow-lg border-2 border-gray-200 flex-none mx-2">
                             <div class="flex">
                                 <div>
                                     <!-- ICON -->
