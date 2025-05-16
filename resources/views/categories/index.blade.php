@@ -40,42 +40,44 @@
         </div>
 
         <!-- Category Carousel -->
-        <div class="relative mb-4">
-            <div class="overflow-hidden">
-                <div id="categoryCarousel" class="flex transition-transform duration-300">
-                    @foreach ($categories as $category)
-                        <div class="w-full md:w-1/4 px-5 py-5 bg-[#C7EEFF] rounded-lg shadow-lg border-2 border-gray-200 flex-none mx-2">
-                            <div class="flex">
-                                <div>
-                                    <!-- ICON -->
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.1501 3.39998L7.43012 9.47998C7.02012 10.14 7.50012 11 8.28012 11H15.7101C16.4901 11 16.9701 10.14 16.5601 9.47998L12.8501 3.39998C12.7617 3.25362 12.637 3.13256 12.4881 3.04853C12.3392 2.9645 12.1711 2.92035 12.0001 2.92035C11.8291 2.92035 11.661 2.9645 11.5121 3.04853C11.3632 3.13256 11.2385 3.25362 11.1501 3.39998Z" fill="black"/>
-                                        <path d="M17.5 22C19.9853 22 22 19.9853 22 17.5C22 15.0147 19.9853 13 17.5 13C15.0147 13 13 15.0147 13 17.5C13 19.9853 15.0147 22 17.5 22Z" fill="black"/>
-                                        <path d="M4 21.5H10C10.55 21.5 11 21.05 11 20.5V14.5C11 13.95 10.55 13.5 10 13.5H4C3.45 13.5 3 13.95 3 14.5V20.5C3 21.05 3.45 21.5 4 21.5Z" fill="black"/>
-                                    </svg>                            
+        @if($categories->isNotEmpty())
+            <div class="relative mb-4">
+                <div class="overflow-hidden">
+                    <div id="categoryCarousel" class="flex transition-transform duration-300">
+                        @foreach ($categories as $category)
+                            <div class="w-full md:w-1/4 px-5 py-5 bg-[#C7EEFF] rounded-lg shadow-lg border-2 border-gray-200 flex-none mx-2">
+                                <div class="flex">
+                                    <div>
+                                        <!-- ICON -->
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11.1501 3.39998L7.43012 9.47998C7.02012 10.14 7.50012 11 8.28012 11H15.7101C16.4901 11 16.9701 10.14 16.5601 9.47998L12.8501 3.39998C12.7617 3.25362 12.637 3.13256 12.4881 3.04853C12.3392 2.9645 12.1711 2.92035 12.0001 2.92035C11.8291 2.92035 11.661 2.9645 11.5121 3.04853C11.3632 3.13256 11.2385 3.25362 11.1501 3.39998Z" fill="black"/>
+                                            <path d="M17.5 22C19.9853 22 22 19.9853 22 17.5C22 15.0147 19.9853 13 17.5 13C15.0147 13 13 15.0147 13 17.5C13 19.9853 15.0147 22 17.5 22Z" fill="black"/>
+                                            <path d="M4 21.5H10C10.55 21.5 11 21.05 11 20.5V14.5C11 13.95 10.55 13.5 10 13.5H4C3.45 13.5 3 13.95 3 14.5V20.5C3 21.05 3.45 21.5 4 21.5Z" fill="black"/>
+                                        </svg>                            
+                                    </div>
+                                    <a href="{{ route('products', ['category' => $category->id]) }}" class="ml-auto">Lihat Produk</a>
                                 </div>
-                                <a href="{{ route('products', ['category' => $category->id]) }}" class="ml-auto">Lihat Produk</a>
+                                <div class="mt-12">
+                                    <h3 class="font-semibold">Total Koleksi {{ $category->name }}</h3>
+                                    <span class="text-5xl font-bold">{{ $category->products->count() }}</span>
+                                </div>
                             </div>
-                            <div class="mt-12">
-                                <h3 class="font-semibold">Total Koleksi {{ $category->name }}</h3>
-                                <span class="text-5xl font-bold">{{ $category->products->count() }}</span>
-                            </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
+                <!-- Navigation Arrows -->
+                <button id="prevButton" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+                <button id="nextButton" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
             </div>
-            <!-- Navigation Arrows -->
-            <button id="prevButton" class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
-            </button>
-            <button id="nextButton" class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-gray-200 p-2 rounded-full">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </button>
-        </div>
+        @endif
 
         {{-- Category Table --}}
         <div>

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class SupplierController extends Controller
 {
     public function index(Request $request){
 
         $search = $request->query('search');
+        $submissionToken = Str::random(32);
 
         $suppliers = Supplier::when($search, function ($query, $search) {
             return $query
@@ -19,7 +21,7 @@ class SupplierController extends Controller
                     ->orWhere('address', 'like', "%{$search}%");
         })->paginate(5)->withQueryString();
 
-        return view('suppliers.index', compact('suppliers'));
+        return view('suppliers.index', compact('suppliers', 'submissionToken'));
     }
 
     public function store(Request $request){
@@ -41,6 +43,7 @@ class SupplierController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
+            session()->forget("submission_token_{$submissionToken}");
             return redirect()->back()->withErrors($validator)->withInput()->with('modal', 'create');
         }
 

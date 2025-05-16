@@ -6,12 +6,14 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function index(Request $request){
 
         $search = $request->query('search');
+        $submissionToken = Str::random(32);
 
         $categories = Category::when($search, function ($query, $search) {
             return $query
@@ -19,7 +21,7 @@ class CategoryController extends Controller
                     ->orWhere('description', 'like', "%{$search}%");
                 })->paginate(5)->withQueryString(); 
 
-        return view('categories.index', compact('categories', 'search'));
+        return view('categories.index', compact('categories', 'search', 'submissionToken'));
     }
 
 
@@ -41,6 +43,7 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
+            session()->forget("submission_token_{$submissionToken}");
             return redirect()->back()->withErrors($validator)->withInput()->with('modal', 'create');
         }
 

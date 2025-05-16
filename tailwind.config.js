@@ -9,6 +9,7 @@ export default {
         extend: {
             colors: {
                 primary: "#1D242B",
+                input: "#DCDCDC",
             },
         },
     },
