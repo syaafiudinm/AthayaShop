@@ -56,7 +56,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 <!-- Add Product Card -->
                 <button onclick="openModal()" class="p-4 rounded-lg shadow-lg border border-gray-300">
-                    <div class="border-dashed border-2 border-gray-400 rounded-md h-[300px] mb-4 flex justify-center items-center">
+                    <div class="border-dashed border-2 border-gray-400 rounded-md h-full mb-4 flex justify-center items-center">
                         <div class="text-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto mb-2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -82,14 +82,18 @@
                             <div class="bg-gray-200 rounded-md mb-4">
                                 <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
                             </div>
-                            <h3 class="font-bold text-lg">{{ $product->name }}</h3>
-                            <p class="text-sm text-black">{{ $product->description }}</p>
-                            <div class="mb-9 mt-1">
-                                <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                            <div class="flex justify-between">
+                                <div>
+                                    <h3 class="font-bold text-lg">{{ $product->name }}</h3>
+                                    <p class="text-sm text-black">{{ $product->description }}</p>
+                                </div>
+                                <div>
+                                    <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                                </div>
                             </div>
                             <div class="flex justify-between">
                                 <p class="font-semibold mt-2">Harga {{ $product->price }}</p>
-                                <p class="text-xs text-gray-600 text-center mt-4">{{ $product->supplier->name }}</p>
+                                <p class="text-xs text-gray-600 text-center mt-3">{{ $product->supplier->name }}</p>
                             </div>
                         </div>
                         <!-- Edit and Delete Buttons -->

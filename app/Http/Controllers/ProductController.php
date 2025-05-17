@@ -85,7 +85,7 @@ class ProductController extends Controller
             $manager = new ImageManager(Driver::class);
 
             $img = $manager->read(public_path('uploads/produk/' . $fileName));
-            $img->resize(300, 170);
+            $img->resize(300, 200);
             $img->save(public_path('uploads/produk/thumb/' . $fileName));
         }
 
