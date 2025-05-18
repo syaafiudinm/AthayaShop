@@ -18,56 +18,81 @@
         @include('components.alert')
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        @foreach ($products as $product)
-            <div class="p-4 rounded-lg shadow border-gray-300 relative">
-                <div class="bg-gray-200 rounded-md mb-4">
-                    <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
-                </div>
-                <div class="flex justify-between">
-                    <div>
-                        <h3 class="font-bold text-lg">{{ $product->name }}</h3>
-                    </div>
-                    <div>
-                        <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
-                    </div>
-                </div>
-                <div class="flex justify-between">
-                    <p class="font-semibold mt-2">
-                        Rp{{ number_format($product->price, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="mx-auto mt-5">
-                    <button wire:click="addToCart({{ $product->id }})" class="mt-2 px-2 py-1 bg-black text-white rounded w-full">Tambahkan +</button>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-    <hr class="my-6" />
-
-    <h2 class="text-xl font-bold mb-4">Order Summary</h2>
-    @foreach ($cart as $item)
-        <div class="flex justify-between items-center border p-2 mb-2">
-            <span>{{ $item['name'] }} x{{ $item['total'] }}</span>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            @foreach ($products as $product)
             <div>
-                <button wire:click="removeFromCart({{ $item['product_id'] }})" class="px-2">-</button>
-                <button wire:click="addToCart({{ $item['product_id'] }})" class="px-2">+</button>
+                <div class="p-4 rounded-lg shadow border border-gray-300 relative">
+                    <div class="bg-gray-200 rounded-md mb-4">
+                        <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md border border-gray-300">
+                    </div>
+                    <div class="flex justify-between">
+                        <div>
+                            <h3 class="font-bold text-md">{{ $product->name }}</h3>
+                        </div>
+                        <div>
+                            <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="font-semibold mt-2">
+                            Rp{{ number_format($product->price, 0, ',', '.') }}
+                        </p>
+                    </div>
+                    <div class="mx-auto mt-5">
+                        <button wire:click="addToCart({{ $product->id }})" class="mt-2 px-2 py-1 bg-black text-white rounded w-full">Tambahkan +</button>
+                    </div>
+                </div>
             </div>
+            @endforeach
         </div>
-    @endforeach
+        <!-- Order Summary -->
+        <div class="bg-[#0077C0] text-white rounded-lg p-4 space-y-4">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-lg font-bold">Rangkuman Orderan</h2>
+                <span class="text-sm">#00009</span>
+            </div>
 
-    <p class="font-semibold">Subtotal: Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
-    <p class="text-red-500">Diskon: Rp{{ number_format($discount, 0, ',', '.') }}</p>
-    <p class="font-bold text-lg">Total: Rp{{ number_format($total, 0, ',', '.') }}</p>
+            @foreach ($cart as $item)
+                <div class="bg-[#C7EEFF] text-black rounded-md p-2 flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gray-300 rounded">
+                        <img src="{{ asset("Uploads/produk/thumb/".$item['image']) }}" alt="" class="w-full h-full object-cover rounded-md">
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-sm">{{ $item['name'] }} ({{ $item['total'] }})</p>
+                        <p class="text-sm font-bold">Rp{{ number_format($item['unit_price'], 0, ',', '.') }}</p>
+                    </div>
+                    <div class="flex gap-1">
+                        <button wire:click="removeFromCart({{ $item['product_id'] }})" class="px-2 bg-gray-200 rounded text-black">-</button>
+                        <button wire:click="addToCart({{ $item['product_id'] }})" class="px-2 bg-gray-200 rounded text-black">+</button>
+                    </div>
+                </div>
+            @endforeach
 
-    <select wire:model="paymentMethod" class="w-full mt-4 p-2 border">
-        <option value="qris">Qris</option>
-        <option value="cash">Tunai</option>
-        <option value="transfer">Transfer</option>
-    </select>
+            <div class="bg-[#C7EEFF] text-black p-3 rounded space-y-1 text-sm">
+                <div class="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>Rp{{ number_format($subtotal, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between text-red-500">
+                    <span>Diskon</span>
+                    <span>-Rp{{ number_format($discount, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between font-bold text-base">
+                    <span>Total Harga</span>
+                    <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
+                </div>
+            </div>
 
-    <button wire:click="openModal" class="mt-4 w-full bg-blue-600 text-white p-2 rounded">Konfirmasi Pembayaran</button>
+            <select wire:model="paymentMethod" class="text-black w-full rounded-md p-2 text-sm">
+                <option value="qris">Qris</option>
+                <option value="cash">Tunai</option>
+                <option value="transfer">Transfer</option>
+            </select>
+
+            <button wire:click="openModal" class="w-full bg-black text-white py-2 rounded text-sm font-semibold">Konfirmasi Pembayaran</button>
+        </div>
+    </div>
 
     @if($showModal)
         <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">

@@ -21,6 +21,8 @@ class Kasir extends Component
     {
         $this->categories = Category::all();
         $this->suppliers = Supplier::all();
+        $this->cart = session()->get('kasir_cart', []);
+        $this->calculateTotal();
         $this->loadProducts();
     }
 
@@ -45,6 +47,7 @@ class Kasir extends Component
             $this->cart[$productId] = [
                 'product_id' => $product->id,
                 'name' => $product->name,
+                'image' => $product->image, 
                 'total' => 1,
                 'unit_price' => $product->price,
             ];
@@ -52,6 +55,7 @@ class Kasir extends Component
 
         $this->cart[$productId]['subtotal'] = $this->cart[$productId]['total'] * $this->cart[$productId]['unit_price'];
         $this->calculateTotal();
+        session(['kasir_cart' => $this->cart]);
     }
 
     public function removeFromCart($productId)
@@ -67,6 +71,7 @@ class Kasir extends Component
         }
 
         $this->calculateTotal();
+        session(['kasir_cart' => $this->cart]);
     }
 
     public function calculateTotal()
@@ -100,6 +105,7 @@ class Kasir extends Component
         }
 
         $this->reset(['cart', 'subtotal', 'total', 'paymentMethod', 'showModal']);
+        session()->forget('kasir_cart');
         session()->flash('success', 'Pembayaran berhasil!');
     }
 

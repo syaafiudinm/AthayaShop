@@ -80,7 +80,7 @@
                             image: '{{ asset('Uploads/produk/thumb/' . $product->image) }}'
                         })">
                             <div class="bg-gray-200 rounded-md mb-4">
-                                <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
+                                <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md border border-gray-300">
                             </div>
                             <div class="flex justify-between">
                                 <div>
