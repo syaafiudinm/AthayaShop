@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('supplier_id')->constrained();
             $table->foreignId('product_id')->constrained();
-            $table->string('total');
-            $table->string('total_price');
+            $table->integer('total');
+            $table->integer('total_price');
             $table->timestamps();
         });
     }

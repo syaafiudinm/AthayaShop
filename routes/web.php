@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Livewire\Kasir;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CashierController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
@@ -32,7 +33,16 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/suppliers/edit/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
-    Route::get('/kasir',[CashierController::class, 'index'])->name('kasir');
+    // Route::get('/kasir', [CashierController::class, 'index'])->name('kasir');
+    // Route::post('/kasir/add', [CashierController::class, 'addToCart'])->name('kasir.add');
+    // Route::post('/kasir/remove', [CashierController::class, 'removeFromCart'])->name('kasir.remove');
+    // Route::post('/kasir/checkout', [CashierController::class, 'checkout'])->name('kasir.checkout');
+    // Route::get('/kasir', Kasir::class)->name('kasir');
+
+    Route::get('/kasir', function () {
+        return view('cashier.index');
+    })->name('kasir');
+
 });    
 
 

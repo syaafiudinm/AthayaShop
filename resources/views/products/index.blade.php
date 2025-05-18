@@ -92,7 +92,9 @@
                                 </div>
                             </div>
                             <div class="flex justify-between">
-                                <p class="font-semibold mt-2">Harga {{ $product->price }}</p>
+                                <p class="font-semibold mt-2">
+                                    Rp{{ number_format($product->price, 0, ',', '.') }}
+                                </p>
                                 <p class="text-xs text-gray-600 text-center mt-3">{{ $product->supplier->name }}</p>
                             </div>
                         </div>

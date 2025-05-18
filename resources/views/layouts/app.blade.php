@@ -16,6 +16,7 @@
         
     </style>
     <title>Athaya Shop</title>
+@livewireStyles
 </head>
 <body>
     <div class="flex min-h-screen bg-white">
@@ -177,5 +178,6 @@
         }
     }
   </script>
+  @livewireScripts
 </body>
 </html>

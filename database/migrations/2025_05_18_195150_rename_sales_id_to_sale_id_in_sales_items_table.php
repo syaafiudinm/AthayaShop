@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('sales_id')->constrained('sales');
-            $table->integer('amount');
-            $table->boolean('status');
-            $table->timestamps();
+        Schema::table('sales_items', function (Blueprint $table) {
+            $table->renameColumn('sales_id', 'sale_id');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment');
+        Schema::table('sales_items', function (Blueprint $table) {
+            //
+        });
     }
 };
