@@ -14,12 +14,32 @@
         </div>
     </div>
 
+    <div class="mt-4">
+        @include('components.alert')
+    </div>
+
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @foreach ($products as $product)
-            <div class="border p-2 rounded">
-                <p class="font-semibold">{{ $product->name }}</p>
-                <p>Rp{{ number_format($product->price, 0, ',', '.') }}</p>
-                <button wire:click="addToCart({{ $product->id }})" class="mt-2 px-2 py-1 bg-black text-white rounded">+</button>
+            <div class="p-4 rounded-lg shadow border-gray-300 relative">
+                <div class="bg-gray-200 rounded-md mb-4">
+                    <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md">
+                </div>
+                <div class="flex justify-between">
+                    <div>
+                        <h3 class="font-bold text-lg">{{ $product->name }}</h3>
+                    </div>
+                    <div>
+                        <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <p class="font-semibold mt-2">
+                        Rp{{ number_format($product->price, 0, ',', '.') }}
+                    </p>
+                </div>
+                <div class="mx-auto mt-5">
+                    <button wire:click="addToCart({{ $product->id }})" class="mt-2 px-2 py-1 bg-black text-white rounded w-full">Tambahkan +</button>
+                </div>
             </div>
         @endforeach
     </div>

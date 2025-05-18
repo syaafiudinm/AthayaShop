@@ -79,6 +79,11 @@ class Kasir extends Component
 
     public function confirmPayment()
     {
+        if (empty($this->cart)) {
+            session()->flash('error', 'Keranjang kosong. Tambahkan item terlebih dahulu.');
+            $this->showModal = false;
+            return;
+        }
         $sale = Sale::create([
             'user_id' => Auth::id(),
             'total_price' => $this->total,
