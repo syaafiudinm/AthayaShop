@@ -31,7 +31,7 @@
                             <h3 class="font-bold text-md">{{ $product->name }}</h3>
                         </div>
                         <div>
-                            <span class="bg-green-500 text-white px-3 py-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                            <span class="bg-green-500 text-white p-2 rounded-lg text-sm">{{ $product->stock }}</span>
                         </div>
                     </div>
                     <div class="mt-3">
@@ -50,7 +50,7 @@
         <div class="bg-[#0077C0] text-white rounded-lg p-4 space-y-4">
             <div class="flex justify-between items-center mb-2">
                 <h2 class="text-lg font-bold">Rangkuman Orderan</h2>
-                <span class="text-sm">#00009</span>
+                <span class="text-sm">Athaya Shop</span>
             </div>
 
             @foreach ($cart as $item)
@@ -85,9 +85,8 @@
             </div>
 
             <select wire:model="paymentMethod" class="text-black w-full rounded-md p-2 text-sm">
-                <option value="qris">Qris</option>
+                <option value="midtrans">Qris</option>
                 <option value="cash">Tunai</option>
-                <option value="transfer">Transfer</option>
             </select>
 
             <button wire:click="openModal" class="w-full bg-black text-white py-2 rounded text-sm font-semibold">Konfirmasi Pembayaran</button>

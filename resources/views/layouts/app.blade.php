@@ -94,7 +94,7 @@
                     <div class="w-8 h-8 bg-gray-700 rounded-full"></div>
             
                     <!-- Nama dan Role -->
-                    <div class="text-white mt-4">
+                    <div class="text-white">
                         <div class="font-semibold text-sm">{{ Auth::user()->name }}</div>
                         <div class="text-gray-400 text-xs">{{ ucfirst(Auth::user()->role) }}</div>
                     </div>

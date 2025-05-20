@@ -7,13 +7,14 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Category;
 use App\Models\Supplier;
+use App\Services\MidtransService;
 use Illuminate\Support\Facades\Auth;
 
 class Kasir extends Component
 {
     public $products = [], $categories = [], $suppliers = [];
     public $cart = [], $subtotal = 0, $discount = 20000, $total = 0;
-    public $paymentMethod = 'qris';
+    public $paymentMethod = 'cash';
     public $showModal = false;
     public $search, $category;
 
@@ -85,14 +86,27 @@ class Kasir extends Component
     public function confirmPayment()
     {
         if (empty($this->cart)) {
-            session()->flash('error', 'Keranjang kosong. Tambahkan item terlebih dahulu.');
-            $this->showModal = false;
+            session()->flash('error', 'Keranjang kosong!');
             return;
         }
+
+        if ($this->paymentMethod === 'cash') {
+            // Proses pembayaran tunai langsung simpan
+            $this->processCashPayment();
+        } elseif ($this->paymentMethod === 'midtrans') {
+            // Proses pembayaran via Midtrans
+            return $this->processMidtransPayment();
+        }
+    }
+
+    protected function processCashPayment()
+    {
+        // Simpan data pembayaran tunai langsung paid
         $sale = Sale::create([
             'user_id' => Auth::id(),
             'total_price' => $this->total,
-            'payment_method' => $this->paymentMethod,
+            'payment_method' => 'cash',
+            'status' => 'paid',
         ]);
 
         foreach ($this->cart as $item) {
@@ -102,12 +116,61 @@ class Kasir extends Component
                 'unit_price' => $item['unit_price'],
                 'subtotal' => $item['subtotal'],
             ]);
+
+            $product = Product::find($item['product_id']);
+            if ($product) {
+                $product->decrement('stock', $item['total']);
+            }
         }
 
+        $this->resetCart();
+        session()->flash('success', 'Pembayaran tunai berhasil!');
+    }
+
+
+    protected function processMidtransPayment(){
+        
+        $sale = Sale::create([
+            'user_id' => Auth::id(),
+            'total_price' => $this->total,
+            'payment_method' => 'midtrans',
+            'status' => 'pending'
+        ]);
+
+        foreach($this->cart as $item){
+            $sale->items()->create([
+                'product_id' => $item['product_id'],
+                'total' => $item['total'],
+                'unit_price' => $item['unit_price'],
+                'subtotal' => $item['subtotal'],
+            ]);
+        }
+
+        $payload = [
+            'transaction_details' => [
+                'order_id' => 'ATHAYA-' . $sale->id . '-' . time(),
+                'gross_amount' => $this->total,
+            ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ],
+            'enabled_payments' => ['gopay', 'bank_transfer'], // batasi channel Midtrans
+        ];
+
+        $midtrans = new MidtransService();
+        $snap = $midtrans->createTransaction($payload);
+
+        $this->resetCart();
+        return redirect($snap->redirect_url);
+    }
+
+    protected function resetCart()
+    {
         $this->reset(['cart', 'subtotal', 'total', 'paymentMethod', 'showModal']);
         session()->forget('kasir_cart');
-        session()->flash('success', 'Pembayaran berhasil!');
     }
+
 
     public function render()
     {

@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'midtrans' => [
+        'serverKey' => env('MIDTRANS_SERVER_KEY'),
+        'enabled_payments' => ['gopay', 'bank_transfer']
+    ],
+
 ];
