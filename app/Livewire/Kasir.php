@@ -155,8 +155,11 @@ class Kasir extends Component
                 'first_name' => Auth::user()->name,
                 'email' => Auth::user()->email,
             ],
-            'enabled_payments' => ['gopay', 'bank_transfer'], // batasi channel Midtrans
+            'enabled_payments' => ['gopay', 'bank_transfer']
         ];
+
+        $payload['finish_redirect_url'] = 'https://0f2a-36-72-72-167.ngrok-free.app/kasir';
+
 
         $midtrans = new MidtransService();
         $snap = $midtrans->createTransaction($payload);

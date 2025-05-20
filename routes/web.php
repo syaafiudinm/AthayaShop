@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MidtransController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         return view('cashier.index');
     })->name('kasir');
 
+    Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
 });    
 
 

@@ -9,7 +9,7 @@ use App\Models\Product;
 
 class MidtransController extends Controller
 {
-    public function notification(Request $request)
+    public function notification()
     {
         $notif = new Notification();
 
@@ -35,7 +35,6 @@ class MidtransController extends Controller
                 }
             }
         } elseif (in_array($transaction, ['cancel', 'deny', 'expire'])) {
-            // Pembayaran gagal/batal
             $sale->update(['status' => 'failed']);
         }
 
