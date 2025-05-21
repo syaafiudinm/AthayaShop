@@ -26,4 +26,20 @@ class SaleController extends Controller
 
         return view('sales.index', compact('sales'));
     }
+
+    public function showDetail($id)
+    {
+        $sale = Sale::with(['items.product', 'user'])->findOrFail($id);
+        return view('sales._detail_modal', compact('sale'))->render();
+    }
+
+    public function destroy($id)
+    {
+        $sale = Sale::find($id);
+        if ($sale) {
+            $sale->delete();
+            return redirect()->route('sales.index')->with('success', 'Transaksi berhasil dihapus.');
+        }
+        return redirect()->route('sales.index')->with('error', 'Transaksi tidak ditemukan.');
+    }
 }

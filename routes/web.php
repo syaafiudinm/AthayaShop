@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/sales/{id}/detail', [SaleController::class, 'showDetail'])->name('sales.detail');
+    Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
 
     // Route::get('/kasir', [CashierController::class, 'index'])->name('kasir');
     // Route::post('/kasir/add', [CashierController::class, 'addToCart'])->name('kasir.add');

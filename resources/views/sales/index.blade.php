@@ -4,14 +4,18 @@
 <div class="flex-1 p-8">
     <h1 class="text-3xl font-bold mb-6">Daftar Order</h1>
 
+    <div class="mt-4 mb-4">
+        @include('components.alert')
+    </div>
+
     {{-- Filter --}}
     <div class="flex items-center gap-4 mb-6">
         <a href="{{ route('sales.index') }}" class="btn border border-gray-300 p-2 rounded-md">Semua</a>
-        <a href="{{ route('sales.index', ['status' => 'pending']) }}" class="btn p-2 border border-gray-300 rounded-md" >Dalam Proses</a>
+        <a href="{{ route('sales.index', ['status' => 'pending']) }}" class="btn p-2 border border-gray-300 rounded-md">Dalam Proses</a>
         <a href="{{ route('sales.index', ['status' => 'paid']) }}" class="btn p-2 border border-gray-300 rounded-md">Selesai</a>
 
         <form class="ml-auto">
-            <input type="text" name="search" placeholder="Cari" class="input p-2 border border-2-gray-300 w-full rounded-md" value="{{ request('search') }}">
+            <input type="text" name="search" placeholder="Cari" class="input p-2 border border-gray-300 rounded-md" value="{{ request('search') }}">
         </form>
     </div>
 
@@ -53,8 +57,8 @@
                 </div>
 
                 <button
-                    wire:click="$emit('showDetail', {{ $sale->id }})"
-                    class="mt-2 inline-block text-center w-full bg-black text-white py-2 rounded-md text-sm font-medium"
+                    data-sale-id="{{ $sale->id }}"
+                    class="mt-2 inline-block text-center w-full bg-black text-white py-2 rounded-md text-sm font-medium open-modal"
                 >
                     Lihat Detail
                 </button>
@@ -63,9 +67,45 @@
     </div>
     @if ($sales->isNotEmpty())
     <div class="mt-6">
-    {{ $sales->links('pagination::tailwind') }}
+        {{ $sales->links('pagination::tailwind') }}
     </div>                          
     @endif
+
+    <!-- Modal -->
+    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-96 relative">
+            <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" id="closeModal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Detail Order</h2>
+            <div id="modalContent">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
 </div>
-<livewire:sale-detail-delete/>
+
+<script>
+document.querySelectorAll('.open-modal').forEach(button => {
+    button.addEventListener('click', function() {
+        const saleId = this.getAttribute('data-sale-id');
+        fetch(`/sales/${saleId}/detail`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('modalContent').innerHTML = html;
+                document.getElementById('detailModal').classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error fetching details:', error);
+                document.getElementById('modalContent').innerHTML = '<p class="text-red-500">Terjadi kesalahan saat mengambil detail.</p>';
+                document.getElementById('detailModal').classList.remove('hidden');
+            });
+    });
+});
+
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('detailModal').classList.add('hidden');
+});
+</script>
 @endsection
