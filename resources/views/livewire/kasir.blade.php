@@ -19,29 +19,27 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
             @foreach ($products as $product)
             <div>
                 <div class="p-4 rounded-lg shadow border border-gray-300 relative">
-                    <div class="bg-gray-200 rounded-md mb-4">
-                        <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md border border-gray-300">
-                    </div>
-                    <div class="flex justify-between">
-                        <div>
-                            <h3 class="font-bold text-md">{{ $product->name }}</h3>
-                        </div>
-                        <div>
-                            <span class="bg-green-500 text-white p-2 rounded-lg text-sm">{{ $product->stock }}</span>
+                    <div class="relative rounded-md mb-4 overflow-hidden">
+                        <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md w-full h-48">
+    
+                        <!-- Stock Badge -->
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-xl border border-gray-300">
+                            Stok {{ $product->stock }}
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <p class="font-semibold mt-2">
+                    <div>
+                        <h3 class="font-bold text-md mb-1">{{ $product->name }}</h3>
+                        <p class="font-semibold">
                             Rp{{ number_format($product->price, 0, ',', '.') }}
                         </p>
                     </div>
-                    <div class="mx-auto mt-5">
-                        <button wire:click="addToCart({{ $product->id }})" class="mt-2 px-2 py-1 bg-black text-white rounded w-full">Tambahkan +</button>
-                    </div>
+                    <button wire:click="addToCart({{ $product->id }})" class="mt-4 w-full bg-black text-white py-2 rounded-md text-sm font-semibold">
+                        + Tambahkan
+                    </button>
                 </div>
             </div>
             @endforeach

@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Livewire\Kasir;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CashierController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MidtransController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/suppliers/create', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::put('/suppliers/edit/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 
     // Route::get('/kasir', [CashierController::class, 'index'])->name('kasir');
     // Route::post('/kasir/add', [CashierController::class, 'addToCart'])->name('kasir.add');
