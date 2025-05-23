@@ -9,7 +9,7 @@
             <div class="mb-4">
                 <label id="editLabelName" class="block font-medium mb-2">Nama</label>
                 <input type="text" name="name" id="editName"
-                    class="w-full rounded-lg px-3 py-2 border-2 border-black bg-primary" required>
+                    class="w-full rounded-lg px-3 py-2 border-2 border-black bg-input" @required(true)>
                 <p id="editErrorName" class="text-red-500 text-sm mt-1 hidden"></p>
             </div>
 
@@ -17,13 +17,13 @@
             <div class="mb-4">
                 <label id="editLabelDesc" class="block font-medium mb-2">Deskripsi</label>
                 <input type="text" name="description" id="editDescription"
-                    class="w-full rounded px-3 py-2 border-2 border-black bg-primary">
-                <p id="editErrorDesc" class="text-red-500 text-sm mt-1 hidden" required ></p>
+                    class="w-full rounded-lg px-3 py-2 border-2 border-black bg-input">
+                <p id="editErrorDesc" class="text-red-500 text-sm mt-1 hidden" @required(true)></p>
             </div>
 
             <div class="flex justify-end gap-2">
-                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 bg-primary text-black rounded-lg">Batal</button>
-                <button type="submit" class="px-4 py-2 bg-primary text-black rounded-lg">Update</button>
+                <button type="button" onclick="closeModal('editModal')" class="px-4 py-2 text-white bg-primary rounded-lg">Batal</button>
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg">Update</button>
             </div>
         </form>
     </div>

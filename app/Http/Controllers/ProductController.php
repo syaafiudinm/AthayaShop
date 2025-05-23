@@ -59,13 +59,17 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'stock' => 'required|min:1',
-            'price' => 'required',
+            'price' => 'required|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         if($validator->fails()){
             session()->forget("submission_token_{$submissionToken}");
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()
+                            ->back()
+                            ->withInput()
+                            ->withErrors($validator)
+                            ->with('modal', 'create');
         }
 
         $product = new Product();

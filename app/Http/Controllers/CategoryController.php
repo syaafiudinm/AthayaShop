@@ -36,7 +36,7 @@ class CategoryController extends Controller
         session()->put("submission_token_{$submissionToken}", true);
 
         $rules = [
-            'name' => 'required',
+            'name' => 'required|min:3',
             'description' => 'required'
         ];
 
@@ -61,7 +61,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         
         $rules = [
-            'name' => 'required',
+            'name' => 'required|min:3',
             'description' => 'required'
         ];
 
