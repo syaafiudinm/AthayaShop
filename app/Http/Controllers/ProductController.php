@@ -58,7 +58,7 @@ class ProductController extends Controller
             'supplier_id' => 'required',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'stock' => 'required|min:1',
+            'stock' => 'required|integer|min:1',
             'price' => 'required|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
