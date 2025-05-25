@@ -82,7 +82,7 @@
               </a>
             </li>
             <li>
-              <a href="#" class="flex items-center gap-2 text-white">
+              <a href="{{ route('absen') }}" class="flex items-center gap-2 text-white">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15.9375 13.125H13.4375C13.2649 13.125 13.125 13.2649 13.125 13.4375V15.9375C13.125 16.1101 13.2649 16.25 13.4375 16.25H15.9375C16.1101 16.25 16.25 16.1101 16.25 15.9375V13.4375C16.25 13.2649 16.1101 13.125 15.9375 13.125Z" fill="white"/>
                     <path d="M12.8125 10.625H10.9375C10.7649 10.625 10.625 10.7649 10.625 10.9375V12.8125C10.625 12.9851 10.7649 13.125 10.9375 13.125H12.8125C12.9851 13.125 13.125 12.9851 13.125 12.8125V10.9375C13.125 10.7649 12.9851 10.625 12.8125 10.625Z" fill="white"/>
@@ -127,8 +127,8 @@
       
         <!-- Main Content -->
         @yield('content')
-       
-  <script>
+  
+<script>
     // Menangani konfirmasi penghapusan kategori
     document.querySelectorAll('.delete-form').forEach((form) => {
         form.addEventListener('submit', function (event) {

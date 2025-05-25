@@ -10,6 +10,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,6 +52,18 @@ Route::middleware(['auth'])->group(function () {
     })->name('kasir');
 
     Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
+    Route::get('/absen/qr-code', function (){
+        $user = Auth::user();
+        $token = $user->generateQrCode();
+        $url = route('absen.verify', ['token' => $token]);
+        $qrCodeSvg = QrCode::size(250)->generate($url);
+
+        return view('absen.qrcode', compact('qrCodeSvg'));
+    })->name('absen.qr-code');
+    Route::get('/absen/verify/{token}', [AbsenController::class, 'verify'])->name('absen.verify');
+    Route::get('/absen/scan', function(){
+        return view('absen.scan');
+    })->name('absen.scan');
 
     Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
 });    
