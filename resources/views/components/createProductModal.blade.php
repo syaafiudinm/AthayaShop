@@ -36,6 +36,9 @@
                 <div class="w-1/2">
                     <label for="productStock" class="block text-sm font-medium text-gray-700">Stok</label>
                     <input type="number" name="stock" id="productStock" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan stok">
+                    @error('stock')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="w-1/2">
                     <label for="productSupplier" class="block text-sm font-medium text-gray-700">Supplier</label>
