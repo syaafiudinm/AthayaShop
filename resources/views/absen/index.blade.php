@@ -42,45 +42,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
+                    @foreach ($absens as $absen)
                         <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
-                            <td class="px-4 py-2 font-semibold">{{$loop->iteration + ($categories->currentPage() - 1) * $categories->perPage()}}</td>
-                            <td class="px-4 py-2 font-medium ">{{ $category->name }}</td>
+                            <td class="px-4 py-2 font-semibold">{{$loop->iteration + ($absens->currentPage() - 1) * $absens->perPage()}}</td>
+                            <td class="px-4 py-2 font-medium ">{{ $absen->user->name }}</td>
                             <td class="px-4 py-2 font-medium">
-                                {{ $category->description }}
+                                {{ $absen->created_at->format('d F Y') }}
                             </td>
                             <td class="px-4 py-2 font-medium">
-                                {{ $category->created_at->format('d F Y') }}
+                                {{ $absen->check_in }}
                             </td>
-                            <td class="px-4 py-2">
-                                <div class="flex items-center gap-5">
-                                    <a href="javascript:void(0);" onclick="openEditModal('{{ $category->id }}', '{{ $category->name }}', '{{ $category->description }}')" class="text-black hover:text-blue-600">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M5 15.9999L4 19.9999L8 18.9999L19.586 7.41394C19.9609 7.03889 20.1716 6.53027 20.1716 5.99994C20.1716 5.46961 19.9609 4.961 19.586 4.58594L19.414 4.41394C19.0389 4.039 18.5303 3.82837 18 3.82837C17.4697 3.82837 16.9611 4.039 16.586 4.41394L5 15.9999Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M5 16L4 20L8 19L18 9L15 6L5 16Z" fill="black"/>
-                                            <path d="M15 6L18 9M13 20H21" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </a>
-                                    
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-black hover:text-red-600 mt-3">
-                                            <!-- Delete Icon -->
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M7 21C6.45 21 5.97933 20.8043 5.588 20.413C5.19667 20.0217 5.00067 19.5507 5 19V6H4V4H9V3H15V4H20V6H19V19C19 19.55 18.8043 20.021 18.413 20.413C18.0217 20.805 17.5507 21.0007 17 21H7ZM9 17H11V8H9V17ZM13 17H15V8H13V17Z" fill="black"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
+                            <td class="px-4 py-2 font-medium">
+                                {{ $absen->status }}
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            @if ($categories->isNotEmpty())
+            @if ($absens->isNotEmpty())
             <div class="mt-6">
-                {{ $categories->links('pagination::tailwind') }}
+                {{ $absens->links('pagination::tailwind') }}
             </div>                          
             @endif       
         </div>

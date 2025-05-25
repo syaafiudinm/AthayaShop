@@ -8,11 +8,25 @@ use Illuminate\Http\Request;
 
 class AbsenController extends Controller
 {
-    public function index(){
-        $users = User::all();
-        
+    public function index(Request $request){
 
-        return view('absen.index');
+        $search = $request->query('search');
+        $users = User::whereHas('absens')->get();
+
+        $absens = Absen::with('user') // biar eager load relasi user
+            ->when($search, function ($query, $search) {
+                return $query
+                    ->whereHas('user', function($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('tanggal', 'like', "%{$search}%")
+                    ->orWhere('check_in', 'like', "%{$search}%")
+                    ->orWhere('check_out', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
+            })
+            ->paginate(5)
+            ->withQueryString();
+        return view('absen.index', compact('absens', 'users'));
     }
 
     public function verify($token)
