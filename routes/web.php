@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AbsenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SaleController;
@@ -47,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kasir', function () {
         return view('cashier.index');
     })->name('kasir');
+
+    Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
 
     Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
 });    
