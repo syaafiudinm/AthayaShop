@@ -30,6 +30,30 @@
                     class="w-full bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-500 text-gray-700" />
             </form>
         </div>
+        <div class="flex items-center gap-3 mt-8">
+            <div class="max-w-md p-6 bg-blue-200 rounded-lg shadow-md flex items-center gap-6">
+            <!-- Progress Circle -->
+            <canvas id="attendanceChart" width="100" height="100"></canvas>
+            
+            <!-- Text info -->
+            <div>
+                <h2 class="text-lg font-bold text-black mb-1">Kehadiran Karyawan</h2>
+                <p class="text-sm text-black mb-4">{{ \Carbon\Carbon::parse($tanggal)->isoFormat('dddd, D MMM YYYY') }}</p>
+                
+                <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-black" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path fill-rule="evenodd" d="M4 14s1-1.5 4-1.5 4 1.5 4 1.5v1H4v-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm font-semibold text-black">Jumlah Orang</span>
+                </div>
+                
+                <p class="text-4xl font-extrabold text-black mt-1">
+                {{ $hadirCount }}<span class="text-lg font-normal">/{{ $totalUsers }}</span>
+                </p>
+            </div>
+            </div>
+        </div>
         <div>
             <table class="w-full mt-6 border-separate border-spacing-y-3">
                 <thead class="bg-primary">
@@ -66,4 +90,26 @@
             @endif       
         </div>
     </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('attendanceChart').getContext('2d');
+  const attendanceChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          datasets: [{
+              data: [70, 30],
+              backgroundColor: ['#0077C0', '#FFFFFF66'], // biru tua & biru muda
+              borderWidth: 0
+          }]
+      },
+      options: {
+          cutout: '80%',
+          responsive: false,
+          plugins: {
+              tooltip: {enabled: false},
+              legend: {display: false}
+          }
+      }
+  });
+</script>
 @endsection

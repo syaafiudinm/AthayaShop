@@ -20,7 +20,7 @@
             .then(data => {
                 document.getElementById('result').textContent = data.message;
                 document.getElementById('result').classList.remove('hidden');
-                document.getElementById('result').classList.add('text-green-600', 'font-semibold');
+                document.getElementById('result').classList.add('text-blue-500', 'font-semibold');
 
                 html5QrcodeScanner.clear();
 

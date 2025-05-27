@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Absen;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AbsenController extends Controller
@@ -26,7 +27,15 @@ class AbsenController extends Controller
             })
             ->paginate(5)
             ->withQueryString();
-        return view('absen.index', compact('absens', 'users'));
+
+        // data kehadiran //
+        $tanggal = Carbon::now('Asia/Makassar')->toDateString();
+        $totalUsers = User::count();
+        $hadirCount = Absen::where('tanggal', $tanggal)
+            ->where('status', 'Hadir')
+            ->count();
+        $percent = $totalUsers > 0 ? round(($hadirCount / $totalUsers) * 100) : 0;
+        return view('absen.index', compact('absens', 'users', 'totalUsers', 'hadirCount', 'percent', 'tanggal'));
     }
 
     public function verify($token)

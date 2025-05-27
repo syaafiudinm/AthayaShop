@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('kasir');
 
     Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
+    
     Route::get('/absen/qr-code', function (){
         $user = Auth::user();
         $token = $user->generateQrCode();
