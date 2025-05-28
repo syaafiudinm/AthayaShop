@@ -31,11 +31,13 @@ class AbsenController extends Controller
         // data kehadiran //
         $tanggal = Carbon::now('Asia/Makassar')->toDateString();
         $totalUsers = User::count();
+        $totalAdmin = User::where('role', 'admin')->count();
+        $totalKasir = User::where('role', 'cashier')->count();
         $hadirCount = Absen::where('tanggal', $tanggal)
             ->where('status', 'Hadir')
             ->count();
         $percent = $totalUsers > 0 ? round(($hadirCount / $totalUsers) * 100) : 0;
-        return view('absen.index', compact('absens', 'users', 'totalUsers', 'hadirCount', 'percent', 'tanggal'));
+        return view('absen.index', compact('absens', 'users', 'totalUsers', 'hadirCount', 'percent', 'tanggal', 'totalAdmin', 'totalKasir'));
     }
 
     public function verify($token)
