@@ -14,7 +14,7 @@
                     Refresh                 
                 </a>
                 <a href="{{ route('absen.scan') }}" class="flex items-center border border-gray-300 px-4 py-2 rounded-md gap-2 mt-1">
-                    Absen!                 
+                    Absen +             
                 </a>
             </div>
             <form method="GET" action="{{ route('categories') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
