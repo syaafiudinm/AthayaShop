@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Absen;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AbsenController extends Controller
 {
@@ -22,7 +23,6 @@ class AbsenController extends Controller
                     })
                     ->orWhere('tanggal', 'like', "%{$search}%")
                     ->orWhere('check_in', 'like', "%{$search}%")
-                    ->orWhere('check_out', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%");
             })
             ->paginate(5)
@@ -67,4 +67,36 @@ class AbsenController extends Controller
 
         return response()->json(['message' => 'Absensi berhasil!']);
     }
+
+    public function uploadDokumen(Request $request)
+    {
+        $request->validate([
+            'status' => 'required|in:Sakit,Izin',
+            'dokumen' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $user = Auth::user();
+        $today = now('Asia/Makassar')->toDateString();
+
+        $existing = Absen::where('user_id', $user->id)
+            ->whereDate('tanggal', $today)
+            ->first();
+
+        if ($existing) {
+            return back()->with('error', 'Kamu sudah melakukan absensi hari ini.');
+        }
+
+        $path = $request->file('dokumen')->store('dokumen-absen', 'public');
+
+        Absen::create([
+            'user_id' => $user->id,
+            'tanggal' => $today,
+            'status' => $request->status,
+            'dokumen' => $path,
+            'check_in' => null, // karena bukan Hadir
+        ]);
+
+        return back()->with('success', 'Dokumen berhasil dikirim. Status: ' . $request->status);
+    }
+
 }

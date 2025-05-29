@@ -18,8 +18,8 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth'])->group(function () { 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('beranda');
+
+Route::middleware(['auth', 'role:admin,owner'])->group(function () { 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories/create', [CategoryController::class, 'store'])->name('categories.store');
@@ -37,22 +37,24 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/suppliers/edit/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
+}); 
+
+Route::middleware(['auth', 'role:cashier,owner'])->group(function () {
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/{id}/detail', [SaleController::class, 'showDetail'])->name('sales.detail');
     Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
 
-    // Route::get('/kasir', [CashierController::class, 'index'])->name('kasir');
-    // Route::post('/kasir/add', [CashierController::class, 'addToCart'])->name('kasir.add');
-    // Route::post('/kasir/remove', [CashierController::class, 'removeFromCart'])->name('kasir.remove');
-    // Route::post('/kasir/checkout', [CashierController::class, 'checkout'])->name('kasir.checkout');
-    // Route::get('/kasir', Kasir::class)->name('kasir');
 
     Route::get('/kasir', function () {
         return view('cashier.index');
     })->name('kasir');
+    Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
+});
 
+
+Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('beranda');
     Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
-    
     Route::get('/absen/qr-code', function (){
         $user = Auth::user();
         $token = $user->generateQrCode();
@@ -65,12 +67,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/absen/scan', function(){
         return view('absen.scan');
     })->name('absen.scan');
+    Route::post('/absen/upload', [AbsenController::class, 'upload'])->name('absen.upload');
+});
 
-    Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
-});    
-
-
-
+   
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'registerStore'])->name('register.store');

@@ -20,7 +20,7 @@
                     </svg>             
                 </a>
             </div>
-            <form method="GET" action="{{ route('categories') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
+            <form method="GET" action="{{ route('absen') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
                 <!-- Search Icon -->
                 <span class="text-gray-500 mr-2">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@
             </form>
         </div>
         <div class="flex items-center gap-6 mt-8">
-            <div class="max-w-md p-6 bg-blue-200 rounded-lg shadow-md flex items-center gap-6">
+            <div class="max-w-md p-6 bg-[#C7EEFF] border-2 border-gray-200 rounded-lg shadow-md flex items-center gap-6">
             <!-- Progress Circle -->
                 <canvas id="attendanceChart" width="100" height="100"></canvas>
                 
@@ -56,7 +56,7 @@
                     </p>
                 </div>
             </div>
-            <div class="max-w-md p-6 bg-blue-200 rounded-lg shadow-md">
+            <div class="max-w-md p-6 bg-[#C7EEFF] border-2 border-gray-200 rounded-lg shadow-md">
                     <div>
                         <h2 class="text-lg font-bold text-black mb-1">Total Seluruh Karyawan</h2>
                         <p class="text-sm text-black mb-4">{{ \Carbon\Carbon::parse($tanggal)->isoFormat('dddd, D MMM YYYY') }}</p>

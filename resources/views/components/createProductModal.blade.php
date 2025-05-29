@@ -28,6 +28,9 @@
                 <div class="w-1/2">
                     <label for="productPrice" class="block text-sm font-medium text-gray-700">Harga</label>
                     <input type="text" name="price" id="productPrice" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan harga" required>
+                    @error('price')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 

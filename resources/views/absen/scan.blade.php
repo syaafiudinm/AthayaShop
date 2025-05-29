@@ -9,6 +9,21 @@
     <div id="result" style="text-align: center"></div>
 </div>
 
+<form action="{{ route('absen.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4 bg-white p-4 rounded shadow-md">
+    @csrf
+
+    <label for="status" class="block font-medium text-sm">Pilih Status:</label>
+    <select name="status" id="status" class="input w-full">
+        <option value="Sakit">Sakit</option>
+        <option value="Izin">Izin</option>
+    </select>
+
+    <label for="dokumen" class="block font-medium text-sm">Upload Surat Keterangan:</label>
+    <input type="file" name="dokumen" class="input w-full" accept=".jpg,.png,.pdf">
+
+    <button type="submit" class="btn bg-blue-600 text-white">Kirim</button>
+</form>
+
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>
     function onScanSuccess(decodedText, decodedResult) {

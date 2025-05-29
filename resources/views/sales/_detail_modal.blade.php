@@ -37,9 +37,9 @@
         <div class="text-sm text-gray-600">Metode Pembayaran: {{ ucfirst($sale->payment_method) }}</div>
     </div>
 
-    <form id="delete-form-{{ $sale->id }}" action="{{ route('sales.destroy', $sale->id) }}" method="POST" class="delete-form">
+    <form id="delete-form-{{ $sale->id }}" action="{{ route('sales.destroy', $sale->id) }}" class="delete-form" method="POST">
         @csrf
         @method('DELETE')
-        <button type="submit" class="mt-4 w-full bg-black text-white py-2 rounded-md">Hapus Transaksi</button>
+        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?')" class="mt-4 w-full bg-black text-white py-2 rounded-md">Hapus Transaksi</button>
     </form>
 </div>
