@@ -7,22 +7,43 @@
             <div id="reader" style=""></div>
         </div>
     <div id="result" style="text-align: center"></div>
+    <hr class="my-8">
+    <h3 class="text-2xl font-semibold my-8 text-center">Izin & Sakit</h3>
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 mt-6">
+    <form action="{{ route('absen.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+        @csrf
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Upload Dokumen Pendukung</h2>
+            <div class="mb-4">
+                <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Jenis Ketidakhadiran</label>
+                <select name="status" id="status"
+                        class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-2"
+                        required>
+                    <option value="" disabled selected>Pilih status</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Izin">Izin</option>
+                </select>
+            </div>
+        <div>
+            <label for="dokumen" class="block text-sm font-medium text-gray-700 mb-1">
+                Upload Dokumen (PDF/JPG/PNG)
+            </label>
+            <input type="file" name="dokumen" accept=".pdf,.jpg,.jpeg,.png"
+                   class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
+                          file:rounded-lg file:border-0
+                          file:text-sm file:font-semibold
+                          file:bg-blue-50 file:text-blue-700
+                          hover:file:bg-blue-100">
+        </div>
+
+        <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition">
+            Absen Sekarang
+        </button>
+    </form>
 </div>
 
-<form action="{{ route('absen.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4 bg-white p-4 rounded shadow-md">
-    @csrf
+</div>
 
-    <label for="status" class="block font-medium text-sm">Pilih Status:</label>
-    <select name="status" id="status" class="input w-full">
-        <option value="Sakit">Sakit</option>
-        <option value="Izin">Izin</option>
-    </select>
-
-    <label for="dokumen" class="block font-medium text-sm">Upload Surat Keterangan:</label>
-    <input type="file" name="dokumen" class="input w-full" accept=".jpg,.png,.pdf">
-
-    <button type="submit" class="btn bg-blue-600 text-white">Kirim</button>
-</form>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script>

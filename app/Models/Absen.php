@@ -13,6 +13,8 @@ class Absen extends Model
         'tanggal',
         'check_in',
         'status',
+        'dokumen', 
+        'approval_status',
     ];
 
     public function user()

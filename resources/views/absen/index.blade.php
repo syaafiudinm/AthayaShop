@@ -71,6 +71,11 @@
                     </div>
             </div>
         </div>
+
+        <div class="mt-4 mb-4">
+            @include('components.alert')
+        </div>
+
         <div>
             <table class="w-full mt-6 border-separate border-spacing-y-3">
                 <thead class="bg-primary">
@@ -79,26 +84,69 @@
                         <th class="text-left px-6 py-3 text-white font-normal">Nama Pegawai</th>
                         <th class="text-left px-6 py-3 text-white font-normal">Tanggal</th>
                         <th class="text-left px-6 py-3 text-white font-normal">Check In</th>
-                        <th class="text-left px-6 py-3 text-white font-normal rounded-r-lg">Status</th>
+                        @if (auth()->user()->role !== 'owner')
+                        <th class="text-left px-6 py-3 text-white font-normal">Informasi</th>
+                        <th class="text-left px-6 py-3 text-white font-normal rounded-r-lg">Approval</th>
+                        @endif
+                        @if (auth()->user()->role === 'owner')
+                            <th class="text-left px-6 py-3 text-white font-normal">Informasi</th>
+                            <th class="text-left px-6 py-3 text-white font-normal">Status</th>
+                            <th class="text-left px-6 py-3 text-white font-normal rounded-r-lg">Dokumen</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($absens as $absen)
                         <tr class="rounded-lg shadow border border-gray-800 overflow-hidden">
-                            <td class="px-4 py-2 font-semibold">{{$loop->iteration + ($absens->currentPage() - 1) * $absens->perPage()}}</td>
-                            <td class="px-4 py-2 font-medium ">{{ $absen->user->name }}</td>
-                            <td class="px-4 py-2 font-medium">
-                                {{ $absen->created_at->format('d F Y') }}
-                            </td>
-                            <td class="px-4 py-2 font-medium">
-                                {{ $absen->check_in }}
-                            </td>
-                            <td class="px-4 py-2 font-medium">
-                                {{ $absen->status }}
-                            </td>
+                            <td class="px-4 py-2 font-semibold">{{ $loop->iteration + ($absens->currentPage() - 1) * $absens->perPage() }}</td>
+                            <td class="px-4 py-2 font-medium">{{ $absen->user->name }}</td>
+                            <td class="px-4 py-2 font-medium">{{ $absen->created_at->format('d F Y') }}</td>
+                            <td class="px-4 py-2 font-medium">{{ $absen->check_in }}</td>
+                            <td class="px-4 py-2 font-medium">{{ $absen->status }}</td>
+
+                            @if(auth()->user()->role === 'owner' && in_array($absen->status, ['Sakit', 'Izin']))
+                                <td class="px-4 py-2 font-medium">
+                                    @if($absen->approval_status === 'Pending')
+                                        <form action="{{ route('absen.approval', $absen->id) }}" method="POST" class="flex gap-2">
+                                            @csrf
+                                            <button name="action" value="approve" class="px-4 py-2 text-gray-600 border border-1 border-gray-300 rounded-md">Terima</button>
+                                            <button name="action" value="reject" class="px-4 py-2 text-gray-600 border border-1 border-gray-300 rounded-md">Tolak</button>
+                                        </form>
+                                    @else
+                                        <span class="{{ $absen->approval_status === 'Approved' ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $absen->approval_status }}
+                                        </span>
+                                    @endif
+                                </td>
+                            @endif
+                            @if (auth()->user()->role === 'owner')
+                                <td class="px-4 py-2 font-medium">
+                                    @if($absen->dokumen)
+                                        <a href="{{ asset('storage/' . $absen->dokumen) }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>
+                                    @else
+                                        <span class="text-gray-500">-</span>
+                                    @endif
+                                </td>
+                            @endif
+                            @if (auth()->user()->role !== 'owner') 
+                                <td class="px-4 py-2 font-medium">
+                                    @if($absen->status === 'Sakit' || $absen->status === 'Izin')
+                                        @if($absen->approval_status === 'Approved')
+                                            <span class="text-green-600 font-semibold">Disetujui</span>
+                                        @elseif($absen->approval_status === 'Rejected')
+                                            <span class="text-red-600 font-semibold">Ditolak</span>
+                                        @else
+                                            <span class="text-yellow-600 font-semibold">Menunggu</span>
+                                        @endif
+                                    @else
+                                        <span class="text-gray-500">-</span>
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
+
             </table>
             @if ($absens->isNotEmpty())
             <div class="mt-6">
@@ -110,11 +158,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const ctx = document.getElementById('attendanceChart').getContext('2d');
+  const hadirCount = {{ $hadirCount }};
+  const tidakHadir = {{ $totalUsers - $hadirCount}};
   const attendanceChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
           datasets: [{
-              data: [70, 30],
+              data: [hadirCount, tidakHadir],
               backgroundColor: ['#0077C0', '#FFFFFF66'], // biru tua & biru muda
               borderWidth: 0
           }]

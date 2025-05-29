@@ -67,7 +67,8 @@ Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
     Route::get('/absen/scan', function(){
         return view('absen.scan');
     })->name('absen.scan');
-    Route::post('/absen/upload', [AbsenController::class, 'upload'])->name('absen.upload');
+    Route::post('/absen/upload', [AbsenController::class, 'store'])->name('absen.store');
+    Route::post('/absen/{id}/approval', [AbsenController::class, 'approval'])->name('absen.approval');
 });
 
    

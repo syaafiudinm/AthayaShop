@@ -68,35 +68,48 @@ class AbsenController extends Controller
         return response()->json(['message' => 'Absensi berhasil!']);
     }
 
-    public function uploadDokumen(Request $request)
+    public function approval(Request $request, $id)
+{
+    $absen = Absen::findOrFail($id);
+
+    if (Auth::user()->role !== 'owner') {
+        abort(403);
+    }
+
+    $action = $request->input('action');
+    if (!in_array($action, ['approve', 'reject'])) {
+        return back()->with('error', 'Aksi tidak valid.');
+    }
+
+    $absen->approval_status = $action === 'approve' ? 'Approved' : 'Rejected';
+    $absen->save();
+
+    return back()->with('success', 'Status berhasil diperbarui.');
+}
+
+
+    public function store(Request $request)
     {
         $request->validate([
-            'status' => 'required|in:Sakit,Izin',
-            'dokumen' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'status' => 'required|in:Hadir,Sakit,Izin',
+            'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $user = Auth::user();
-        $today = now('Asia/Makassar')->toDateString();
-
-        $existing = Absen::where('user_id', $user->id)
-            ->whereDate('tanggal', $today)
-            ->first();
-
-        if ($existing) {
-            return back()->with('error', 'Kamu sudah melakukan absensi hari ini.');
+        if ($request->hasFile('dokumen')) {
+            $filePath = $request->file('dokumen')->store('dokumen', 'public');
         }
 
-        $path = $request->file('dokumen')->store('dokumen-absen', 'public');
-
         Absen::create([
-            'user_id' => $user->id,
-            'tanggal' => $today,
+            'user_id' => Auth::user()->id,
+            'tanggal' => now('Asia/Makassar')->toDateString(),
+            'check_in' => now('Asia/Makassar')->format('H:i:s'),
             'status' => $request->status,
-            'dokumen' => $path,
-            'check_in' => null, // karena bukan Hadir
+            'dokumen' => $filePath,
+            'approval_status' => in_array($request->status, ['Sakit', 'Izin']) ? 'Pending' : null,
         ]);
 
-        return back()->with('success', 'Dokumen berhasil dikirim. Status: ' . $request->status);
+        return redirect()->route('absen')->with('success', 'Absensi berhasil dikirim.');
     }
+
 
 }
