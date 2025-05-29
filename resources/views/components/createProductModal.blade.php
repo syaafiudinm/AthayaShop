@@ -12,6 +12,9 @@
             <div class="mb-4">
                 <label for="productName" class="block text-sm font-medium text-gray-700">Nama Produk</label>
                 <input type="text" name="name" id="productName" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan nama" required>
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Category and Supplier -->
@@ -24,6 +27,9 @@
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
+                    @error('category_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="w-1/2">
                     <label for="productPrice" class="block text-sm font-medium text-gray-700">Harga</label>
@@ -51,6 +57,9 @@
                             <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                         @endforeach
                     </select>
+                    @error('supplier_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -58,6 +67,9 @@
             <div class="mb-4">
                 <label for="productDescription" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea name="description" id="productDescription" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan deskripsi" rows="3" required></textarea>
+                @error('description')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Product Photo (Drag and Drop) -->
