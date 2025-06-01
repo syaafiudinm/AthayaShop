@@ -36,15 +36,12 @@ Route::middleware(['auth', 'role:admin,owner'])->group(function () {
     Route::post('/suppliers/create', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::put('/suppliers/edit/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
-
 }); 
 
 Route::middleware(['auth', 'role:cashier,owner'])->group(function () {
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/{id}/detail', [SaleController::class, 'showDetail'])->name('sales.detail');
     Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
-
-
     Route::get('/kasir', function () {
         return view('cashier.index');
     })->name('kasir');
@@ -70,8 +67,6 @@ Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
     Route::post('/absen/upload', [AbsenController::class, 'store'])->name('absen.store');
     Route::post('/absen/{id}/approval', [AbsenController::class, 'approval'])->name('absen.approval');
 });
-
-   
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'registerStore'])->name('register.store');

@@ -69,23 +69,31 @@ class AbsenController extends Controller
     }
 
     public function approval(Request $request, $id)
-{
-    $absen = Absen::findOrFail($id);
+    {
+        $absen = Absen::where('user_id', Auth::user()->id)
+            ->whereDate('tanggal', now('Asia/Makassar')->toDateString())
+            ->first();
 
-    if (Auth::user()->role !== 'owner') {
-        abort(403);
+        if ($absen) {
+            return back()->with('error', 'Absensi sudah dilakukan hari ini!');
+        }
+        
+        $absen = Absen::findOrFail($id);
+
+        if (Auth::user()->role !== 'owner') {
+            abort(403);
+        }
+
+        $action = $request->input('action');
+        if (!in_array($action, ['approve', 'reject'])) {
+            return back()->with('error', 'Aksi tidak valid.');
+        }
+
+        $absen->approval_status = $action === 'approve' ? 'Approved' : 'Rejected';
+        $absen->save();
+
+        return back()->with('success', 'Status berhasil diperbarui.');
     }
-
-    $action = $request->input('action');
-    if (!in_array($action, ['approve', 'reject'])) {
-        return back()->with('error', 'Aksi tidak valid.');
-    }
-
-    $absen->approval_status = $action === 'approve' ? 'Approved' : 'Rejected';
-    $absen->save();
-
-    return back()->with('success', 'Status berhasil diperbarui.');
-}
 
 
     public function store(Request $request)

@@ -103,12 +103,13 @@
 
     @if($showModal)
         <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-            <div class="bg-white p-6 rounded shadow w-full max-w-md">
+            <div class="bg-white p-6 rounded-3xl shadow w-full max-w-md">
                 <h3 class="text-lg font-bold mb-2">Konfirmasi Pembayaran</h3>
+                <hr class="mb-2">
                 <p>Total: <strong>Rp{{ number_format($total, 0, ',', '.') }}</strong></p>
                 <p>Metode: <strong>{{ ucfirst($paymentMethod) }}</strong></p>
-                <button wire:click="confirmPayment" class="mt-4 w-full bg-green-600 text-white p-2 rounded">Bayar</button>
-                <button wire:click="$set('showModal', false)" class="mt-2 w-full bg-gray-300 text-black p-2 rounded">Batal</button>
+                <button wire:click="confirmPayment" class="mt-4 w-full bg-[#0077C0] text-white p-2 rounded">Bayar</button>
+                <button wire:click="$set('showModal', false)" class="mt-2 w-full bg-black text-white p-2 rounded">Batal</button>
             </div>
         </div>
     @endif
