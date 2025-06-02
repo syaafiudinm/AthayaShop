@@ -2,12 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Sale;
+use App\Models\Absen;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard.index');
+        $tanggal = Carbon::now('Asia/Makassar')->toDateString();
+        $witaNow = now('Asia/Makassar')->format('H:i:s');
+
+        $categories = Category::with('products')->get();
+
+        $TotalOrder = Sale::where('status', 'paid')->count();
+        $totalIncome = Sale::where('status', 'paid')->sum('total_price');
+
+        $sales = Sale::with(['items.product', 'user'])->get();
+        $products = Product::with('salesItems')->get();
+
+        $sakitCount = Absen::whereDate('tanggal', $tanggal)->where('status', 'Sakit')->count();
+        $izinCount = Absen::whereDate('tanggal', $tanggal)->where('status', 'Izin')->count();
+        $hadirCount = Absen::whereDate('tanggal', $tanggal)->where('status', 'Hadir')->count();
+
+        $newestIncome = Sale::where('status', 'paid')->orderBy('created_at', 'desc')->first()->total_price;
+
+
+        return view('dashboard.index', [
+            'categories' => $categories,
+            'TotalOrder' => $TotalOrder,
+            'totalIncome' => $totalIncome,
+            'sakitCount' => $sakitCount,
+            'izinCount' => $izinCount,
+            'hadirCount' => $hadirCount,
+            'newestIncome' => $newestIncome,
+            'witaNow' => $witaNow,
+            'tanggal' => $tanggal,
+            'sales' => $sales,
+            'products' => $products,
+        ]);
     }
 }

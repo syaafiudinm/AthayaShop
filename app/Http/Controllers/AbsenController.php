@@ -30,14 +30,14 @@ class AbsenController extends Controller
 
         // data kehadiran //
         $tanggal = Carbon::now('Asia/Makassar')->toDateString();
-        $totalUsers = User::count();
+        $totalPegawai = User::where('role', '!=', 'owner')->count();
         $totalAdmin = User::where('role', 'admin')->count();
         $totalKasir = User::where('role', 'cashier')->count();
         $hadirCount = Absen::where('tanggal', $tanggal)
             ->where('status', 'Hadir')
             ->count();
-        $percent = $totalUsers > 0 ? round(($hadirCount / $totalUsers) * 100) : 0;
-        return view('absen.index', compact('absens', 'users', 'totalUsers', 'hadirCount', 'percent', 'tanggal', 'totalAdmin', 'totalKasir'));
+        $percent = $totalPegawai> 0 ? round(($hadirCount / $totalPegawai) * 100) : 0;
+        return view('absen.index', compact('absens', 'users', 'totalPegawai', 'hadirCount', 'percent', 'tanggal', 'totalAdmin', 'totalKasir'));
     }
 
     public function verify($token)
@@ -77,7 +77,7 @@ class AbsenController extends Controller
         if ($absen) {
             return back()->with('error', 'Absensi sudah dilakukan hari ini!');
         }
-        
+
         $absen = Absen::findOrFail($id);
 
         if (Auth::user()->role !== 'owner') {

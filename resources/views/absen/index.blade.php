@@ -37,7 +37,6 @@
             <div class="max-w-md p-6 bg-[#C7EEFF] border-2 border-gray-200 rounded-lg shadow-md flex items-center gap-6">
             <!-- Progress Circle -->
                 <canvas id="attendanceChart" width="100" height="100"></canvas>
-                
                 <!-- Text info -->
                 <div>
                     <h2 class="text-lg font-bold text-black mb-1">Kehadiran Karyawan</h2>
@@ -52,7 +51,7 @@
                     </div>
                     
                     <p class="text-4xl font-extrabold text-black mt-1">
-                    {{ $hadirCount }}<span class="text-lg font-normal">/{{ $totalUsers }}</span>
+                    {{ $hadirCount }}<span class="text-lg font-normal">/{{ $totalPegawai }}</span>
                     </p>
                 </div>
             </div>
@@ -159,7 +158,7 @@
 <script>
   const ctx = document.getElementById('attendanceChart').getContext('2d');
   const hadirCount = {{ $hadirCount }};
-  const tidakHadir = {{ $totalUsers - $hadirCount}};
+  const tidakHadir = {{ $totalPegawai- $hadirCount}};
   const attendanceChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
