@@ -62,6 +62,7 @@
                 <!-- Submit Button -->
                 <button type="submit" class="w-full border-2 border-black bg-primary text-white py-3 rounded-lg mb-4 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Masuk</button>
             </form>
+            <span>Sudah punya akun? <a href="{{ route('login') }}" class="text-primary hover:underline font-semibold">Masuk!</a></span>
         </div>
 
         <!-- Right Side: Empty or Background -->
