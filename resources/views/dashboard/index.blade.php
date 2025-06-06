@@ -47,8 +47,16 @@
                 <div class="flex justify-between items-start">
                    <p class="text-blue-200 text-sm">Total Pemasukan</p>
                </div>
-               <p class="text-xs outline outline-white px-2 py-1 rounded-full inline-block mt-2">Rp.{{ number_format($newestIncome, 0, ',', '.') }}</p>
-               <p class="text-4xl font-bold mt-2">Rp.{{ number_format($totalIncome, 0, ',', '.') }}</p>
+               @if ($newestIncome > 0) 
+                    <p class="text-xs outline outline-white px-2 py-1 rounded-full inline-block mt-2">Rp.{{ number_format($newestIncome, 0, ',', '.') }}</p>
+               @else
+                    <p class="text-xs outline outline-white px-2 py-1 rounded-full inline-block mt-2">Rp.0</p>
+               @endif
+               @if ($totalIncome > 0)   
+                    <p class="text-4xl font-bold mt-2">Rp.{{ number_format($totalIncome, 0, ',', '.') }}</p>
+               @else
+                    <p class="text-4xl font-bold mt-2">Rp.0</p>
+               @endif
            </div>
         </div>
 

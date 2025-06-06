@@ -29,7 +29,9 @@ class DashboardController extends Controller
         $izinCount = Absen::whereDate('tanggal', $tanggal)->where('status', 'Izin')->count();
         $hadirCount = Absen::whereDate('tanggal', $tanggal)->where('status', 'Hadir')->count();
 
-        $newestIncome = Sale::where('status', 'paid')->orderBy('created_at', 'desc')->first()->total_price;
+        $newestIncome = optional(
+                            Sale::where('status', 'paid')->orderBy('created_at', 'desc')->first()
+                        )->total_price ?? 0;
 
 
         return view('dashboard.index', [
