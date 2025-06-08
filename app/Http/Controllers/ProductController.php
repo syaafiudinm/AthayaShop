@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Drivers\Gd\Driver;
+
 
 
 class ProductController extends Controller
@@ -80,17 +84,38 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->price = $request->price;
         
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads/produk'), $fileName);
-            $product->image = $fileName;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            try {
+                $file = $request->file('image');
 
-            $manager = new ImageManager(Driver::class);
+                // Buat nama file yang unik untuk menghindari konflik di S3
+                $fileName = Str::slug($product->name) . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $path = $fileName; // Tentukan folder di S3
 
-            $img = $manager->read(public_path('uploads/produk/' . $fileName));
-            $img->resize(300, 200);
-            $img->save(public_path('uploads/produk/thumb/' . $fileName));
+                // Inisialisasi ImageManager
+                $manager = new ImageManager(new Driver());
+                
+                // Baca dan proses gambar
+                $image = $manager->read($file);
+                $image->resize(300,200); // Resize gambar, tinggi menyesuaikan aspek rasio
+
+                // Encode gambar yang sudah di-resize untuk di-upload
+                $encodedImage = $image->encode();
+
+                // Upload gambar yang telah diproses ke S3
+                Storage::disk('s3')->put($path, $encodedImage, 'public');
+                // Jika berhasil, baru isi kolom 'image' dengan URL dari S3
+                $product->image = Storage::disk('s3')->url($path);
+
+            } catch (Exception $e) {
+                // Jika terjadi error saat upload, batalkan semua proses.
+                // Kembalikan pengguna ke form dengan pesan error yang jelas.
+                // Di aplikasi production, catat error ini ke log.
+                // Log::error('S3 Upload Error: ' . $e->getMessage());
+                return redirect()->back()
+                    ->with('error', 'Gagal mengupload gambar. Silakan coba lagi.')
+                    ->withInput();
+            }
         }
 
         $product->save();
