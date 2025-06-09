@@ -137,99 +137,96 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
+        // Wait for the DOM to be fully loaded before running the script
+        // Wait for the DOM to be fully loaded before running the script
         document.addEventListener('DOMContentLoaded', function() {
-            // This small delay gives the mobile browser time to finish layout calculations
-            // before the chart script runs. It's a robust fix for the "chart too big" issue.
-            setTimeout(() => {
-                const commonChartOptions = {
-                    chart: {
-                        type: 'donut',
-                        width: '100%', // Let the chart fill its container
-                    },
-                    plotOptions: {
-                        pie: {
-                            donut: {
-                                size: '65%',
-                                labels: {
+            const commonChartOptions = {
+                chart: {
+                    type: 'donut',
+                    width: '100%', // Ensure chart uses full width of the container
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%', // Adjust donut size (65% should work well for both mobile and desktop)
+                            labels: {
+                                show: true,
+                                name: { show: false },
+                                value: {
                                     show: true,
-                                    name: { show: false },
-                                    value: {
-                                        show: true,
-                                        fontSize: '24px',
-                                        fontWeight: 'bold',
-                                        color: '#1f2937',
-                                        offsetY: 8,
-                                        formatter: (val) => val,
-                                    },
-                                    total: { show: false }
-                                }
+                                    fontSize: '24px', // Adjust font size for larger screens
+                                    fontWeight: 'bold',
+                                    color: '#1f2937',
+                                    offsetY: 6,
+                                    formatter: (val) => val,
+                                },
+                                total: { show: false }
                             }
                         }
+                    }
+                },
+                stroke: { width: 0 },
+                legend: { show: false },
+                tooltip: {
+                    enabled: true,
+                    y: {
+                        formatter: (val) => `${val} Orang`,
+                        title: { formatter: (seriesName) => seriesName },
                     },
-                    stroke: { width: 0 },
-                    legend: { show: false },
-                    tooltip: {
-                        enabled: true,
-                        y: {
-                            formatter: (val) => `${val} Orang`,
-                            title: { formatter: (seriesName) => seriesName },
+                },
+                // Add the responsive configuration for mobile view
+                responsive: [{
+                    breakpoint: 480, // Mobile breakpoint
+                    options: {
+                        chart: {
+                            width: '100%' // Ensure chart width fits the container on small screens
                         },
-                    },
-                    // Responsive options are still a good fallback
-                    responsive: [{
-                        breakpoint: 480,
-                        options: {
-                            plotOptions: {
-                                pie: {
-                                    donut: {
-                                        labels: {
-                                            value: {
-                                                fontSize: '18px'
-                                            }
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    size: '55%', // Reduce donut size on mobile
+                                    labels: {
+                                        value: {
+                                            fontSize: '18px' // Smaller font size for mobile
                                         }
                                     }
                                 }
                             }
                         }
-                    }]
-                };
+                    }
+                }]
+            };
 
-                // 1. Hadir Chart
-                if (document.querySelector("#chartHadir")) {
-                    const optionsHadir = {
-                        ...commonChartOptions,
-                        series: [{{ $hadirCount }}],
-                        labels: ['Hadir'],
-                        colors: ['#3B82F6'],
-                    };
-                    const chartHadir = new ApexCharts(document.querySelector("#chartHadir"), optionsHadir);
-                    chartHadir.render();
-                }
+            // 1. Hadir Chart
+            const optionsHadir = {
+                ...commonChartOptions,
+                series: [{{ $hadirCount }}],
+                labels: ['Hadir'],
+                colors: ['#3B82F6'],
+            };
+            const chartHadir = new ApexCharts(document.querySelector("#chartHadir"), optionsHadir);
+            chartHadir.render();
 
-                // 2. Sakit Chart
-                if (document.querySelector("#chartSakit")) {
-                    const optionsSakit = {
-                        ...commonChartOptions,
-                        series: [{{ $sakitCount }}],
-                        labels: ['Sakit'],
-                        colors: ['#EF4444'],
-                    };
-                    const chartSakit = new ApexCharts(document.querySelector("#chartSakit"), optionsSakit);
-                    chartSakit.render();
-                }
+            // 2. Sakit Chart
+            const optionsSakit = {
+                ...commonChartOptions,
+                series: [{{ $sakitCount }}],
+                labels: ['Sakit'],
+                colors: ['#EF4444'],
+            };
+            const chartSakit = new ApexCharts(document.querySelector("#chartSakit"), optionsSakit);
+            chartSakit.render();
 
-                // 3. Izin Chart
-                if (document.querySelector("#chartIzin")) {
-                    const optionsIzin = {
-                        ...commonChartOptions,
-                        series: [{{ $izinCount }}],
-                        labels: ['Izin'],
-                        colors: ['#FBBF24'],
-                    };
-                    const chartIzin = new ApexCharts(document.querySelector("#chartIzin"), optionsIzin);
-                    chartIzin.render();
-                }
-            }, 100); // 100ms delay
+            // 3. Izin Chart
+            const optionsIzin = {
+                ...commonChartOptions,
+                series: [{{ $izinCount }}],
+                labels: ['Izin'],
+                colors: ['#FBBF24'],
+            };
+            const chartIzin = new ApexCharts(document.querySelector("#chartIzin"), optionsIzin);
+            chartIzin.render();
         });
     </script>
+
 @endsection
