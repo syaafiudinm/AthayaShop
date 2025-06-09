@@ -6,7 +6,7 @@
             <p class="text-xs text-gray-400">{{ $sale->created_at->format('l, d F Y') }} {{ $sale->created_at->format('H:i') }} WITA</p>
         </div>
         <div>
-            <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-600">Dalam Proses</span>
+            <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-600">{{$sale->status}}</span>
         </div>
     </div>
     <hr class="my-4">

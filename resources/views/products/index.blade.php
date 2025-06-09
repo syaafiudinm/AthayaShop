@@ -279,10 +279,7 @@
 
         function openDetailModal(product) {
         // Populate modal fields
-/*************  ✨ Windsurf Command 🌟  *************/
-        // Set image src to the product's image URL
         document.getElementById('detailImage').src = product.image;
-/*******  c83d8479-4e04-4c7b-ac19-327c85ec6282  *******/
         document.getElementById('detailName').textContent = product.name;
         document.getElementById('detailDescription').textContent = product.description;
         document.getElementById('detailStock').querySelector('span:nth-child(2)').textContent = product.stock;

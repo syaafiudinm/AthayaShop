@@ -14,7 +14,7 @@
                     <path d="M10.8319 10.0048C10.7434 10.0614 10.6446 10.1 10.5412 10.1185C10.4377 10.1369 10.3317 10.1348 10.229 10.1123C10.1264 10.0897 10.0292 10.0472 9.94303 9.98707C9.85685 9.92697 9.78334 9.85048 9.72672 9.76197C9.67009 9.67346 9.63145 9.57466 9.61301 9.47122C9.59456 9.36777 9.59668 9.26171 9.61922 9.15908C9.64177 9.05646 9.68431 8.95927 9.74441 8.87309C9.80451 8.7869 9.88101 8.71339 9.96952 8.65677L12.7551 6.87517C12.9338 6.76457 13.1489 6.72874 13.3538 6.77541C13.5587 6.82208 13.737 6.94751 13.8502 7.12459C13.9634 7.30167 14.0023 7.51617 13.9586 7.72174C13.915 7.9273 13.7921 8.10742 13.6167 8.22317L10.8319 10.0048Z" fill="black"/>
                     <path d="M15.123 9.92798C15.2047 10.1209 15.2074 10.3382 15.1306 10.5331C15.0538 10.728 14.9036 10.885 14.7123 10.9704C14.521 11.0558 14.3039 11.0627 14.1075 10.9897C13.9112 10.9167 13.7513 10.7696 13.6622 10.58L12.4558 7.87598C12.4106 7.77971 12.385 7.67539 12.3806 7.56913C12.3762 7.46286 12.393 7.35677 12.43 7.25708C12.4671 7.15738 12.5237 7.06608 12.5964 6.98851C12.6692 6.91094 12.7567 6.84865 12.8538 6.8053C12.9509 6.76195 13.0557 6.73841 13.1621 6.73604C13.2684 6.73367 13.3742 6.75253 13.4731 6.79152C13.5721 6.8305 13.6623 6.88883 13.7384 6.96308C13.8146 7.03734 13.8751 7.12604 13.9166 7.22398L15.123 9.92798Z" fill="black"/>
                 </svg>
-                Refresh                 
+                Refresh
             </a>
         </div>
         <div class="w-80">
@@ -32,8 +32,8 @@
             <div>
                 <div class="p-4 rounded-lg shadow border border-gray-300 relative">
                     <div class="relative rounded-md mb-4 overflow-hidden">
-                        <img src="{{ asset('Uploads/produk/thumb/' . $product->image) }}" alt="{{ $product->name }}" class="object-cover rounded-md w-full h-48">
-    
+                        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="object-cover rounded-md w-full h-48">
+
                         <!-- Stock Badge -->
                         <div class="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-xl border border-gray-300">
                             Stok {{ $product->stock }}
@@ -59,11 +59,11 @@
                     <h2 class="text-lg font-bold">Rangkuman Orderan</h2>
                     <span class="text-sm">Athaya Shop</span>
                 </div>
-    
+
                 @foreach ($cart as $item)
                     <div class="bg-[#C7EEFF] text-black rounded-md p-2 flex items-center gap-3">
                         <div class="w-12 h-12 bg-gray-300 rounded">
-                            <img src="{{ asset("Uploads/produk/thumb/".$item['image']) }}" alt="" class="w-full h-full object-cover rounded-md">
+                            <img src="{{ $item['image'] }}" alt="" class="w-full h-full object-cover rounded-md">
                         </div>
                         <div class="flex-1">
                             <p class="font-semibold text-sm">{{ $item['name'] }} ({{ $item['total'] }})</p>
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 @endforeach
-    
+
                 <div class="bg-[#C7EEFF] text-black p-3 rounded space-y-1 text-sm">
                     <div class="flex justify-between">
                         <span>Subtotal</span>
@@ -90,12 +90,12 @@
                         <span>Rp{{ number_format($total, 0, ',', '.') }}</span>
                     </div>
                 </div>
-    
+
                 <select wire:model="paymentMethod" class="text-black w-full rounded-md p-2 text-sm">
                     <option value="midtrans">Qris</option>
                     <option value="cash">Tunai</option>
                 </select>
-    
+
                 <button wire:click="openModal" class="w-full bg-black text-white py-2 rounded text-sm font-semibold">Konfirmasi Pembayaran</button>
             </div>
         </div>

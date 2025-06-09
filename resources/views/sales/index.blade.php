@@ -42,7 +42,6 @@
                             <span>Rp{{ number_format($item->unit_price, 0, ',', '.') }}</span>
                         </div>
                     @endforeach
-
                     @if ($sale->items->count() > 3)
                         <p class="text-xs text-gray-500">+{{ $sale->items->count() - 3 }} Barang lainnya</p>
                     @endif
@@ -68,7 +67,7 @@
     @if ($sales->isNotEmpty())
     <div class="mt-6">
         {{ $sales->links('pagination::tailwind') }}
-    </div>                          
+    </div>
     @endif
 
     <!-- Modal -->

@@ -8,6 +8,8 @@ class SalesItem extends Model
 {
     use HasFactory;
 
+    protected $table = 'sales_items';
+
     protected $fillable = [
         'sales_id',
         'product_id',

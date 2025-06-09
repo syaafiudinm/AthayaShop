@@ -85,7 +85,8 @@
                         <th class="text-center px-6 py-3 text-white font-normal">Check In</th>
                         @if (auth()->user()->role !== 'owner')
                         <th class="text-center px-6 py-3 text-white font-normal">Informasi</th>
-                        <th class="text-center px-6 py-3 text-white font-normal rounded-r-lg">Approval</th>
+                        <th class="text-center px-6 py-3 text-white font-normal">Dokumen</th>
+                        <th class="text-center px-6 py-3 text-white font-normal rounded-r-lg">Status</th>
                         @endif
                         @if (auth()->user()->role === 'owner')
                             <th class="text-center px-6 py-3 text-white font-normal">Informasi</th>
@@ -118,7 +119,7 @@
                                     @endif
                                 </td>
                             @endif
-                            @if (auth()->user()->role === 'owner')
+                            @if (auth()->user())
                                 <td class="px-4 text-center py-2 font-medium">
                                     @if($absen->dokumen)
                                         <a href="{{ asset('storage/' . $absen->dokumen) }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>

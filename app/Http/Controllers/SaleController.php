@@ -16,7 +16,7 @@ class SaleController extends Controller
             ->when($status, fn($q) => $q->where('status', $status))
             ->when($search, function ($q) use ($search) {
                 $q->where('id', 'like', "%{$search}%")
-                ->orWhereHas('user', fn($q) => 
+                ->orWhereHas('user', fn($q) =>
                     $q->where('name', 'like', "%{$search}%")
                 );
             })

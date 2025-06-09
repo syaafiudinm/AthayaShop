@@ -25,6 +25,7 @@ class AbsenController extends Controller
                     ->orWhere('check_in', 'like', "%{$search}%")
                     ->orWhere('status', 'like', "%{$search}%");
             })
+            ->orderBy('tanggal', 'desc')
             ->paginate(5)
             ->withQueryString();
 
