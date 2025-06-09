@@ -9,14 +9,16 @@
     </div>
 
     {{-- Filter --}}
-    <div class="flex items-center gap-4 mb-6">
-        <a href="{{ route('sales.index') }}" class="btn border border-gray-300 p-2 rounded-md">Semua</a>
-        <a href="{{ route('sales.index', ['status' => 'pending']) }}" class="btn p-2 border border-gray-300 rounded-md">Dalam Proses</a>
-        <a href="{{ route('sales.index', ['status' => 'paid']) }}" class="btn p-2 border border-gray-300 rounded-md">Selesai</a>
+    <div class="flex items-center gap-4 mb-6 max-sm:flex-col">
+        <a href="{{ route('sales.index') }}" class="btn border border-gray-300 p-2 rounded-md max-sm:w-full">Semua</a>
+        <a href="{{ route('sales.index', ['status' => 'pending']) }}" class="btn p-2 border border-gray-300 rounded-md max-sm:w-full">Dalam Proses</a>
+        <a href="{{ route('sales.index', ['status' => 'paid']) }}" class="btn p-2 border border-gray-300 rounded-md max-sm:w-full">Selesai</a>
 
-        <form class="ml-auto">
-            <input type="text" name="search" placeholder="Cari" class="input p-2 border border-gray-300 rounded-md" value="{{ request('search') }}">
-        </form>
+        <div class="md:ml-auto max-sm:w-full">
+            <form>
+                <input type="text" name="search" placeholder="Cari" class="input p-2 border border-gray-300 rounded-md " value="{{ request('search') }}">
+            </form>
+        </div>
     </div>
 
     {{-- Grid --}}
