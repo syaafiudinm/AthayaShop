@@ -4,7 +4,7 @@
 
     <div class="flex-1 p-8">
         <h1 class="text-3xl font-semibold mb-6">Produk</h1>
-        <div class="flex gap-4">
+        <div class="flex gap-4 max-sm:flex-col">
              <!-- Category Filter Dropdown -->
             <a href="{{ route('products') }}" class="flex items-center border border-gray-300 p-2 rounded-md gap-2 mt-1">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,7 +12,7 @@
                     <path d="M10.8319 10.0048C10.7434 10.0614 10.6446 10.1 10.5412 10.1185C10.4377 10.1369 10.3317 10.1348 10.229 10.1123C10.1264 10.0897 10.0292 10.0472 9.94303 9.98707C9.85685 9.92697 9.78334 9.85048 9.72672 9.76197C9.67009 9.67346 9.63145 9.57466 9.61301 9.47122C9.59456 9.36777 9.59668 9.26171 9.61922 9.15908C9.64177 9.05646 9.68431 8.95927 9.74441 8.87309C9.80451 8.7869 9.88101 8.71339 9.96952 8.65677L12.7551 6.87517C12.9338 6.76457 13.1489 6.72874 13.3538 6.77541C13.5587 6.82208 13.737 6.94751 13.8502 7.12459C13.9634 7.30167 14.0023 7.51617 13.9586 7.72174C13.915 7.9273 13.7921 8.10742 13.6167 8.22317L10.8319 10.0048Z" fill="black"/>
                     <path d="M15.123 9.92798C15.2047 10.1209 15.2074 10.3382 15.1306 10.5331C15.0538 10.728 14.9036 10.885 14.7123 10.9704C14.521 11.0558 14.3039 11.0627 14.1075 10.9897C13.9112 10.9167 13.7513 10.7696 13.6622 10.58L12.4558 7.87598C12.4106 7.77971 12.385 7.67539 12.3806 7.56913C12.3762 7.46286 12.393 7.35677 12.43 7.25708C12.4671 7.15738 12.5237 7.06608 12.5964 6.98851C12.6692 6.91094 12.7567 6.84865 12.8538 6.8053C12.9509 6.76195 13.0557 6.73841 13.1621 6.73604C13.2684 6.73367 13.3742 6.75253 13.4731 6.79152C13.5721 6.8305 13.6623 6.88883 13.7384 6.96308C13.8146 7.03734 13.8751 7.12604 13.9166 7.22398L15.123 9.92798Z" fill="black"/>
                 </svg>
-                Refresh                 
+                Refresh
             </a>
             <form method="GET" action="{{ route('products') }}" id="categoryFilterForm" class="flex items-center border border-gray-300 rounded-md px-4 py-2 mt-1">
                 <span class="text-gray-500 mr-2">
@@ -32,15 +32,15 @@
                 @endif
             </form>
             <!-- Search Form (Move to the right) -->
-            <form method="GET" action="{{ route('products') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3">
+            <form method="GET" action="{{ route('products') }}" class="flex items-center border border-gray-300 rounded-lg p-2 ml-auto md:w-1/3 max-sm:w-full">
                 <!-- Search Icon -->
                 <span class="text-gray-500 mr-2">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M13.0667 14L8.86667 9.8C8.53333 10.0667 8.15 10.2778 7.71667 10.4333C7.28333 10.5889 6.82222 10.6667 6.33333 10.6667C5.12222 10.6667 4.09733 10.2471 3.25867 9.408C2.42 8.56889 2.00044 7.544 2 6.33333C1.99956 5.12267 2.41911 4.09778 3.25867 3.25867C4.09822 2.41956 5.12311 2 6.33333 2C7.54356 2 8.56867 2.41956 9.40867 3.25867C10.2487 4.09778 10.668 5.12267 10.6667 6.33333C10.6667 6.82222 10.5889 7.28333 10.4333 7.71667C10.2778 8.15 10.0667 8.53333 9.8 8.86667L14 13.0667L13.0667 14ZM6.33333 9.33333C7.16667 9.33333 7.87511 9.04178 8.45867 8.45867C9.04222 7.87556 9.33378 7.16711 9.33333 6.33333C9.33289 5.49956 9.04133 4.79133 8.45867 4.20867C7.876 3.626 7.16756 3.33422 6.33333 3.33333C5.49911 3.33244 4.79089 3.62422 4.20867 4.20867C3.62644 4.79311 3.33467 5.50133 3.33333 6.33333C3.332 7.16533 3.62378 7.87378 4.20867 8.45867C4.79356 9.04356 5.50178 9.33511 6.33333 9.33333Z" fill="black"/>
-                    </svg>                        
+                    </svg>
                 </span>
                 <!-- Search Input -->
-                <input type="text" name="search" value="{{ request('search') }}" 
+                <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari"
                     class="w-full bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-500 text-gray-700" />
             </form>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </button>
-            
+
                 @foreach ($products as $product)
                     <div class="p-4 rounded-lg shadow-lg border border-gray-300 relative flex flex-col">
                         <!-- Clickable area for the entire card, excluding buttons -->
@@ -124,20 +124,20 @@
             @if ($products->isNotEmpty())
             <div class="mt-6">
                 {{ $products->links('pagination::tailwind') }}
-            </div>                          
+            </div>
             @endif
         </div>
         @include('components.createProductModal',['submissionToken' => $submissionToken])
         @include('components.editProductModal', ['submissionToken' => $submissionToken])
         @include('components.ProductDetail')
     </div>
-    
+
     <script>
         // Open Create Modal
         function openModal() {
             document.getElementById('productModal').classList.remove('hidden');
         }
-    
+
         // Close Create Modal
         function closeModal() {
             document.getElementById('productModal').classList.add('hidden');
@@ -146,8 +146,8 @@
             document.getElementById('preview').classList.add('hidden');
             document.getElementById('imagePreview').src = '';
             document.getElementById('message').textContent = '';
-        }   
-    
+        }
+
         // Close Edit Modal
         function closeEditModal() {
             document.getElementById('editProductModal').classList.add('hidden');
@@ -157,15 +157,15 @@
             document.getElementById('editImagePreview').src = '';
             document.getElementById('editMessage').textContent = '';
         }
-    
+
         // Open Edit Modal and Populate Fields
         function openEditModal(product) {
             const modal = document.getElementById('editProductModal');
             const form = document.getElementById('editProductForm');
-            
+
             // Set form action to update route
             form.action = `/products/edit/${product.id}`;
-    
+
             // Populate form fields
             document.getElementById('editProductName').value = product.name || '';
             document.getElementById('editProductCategory').value = product.category_id || '';
@@ -173,7 +173,7 @@
             document.getElementById('editProductStock').value = product.stock || '';
             document.getElementById('editProductSupplier').value = product.supplier_id || '';
             document.getElementById('editProductDescription').value = product.description || '';
-    
+
             // Handle existing image preview
             const editPreview = document.getElementById('editPreview');
             const editImagePreview = document.getElementById('editImagePreview');
@@ -184,41 +184,41 @@
                 editPreview.classList.add('hidden');
                 editImagePreview.src = '';
             }
-    
+
             // Show modal
             modal.classList.remove('hidden');
         }
-    
+
         // Handle Drag and Drop for Create Modal
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('fileInput');
         const preview = document.getElementById('preview');
         const imagePreview = document.getElementById('imagePreview');
         const message = document.getElementById('message');
-    
+
         if (dropzone && fileInput) {
             dropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 dropzone.classList.add('border-blue-500');
             });
-    
+
             dropzone.addEventListener('dragleave', () => {
                 dropzone.classList.remove('border-blue-500');
             });
-    
+
             dropzone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 dropzone.classList.remove('border-blue-500');
                 const file = e.dataTransfer.files[0];
                 handleFile(file);
             });
-    
+
             fileInput.addEventListener('change', () => {
                 const file = fileInput.files[0];
                 handleFile(file);
             });
         }
-    
+
         function handleFile(file) {
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
@@ -232,37 +232,37 @@
                 message.textContent = 'Please upload a valid image file';
             }
         }
-    
+
         // Handle Drag and Drop for Edit Modal
         const editDropzone = document.getElementById('editDropzone');
         const editFileInput = document.getElementById('editFileInput');
         const editPreview = document.getElementById('editPreview');
         const editImagePreview = document.getElementById('editImagePreview');
         const editMessage = document.getElementById('editMessage');
-    
+
         if (editDropzone && editFileInput) {
             editDropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 editDropzone.classList.add('border-blue-500');
             });
-    
+
             editDropzone.addEventListener('dragleave', () => {
                 editDropzone.classList.remove('border-blue-500');
             });
-    
+
             editDropzone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 editDropzone.classList.remove('border-blue-500');
                 const file = e.dataTransfer.files[0];
                 handleEditFile(file);
             });
-    
+
             editFileInput.addEventListener('change', () => {
                 const file = editFileInput.files[0];
                 handleEditFile(file);
             });
         }
-    
+
         function handleEditFile(file) {
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
