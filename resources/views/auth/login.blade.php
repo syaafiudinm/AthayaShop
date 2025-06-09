@@ -16,51 +16,42 @@
     </style>
     <title>Login - Athaya Shop</title>
 </head>
-<body class="bg-gray-100 overflow-hidden">
-<div class="flex flex-col md:flex-row h-screen">
-    <!-- Left Side: Login Form -->
-    <div class="w-full md:w-1/2 bg-white flex flex-col justify-center items-center p-6 md:p-10 overflow-y-auto">
-        <div class="w-full max-w-sm">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Selamat Datang</h2>
-            <p class="text-gray-600 mb-8">Silahkan login untuk masuk ke dalam sistem.</p>
+<body class="bg-gray-100 flex items-center justify-center h-screen p-4">
 
-            @include('components.alert')
+<div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+    <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang</h2>
+        <p class="text-gray-600 mb-8">Silahkan login untuk masuk ke dalam sistem.</p>
+    </div>
 
-            <!-- Login Form -->
-            <form action="{{ route('authenticate') }}" method="POST">
-                @csrf
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="user@email.com" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                    @error('email')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
-                    <input type="password" id="password" name="password" placeholder="Min. 8 karakter" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-                    @error('password')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+    @include('components.alert')
 
-                <!-- Submit Button -->
-                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">Masuk</button>
-            </form>
-
-            <p class="text-center text-sm text-gray-600 mt-6">
-                Belum punya akun? <a href="{{ route('register') }}" class="text-primary hover:underline font-semibold">Daftar di sini</a>
-            </p>
+    <!-- Login Form -->
+    <form action="{{ route('authenticate') }}" method="POST">
+        @csrf
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="user@email.com" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            @error('email')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
         </div>
-    </div>
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+            <input type="password" id="password" name="password" placeholder="Min. 8 karakter" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            @error('password')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
 
-    <!-- Right Side: Image background (Hidden on mobile) -->
-    <div class="hidden md:flex md:w-1/2 bg-gray-200 items-center justify-center">
-        <img src="https://placehold.co/1080x1920/e2e8f0/4a5568?text=Athaya+Shop"
-             alt="Decorative image for Athaya Shop login page"
-             class="w-full h-full object-cover"
-             onerror="this.onerror=null;this.src='https://placehold.co/1080/e2e8f0/4a5568?text=Image+Not+Found';">
-    </div>
+        <!-- Submit Button -->
+        <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">Masuk</button>
+    </form>
+
+    <p class="text-center text-sm text-gray-600 mt-6">
+        Belum punya akun? <a href="{{ route('register') }}" class="text-primary hover:underline font-semibold">Daftar di sini</a>
+    </p>
 </div>
+
 </body>
 </html>

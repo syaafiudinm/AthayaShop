@@ -137,83 +137,93 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
-        // Common options for all donut charts for cleaner code
-        const commonChartOptions = {
-            chart: {
-                type: 'donut',
-                // Removed fixed width and height to make charts responsive
-            },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%', // Donut hole size
-                        labels: {
-                            show: true,
-                            name: {
-                                show: false,
-                            },
-                            value: {
+        // Wait for the DOM to be fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', function() {
+            const commonChartOptions = {
+                chart: {
+                    type: 'donut',
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            size: '65%',
+                            labels: {
                                 show: true,
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                color: '#1f2937',
-                                offsetY: 8,
-                                formatter: (val) => val,
-                            },
-                            total: {
-                                show: false,
+                                name: { show: false },
+                                value: {
+                                    show: true,
+                                    fontSize: '24px',
+                                    fontWeight: 'bold',
+                                    color: '#1f2937',
+                                    offsetY: 8,
+                                    formatter: (val) => val,
+                                },
+                                total: { show: false }
                             }
                         }
                     }
-                }
-            },
-            stroke: {
-                width: 0, // No border
-            },
-            legend: {
-                show: false,
-            },
-            // Tooltips can be useful, so they are enabled. Set to false to hide.
-            tooltip: {
-                enabled: true,
-                y: {
-                    formatter: (val) => `${val} Orang`,
-                    title: {
-                        formatter: (seriesName) => seriesName,
+                },
+                stroke: { width: 0 },
+                legend: { show: false },
+                tooltip: {
+                    enabled: true,
+                    y: {
+                        formatter: (val) => `${val} Orang`,
+                        title: { formatter: (seriesName) => seriesName },
                     },
                 },
-            }
-        };
+                // Add the responsive configuration
+                responsive: [{
+                    breakpoint: 480, // This is a typical mobile breakpoint
+                    options: {
+                        chart: {
+                            width: '100%' // Ensure chart width fits container on small screens
+                        },
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    labels: {
+                                        value: {
+                                            fontSize: '18px' // Use a smaller font for the value on mobile
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }]
+            };
 
-        // 1. Hadir Chart
-        const optionsHadir = {
-            ...commonChartOptions,
-            series: [{{ $hadirCount }}],
-            labels: ['Hadir'],
-            colors: ['#3B82F6'], // Blue
-        };
-        const chartHadir = new ApexCharts(document.querySelector("#chartHadir"), optionsHadir);
-        chartHadir.render();
+            // 1. Hadir Chart
+            const optionsHadir = {
+                ...commonChartOptions,
+                series: [{{ $hadirCount }}],
+                labels: ['Hadir'],
+                colors: ['#3B82F6'],
+            };
+            const chartHadir = new ApexCharts(document.querySelector("#chartHadir"), optionsHadir);
+            chartHadir.render();
 
-        // 2. Sakit Chart
-        const optionsSakit = {
-            ...commonChartOptions,
-            series: [{{ $sakitCount }}],
-            labels: ['Sakit'],
-            colors: ['#EF4444'], // Red
-        };
-        const chartSakit = new ApexCharts(document.querySelector("#chartSakit"), optionsSakit);
-        chartSakit.render();
+            // 2. Sakit Chart
+            const optionsSakit = {
+                ...commonChartOptions,
+                series: [{{ $sakitCount }}],
+                labels: ['Sakit'],
+                colors: ['#EF4444'],
+            };
+            const chartSakit = new ApexCharts(document.querySelector("#chartSakit"), optionsSakit);
+            chartSakit.render();
 
-        // 3. Izin Chart
-        const optionsIzin = {
-            ...commonChartOptions,
-            series: [{{ $izinCount }}],
-            labels: ['Izin'],
-            colors: ['#FBBF24'], // Amber/Yellow
-        };
-        const chartIzin = new ApexCharts(document.querySelector("#chartIzin"), optionsIzin);
-        chartIzin.render();
+            // 3. Izin Chart
+            const optionsIzin = {
+                ...commonChartOptions,
+                series: [{{ $izinCount }}],
+                labels: ['Izin'],
+                colors: ['#FBBF24'],
+            };
+            const chartIzin = new ApexCharts(document.querySelector("#chartIzin"), optionsIzin);
+            chartIzin.render();
+        });
     </script>
 
 @endsection
