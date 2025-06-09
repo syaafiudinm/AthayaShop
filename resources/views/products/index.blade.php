@@ -67,9 +67,9 @@
                 </button>
             
                 @foreach ($products as $product)
-                    <div class="p-4 rounded-lg shadow-lg border border-gray-300 relative">
+                    <div class="p-4 rounded-lg shadow-lg border border-gray-300 relative flex flex-col">
                         <!-- Clickable area for the entire card, excluding buttons -->
-                        <div class="cursor-pointer" onclick="openDetailModal({
+                        <div class="cursor-pointer flex-grow" onclick="openDetailModal({
                             id: '{{ $product->id }}',
                             name: '{{ $product->name }}',
                             price: '{{ $product->price }}',
@@ -77,7 +77,7 @@
                             stock: '{{ $product->stock }}',
                             category_id: '{{ $product->category_id }}',
                             supplier_name: '{{ $product->supplier->name }}',
-                            image: '{{ asset('Uploads/produk/thumb/' . $product->image) }}'
+                            image: '{{ $product->image }}'
                         })">
                             <div class="bg-gray-200 rounded-md mb-4">
                                 <img src="{{ $product->image }}" alt="{{ $product->name }}" class="object-cover rounded-md border border-gray-300">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <!-- Edit and Delete Buttons -->
-                        <div class="flex justify-end mt-2 gap-2">
+                        <div class="flex justify-end gap-2 mt-2">
                             <a href="javascript:void(0)" onclick="openEditModal({
                                 id: '{{ $product->id }}',
                                 name: '{{ $product->name }}',
@@ -108,7 +108,7 @@
                                 stock: '{{ $product->stock }}',
                                 category_id: '{{ $product->category_id }}',
                                 supplier_id: '{{ $product->supplier_id }}',
-                                image: '{{ asset('Uploads/produk/thumb/' . $product->image) }}'
+                                image: '{{$product->image }}'
                             })" class="px-4 py-2 text-gray-600 border border-1 border-gray-300 rounded-md">
                                 Edit
                             </a>
@@ -279,7 +279,10 @@
 
         function openDetailModal(product) {
         // Populate modal fields
+/*************  ✨ Windsurf Command 🌟  *************/
+        // Set image src to the product's image URL
         document.getElementById('detailImage').src = product.image;
+/*******  c83d8479-4e04-4c7b-ac19-327c85ec6282  *******/
         document.getElementById('detailName').textContent = product.name;
         document.getElementById('detailDescription').textContent = product.description;
         document.getElementById('detailStock').querySelector('span:nth-child(2)').textContent = product.stock;
