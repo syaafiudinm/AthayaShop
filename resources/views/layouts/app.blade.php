@@ -19,6 +19,12 @@
         .input {
             @apply border border-gray-300 rounded px-3 py-2 text-sm;
         }
+
+        #chartHadir, #chartSakit, #chartIzin {
+            width: 100%; /* Ensure the chart container takes up the full width */
+            height: auto; /* Ensure the chart height adjusts to its content */
+        }
+
     </style>
     <title>Athaya Shop</title>
     @livewireStyles
