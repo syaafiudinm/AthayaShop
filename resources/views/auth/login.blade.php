@@ -5,56 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-
     </style>
-    <title>Athaya Shop</title>
+    <title>Login - Athaya Shop</title>
 </head>
-<body class="bg-gray-100">
-    <div class="flex h-screen">
-        <!-- Left Side: Login Form -->
-        <div class="w-1/2 bg-white flex flex-col justify-center items-center p-10">
-            <h2 class="text-4xl font-bold text-gray-800 mb-8">Selamat Datang</h2>
-            <p class="text-lg text-gray-600 mb-6">Silahkan login untuk masuk ke dalam sistem</p>
+<body class="bg-gray-100 overflow-hidden">
+<div class="flex flex-col md:flex-row h-screen">
+    <!-- Left Side: Login Form -->
+    <div class="w-full md:w-1/2 bg-white flex flex-col justify-center items-center p-6 md:p-10 overflow-y-auto">
+        <div class="w-full max-w-sm">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Selamat Datang</h2>
+            <p class="text-gray-600 mb-8">Silahkan login untuk masuk ke dalam sistem.</p>
 
             @include('components.alert')
 
             <!-- Login Form -->
-            <form action="{{route('authenticate')}}" method="POST" class="w-full max-w-sm">
+            <form action="{{ route('authenticate') }}" method="POST">
                 @csrf
-                <div class="mb-6">
-                    <label for="email" class="block text-sm text-gray-700">Email</label>
-                    <input type="email" id="email" name="email" placeholder="user@email.com" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="user@email.com" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                     @error('email')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
                 <div class="mb-6">
-                    <label for="password" class="block text-sm text-gray-700">Kata Sandi</label>
-                    <input type="password" id="password" name="password" placeholder="Min. 8 karakter" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+                    <input type="password" id="password" name="password" placeholder="Min. 8 karakter" class="w-full mt-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
                     @error('password')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="w-full border-2 border-black bg-primary text-white py-3 rounded-lg mb-4 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Masuk</button>
+                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">Masuk</button>
             </form>
-            <span>Belum punya akun?
-                <a href="{{ route('register') }}" class="text-primaray hover:underline font-semibold">Daftar!</a>
-            </span>
-        </div>
 
-        <!-- Right Side: Empty or Background -->
-        <div class="w-1/2 bg-gray-200 flex justify-center items-center">
-
+            <p class="text-center text-sm text-gray-600 mt-6">
+                Belum punya akun? <a href="{{ route('register') }}" class="text-primary hover:underline font-semibold">Daftar di sini</a>
+            </p>
         </div>
     </div>
+
+    <!-- Right Side: Image background (Hidden on mobile) -->
+    <div class="hidden md:flex md:w-1/2 bg-gray-200 items-center justify-center">
+        <img src="https://placehold.co/1080x1920/e2e8f0/4a5568?text=Athaya+Shop"
+             alt="Decorative image for Athaya Shop login page"
+             class="w-full h-full object-cover"
+             onerror="this.onerror=null;this.src='https://placehold.co/1080/e2e8f0/4a5568?text=Image+Not+Found';">
+    </div>
+</div>
 </body>
+</html>
