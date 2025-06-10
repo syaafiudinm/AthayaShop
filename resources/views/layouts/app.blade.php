@@ -26,11 +26,34 @@
             height: auto; /* Ensure the chart height adjusts to its content */
         }
 
+        /* --- Loading Overlay CSS --- */
+        #loading-overlay {
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            opacity: 0.75;
+        }
     </style>
     <title>Athaya Shop</title>
     @livewireStyles
 </head>
 <body class="bg-gray-100">
+
+<div id="loading-overlay">
+    <div class="text-white text-2xl">
+        <svg class="animate-spin h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </div>
+</div>
 
 <div class="relative min-h-screen lg:flex">
     <div id="sidebar" class="w-64 bg-primary shadow-md px-4 py-8 text-white fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 z-40">
@@ -147,6 +170,53 @@
 </div>
 
 <script>
+    // --- Loading Overlay Logic ---
+    const loadingOverlay = document.getElementById('loading-overlay');
+
+    function showLoader() {
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'flex';
+        }
+    }
+
+    function hideLoader() {
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+    }
+
+    // Show loader on link clicks (excluding those opening in a new tab)
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Check if the link opens in a new tab
+            if (event.ctrlKey || event.metaKey || link.target === '_blank') {
+                return;
+            }
+            // Check if it's a javascript link
+            if(link.href.startsWith('javascript:')) {
+                return;
+            }
+            showLoader();
+        });
+    });
+
+    // Show loader on form submissions (excluding delete forms)
+    document.querySelectorAll('form').forEach(form => {
+        if (!form.classList.contains('delete-form')) {
+            form.addEventListener('submit', function() {
+                showLoader();
+            });
+        }
+    });
+
+    // Hide loader when the page is shown (e.g., when using back/forward buttons)
+    window.addEventListener('pageshow', function(event) {
+        // The persisted property is false on initial load
+        if (event.persisted) {
+            hideLoader();
+        }
+    });
+
     // --- Responsive Sidebar Logic ---
     const sidebar = document.getElementById('sidebar');
     const menuButton = document.getElementById('menu-button');
@@ -210,6 +280,8 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Show loader just before submitting the confirmed delete form
+                    showLoader();
                     form.submit();
                 }
             });

@@ -122,7 +122,7 @@
                             @if (auth()->user())
                                 <td class="px-4 text-center py-2 font-medium">
                                     @if($absen->dokumen)
-                                        <a href="{{ asset('storage/' . $absen->dokumen) }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>
+                                        <a href="{{ $absen->dokumen }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>
                                     @else
                                         <span class="text-gray-500">-</span>
                                     @endif

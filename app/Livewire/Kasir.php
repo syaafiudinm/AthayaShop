@@ -38,27 +38,6 @@ class Kasir extends Component
             ->get();
     }
 
-//    public function addToCart($productId)
-//    {
-//        $product = Product::findOrFail($productId);
-//
-//        if (isset($this->cart[$productId])) {
-//            $this->cart[$productId]['total']++;
-//        } else {
-//            $this->cart[$productId] = [
-//                'product_id' => $product->id,
-//                'name' => $product->name,
-//                'image' => $product->image,
-//                'total' => 1,
-//                'unit_price' => $product->price,
-//            ];
-//        }
-//
-//        $this->cart[$productId]['subtotal'] = $this->cart[$productId]['total'] * $this->cart[$productId]['unit_price'];
-//        $this->calculateTotal();
-//        session(['kasir_cart' => $this->cart]);
-//    }
-
     public function addToCart($productId)
     {
         $product = Product::findOrFail($productId);

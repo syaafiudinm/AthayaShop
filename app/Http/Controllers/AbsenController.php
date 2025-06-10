@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Absen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AbsenController extends Controller
 {
@@ -97,6 +98,29 @@ class AbsenController extends Controller
     }
 
 
+//    public function store(Request $request)
+//    {
+//        $request->validate([
+//            'status' => 'required|in:Hadir,Sakit,Izin',
+//            'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+//        ]);
+//
+//        if ($request->hasFile('dokumen')) {
+//            $filePath = $request->file('dokumen')->store('dokumen', 'public');
+//        }
+//
+//        Absen::create([
+//            'user_id' => Auth::user()->id,
+//            'tanggal' => now('Asia/Makassar')->toDateString(),
+//            'check_in' => now('Asia/Makassar')->format('H:i:s'),
+//            'status' => $request->status,
+//            'dokumen' => $filePath,
+//            'approval_status' => in_array($request->status, ['Sakit', 'Izin']) ? 'Pending' : null,
+//        ]);
+//
+//        return redirect()->route('absen')->with('success', 'Absensi berhasil dikirim.');
+//    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -104,8 +128,11 @@ class AbsenController extends Controller
             'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
+        $fileUrl = null; // Initialize as null
         if ($request->hasFile('dokumen')) {
-            $filePath = $request->file('dokumen')->store('dokumen', 'public');
+            $path = $request->file('dokumen')->storePublicly('dokumen', 's3');
+            // Store the file on the 's3' disk in the 'dokumen' folder
+            $fileUrl = Storage::disk('s3')->url($path);
         }
 
         Absen::create([
@@ -113,7 +140,7 @@ class AbsenController extends Controller
             'tanggal' => now('Asia/Makassar')->toDateString(),
             'check_in' => now('Asia/Makassar')->format('H:i:s'),
             'status' => $request->status,
-            'dokumen' => $filePath,
+            'dokumen' => $fileUrl, // Save the path returned by S3
             'approval_status' => in_array($request->status, ['Sakit', 'Izin']) ? 'Pending' : null,
         ]);
 
