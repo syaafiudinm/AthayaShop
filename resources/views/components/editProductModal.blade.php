@@ -14,6 +14,9 @@
             <div class="mb-4">
                 <label for="editProductName" class="block text-sm font-medium text-gray-700">Nama Produk</label>
                 <input type="text" name="name" id="editProductName" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan nama" required>
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Category and Price -->
@@ -26,10 +29,16 @@
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
+                    @error('category_id')
+                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="w-1/2">
                     <label for="editProductPrice" class="block text-sm font-medium text-gray-700">Harga</label>
                     <input type="text" name="price" id="editProductPrice" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan harga" required>
+                    @error('price')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -38,6 +47,9 @@
                 <div class="w-1/2">
                     <label for="editProductStock" class="block text-sm font-medium text-gray-700">Stok</label>
                     <input type="number" name="stock" id="editProductStock" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan stok">
+                    @error('stock')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="w-1/2">
                     <label for="editProductSupplier" class="block text-sm font-medium text-gray-700">Supplier</label>
@@ -47,6 +59,9 @@
                             <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                         @endforeach
                     </select>
+                    @error('supplier_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -54,6 +69,9 @@
             <div class="mb-4">
                 <label for="editProductDescription" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea name="description" id="editProductDescription" class="w-full rounded-md border border-gray-300 px-3 py-2 mt-1 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Masukkan deskripsi" rows="3" required></textarea>
+                @error('description')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Product Photo (Drag and Drop) -->
@@ -67,6 +85,9 @@
                     </div>
                 </div>
                 <p id="editMessage" class="mt-2 text-center text-sm text-gray-600"></p>
+                @error('image')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Buttons -->

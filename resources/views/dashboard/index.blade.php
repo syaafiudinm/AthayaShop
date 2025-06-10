@@ -17,7 +17,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-[#C7EEFF] p-6 rounded-2xl shadow-sm flex items-end justify-between">
+                        <div class="bg-[#C7EEFF] p-8 rounded-2xl shadow-sm flex items-end justify-between border border-gray-200">
                             <div>
                                 <p class="text-gray-800 font-bold text-sm mb-4">Total Transaksi</p>
                                 <p class="text-4xl font-bold text-gray-800">{{ $TotalOrder }}</p>
@@ -28,7 +28,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <div class="bg-[#C7EEFF] p-6 rounded-2xl shadow-sm">
+                        <div class="bg-[#C7EEFF] p-8 rounded-2xl shadow-sm border border-gray-200">
                             <p class="text-gray-800 font-bold text-sm mb-4">Total Barang</p>
                             <div class="flex flex-wrap items-end gap-x-6 gap-y-2 mt-2">
                                 @foreach ($categories as $category)
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-[#0077C0] text-white p-6 rounded-2xl shadow-sm">
+                <div class="bg-[#0077C0] text-white p-8 rounded-2xl shadow-sm border border-gray-200">
                     <p class="text-blue-200 text-sm">Total Pemasukan</p>
                     @if ($newestIncome > 0)
                         <p class="text-xs outline outline-white px-2 py-1 rounded-full inline-block mt-2">Rp.{{ number_format($newestIncome, 0, ',', '.') }}</p>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm">
+                <div class="lg:col-span-2 bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
                     <h3 class="font-bold text-gray-800 mb-4">Kehadiran Karyawan</h3>
                     <div class="grid grid-cols-3 gap-4 text-center py-4">
                         <div class="flex flex-col items-center space-y-2">
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-[#C7EEFF] p-6 rounded-2xl shadow-sm text-center flex flex-col justify-center">
+                <div class="bg-[#C7EEFF] p-8 rounded-2xl shadow-sm text-center flex flex-col justify-center border border-gray-200">
                     <p class="font-semibold text-gray-500">Waktu</p>
                     <p class="text-4xl sm:text-5xl font-bold text-gray-800 my-2">{{ $witaNow }}</p>
                     <p class="text-gray-600">
@@ -87,11 +87,11 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
                     <h3 class="font-bold text-gray-800 mb-4">Riwayat Transaksi</h3>
                     <div class="overflow-x-auto">
                         <div class="space-y-3 min-w-[500px]">
-                            <div class="grid grid-cols-3 text-sm font-semibold text-gray-500 bg-gray-100 p-2 rounded-lg">
+                            <div class="grid grid-cols-3 text-sm font-semibold text-white bg-[#0077C0] p-2 rounded-lg">
                                 <div class="text-center">ID Transaksi</div>
                                 <div class="text-center">Waktu</div>
                                 <div class="text-center">Nama Kasir</div>
@@ -108,11 +108,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
                     <h3 class="font-bold text-gray-800 mb-4">Stok Produk</h3>
                     <div class="overflow-x-auto">
                         <div class="space-y-2 min-w-[400px]">
-                            <div class="grid grid-cols-4 text-sm font-semibold text-gray-500 bg-gray-100 p-2 rounded-lg">
+                            <div class="grid grid-cols-4 text-sm font-semibold text-white bg-[#0077C0] p-2 rounded-lg">
                                 <div class="col-span-2">Nama Produk</div>
                                 <div class="text-center">Terjual</div>
                                 <div class="text-center">Stok</div>
@@ -154,7 +154,7 @@
                                 name: { show: false },
                                 value: {
                                     show: true,
-                                    fontSize: '24px', // Adjust font size for larger screens
+                                    fontSize: '36px', // Adjust font size for larger screens
                                     fontWeight: 'bold',
                                     color: '#1f2937',
                                     offsetY: 6,

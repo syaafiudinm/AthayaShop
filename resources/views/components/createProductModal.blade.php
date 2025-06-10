@@ -83,6 +83,9 @@
                     </div>
                 </div>
                 <p id="message" class="mt-2 text-center text-sm text-gray-600"></p>
+                @error('image')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- Buttons -->

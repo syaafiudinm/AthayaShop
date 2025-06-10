@@ -38,18 +38,50 @@ class Kasir extends Component
             ->get();
     }
 
+//    public function addToCart($productId)
+//    {
+//        $product = Product::findOrFail($productId);
+//
+//        if (isset($this->cart[$productId])) {
+//            $this->cart[$productId]['total']++;
+//        } else {
+//            $this->cart[$productId] = [
+//                'product_id' => $product->id,
+//                'name' => $product->name,
+//                'image' => $product->image,
+//                'total' => 1,
+//                'unit_price' => $product->price,
+//            ];
+//        }
+//
+//        $this->cart[$productId]['subtotal'] = $this->cart[$productId]['total'] * $this->cart[$productId]['unit_price'];
+//        $this->calculateTotal();
+//        session(['kasir_cart' => $this->cart]);
+//    }
+
     public function addToCart($productId)
     {
         $product = Product::findOrFail($productId);
 
+        // Get the current quantity in the cart for this product
+        $quantityInCart = isset($this->cart[$productId]['total']) ? $this->cart[$productId]['total'] : 0;
+
+        // Check if adding another item would exceed the available stock
+        if ($product->stock <= $quantityInCart) {
+            // Flash an error message and stop the function
+            session()->flash('error', 'Stok untuk produk "' . $product->name . '" tidak mencukupi.');
+            return;
+        }
+
+        // If stock is sufficient, proceed to add to cart
         if (isset($this->cart[$productId])) {
             $this->cart[$productId]['total']++;
         } else {
             $this->cart[$productId] = [
                 'product_id' => $product->id,
-                'name' => $product->name,
-                'image' => $product->image,
-                'total' => 1,
+                'name'       => $product->name,
+                'image'      => $product->image,
+                'total'      => 1,
                 'unit_price' => $product->price,
             ];
         }
