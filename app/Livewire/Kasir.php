@@ -48,7 +48,7 @@ class Kasir extends Component
             $this->cart[$productId] = [
                 'product_id' => $product->id,
                 'name' => $product->name,
-                'image' => $product->image, 
+                'image' => $product->image,
                 'total' => 1,
                 'unit_price' => $product->price,
             ];
@@ -129,7 +129,7 @@ class Kasir extends Component
 
 
     protected function processMidtransPayment(){
-        
+
         $sale = Sale::create([
             'user_id' => Auth::id(),
             'total_price' => $this->total,

@@ -3,7 +3,7 @@
 
     <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
         <div class="flex flex-col sm:flex-row gap-3">
-            <select wire:model="category" class="border rounded-md p-2 w-full sm:w-auto">
+            <select wire:model.live="category" class="border rounded-md p-2 w-full sm:w-auto">
                 <option value="all">Semua Kategori</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
