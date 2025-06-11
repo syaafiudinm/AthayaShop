@@ -169,7 +169,7 @@ class Kasir extends Component
             'enabled_payments' => ['gopay', 'bank_transfer']
         ];
 
-        $payload['finish_redirect_url'] = 'https://0f2a-36-72-72-167.ngrok-free.app/kasir';
+        $payload['finish_redirect_url'] = 'https://athaya.shop/sales';
 
 
         $midtrans = new MidtransService();
