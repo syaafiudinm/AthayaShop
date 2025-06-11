@@ -12,6 +12,10 @@
             </div>
         </div>
 
+        <div class="mt-4">
+            @include('components.alert')
+        </div>
+
         <div class="space-y-8">
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

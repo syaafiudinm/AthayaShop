@@ -41,6 +41,12 @@ class AuthController extends Controller
     }
 
     public function login(){
+
+        if (Auth::check()) {
+            // Jika ada, logout user yang saat ini aktif
+            return redirect()->route('beranda')->with('error', 'you have to logout first');
+        }
+
         return view('auth.login');
     }
 
@@ -63,10 +69,16 @@ class AuthController extends Controller
             return redirect()->route('login')->with('error', 'Either email or password is incorrect');
         }
 
-    } 
+    }
 
-    public function logout(){
-        Auth::logout();
+    public function logout(Request $request){
+        if (Auth::check()) {
+            Auth::logout();
+
+            // Invalidate session lama dan buat token baru untuk keamanan
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
         return redirect()->route('login');
     }
 }

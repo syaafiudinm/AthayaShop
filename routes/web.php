@@ -14,19 +14,19 @@ use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 
 
-Route::middleware(['auth', 'role:admin,owner'])->group(function () { 
+Route::middleware(['auth', 'role:admin,owner'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories/create', [CategoryController::class, 'store'])->name('categories.store');
     Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/edit/{id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-    
+
     Route::get('/products', [ProductController::class, 'index'])->name('products');
     Route::post('/products/create', [ProductController::class, 'store'])->name('products.store');
     Route::put('/products/edit/{id}', [ProductController::class, 'update'])->name('products.update');
@@ -36,7 +36,7 @@ Route::middleware(['auth', 'role:admin,owner'])->group(function () {
     Route::post('/suppliers/create', [SupplierController::class, 'store'])->name('suppliers.store');
     Route::put('/suppliers/edit/{id}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
-}); 
+});
 
 Route::middleware(['auth', 'role:cashier,owner'])->group(function () {
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
@@ -68,8 +68,11 @@ Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
     Route::post('/absen/{id}/approval', [AbsenController::class, 'approval'])->name('absen.approval');
 });
 
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/register', [AuthController::class, 'registerStore'])->name('register.store');
+Route::middleware(['auth', 'role:owner'])->group(function () {
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'registerStore'])->name('register.store');
+});
+
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
