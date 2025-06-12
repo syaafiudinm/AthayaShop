@@ -45,8 +45,8 @@ Route::middleware(['auth', 'role:cashier,owner'])->group(function () {
     Route::get('/kasir', function () {
         return view('cashier.index');
     })->name('kasir');
-    Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
 });
+    Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
 
 
 Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
