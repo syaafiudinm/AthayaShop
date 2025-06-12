@@ -139,15 +139,16 @@ class Kasir extends Component
     }
 
 
-    protected function processMidtransPayment(){
-
+    protected function processMidtransPayment()
+    {
+        // `status` akan otomatis 'pending' karena sudah diatur di migrasi
         $sale = Sale::create([
             'user_id' => Auth::id(),
             'total_price' => $this->total,
             'payment_method' => 'midtrans',
-            'status' => 'pending'
         ]);
 
+        // Buat Sale Items (kode Anda sudah benar)
         foreach($this->cart as $item){
             $sale->items()->create([
                 'product_id' => $item['product_id'],
@@ -157,9 +158,15 @@ class Kasir extends Component
             ]);
         }
 
+        // Buat order_id yang unik
+        $orderId = 'ATHAYA-' . $sale->id . '-' . time();
+
+        // Simpan order_id ke database (SANGAT PENTING)
+        $sale->update(['order_id' => $orderId]);
+
         $payload = [
             'transaction_details' => [
-                'sales_id' => 'ATHAYA-' . $sale->id . '-' . time(),
+                'order_id' => $orderId,
                 'gross_amount' => $this->total,
             ],
             'customer_details' => [
@@ -169,8 +176,9 @@ class Kasir extends Component
             'enabled_payments' => ['gopay', 'bank_transfer']
         ];
 
-        $payload['finish_redirect_url'] = 'https://athaya.shop/sales';
-
+        // Redirect URL setelah pembayaran selesai (opsional)
+        // Pastikan route 'sales.index' ada dan bisa diakses
+        $payload['finish_redirect_url'] = route('sales.index');
 
         $midtrans = new MidtransService();
         $snap = $midtrans->createTransaction($payload);

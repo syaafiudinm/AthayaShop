@@ -46,7 +46,6 @@ Route::middleware(['auth', 'role:cashier,owner'])->group(function () {
         return view('cashier.index');
     })->name('kasir');
 });
-    Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
 
 
 Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
@@ -76,3 +75,4 @@ Route::middleware(['auth', 'role:owner'])->group(function () {
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
