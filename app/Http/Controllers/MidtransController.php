@@ -20,7 +20,7 @@ class MidtransController extends Controller
         }
 
 
-        $orderId = $payload['order_id'];
+        $orderId = $payload['sale_id'];
         $statusCode = $payload['status_code'];
         $grossAmount = $payload['gross_amount'];
         $signature = hash('sha512', $orderId . $statusCode . $grossAmount . $serverKey);

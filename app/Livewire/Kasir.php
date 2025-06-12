@@ -159,7 +159,7 @@ class Kasir extends Component
 
         $payload = [
             'transaction_details' => [
-                'order_id' => 'ATHAYA-' . $sale->id . '-' . time(),
+                'sales_id' => 'ATHAYA-' . $sale->id . '-' . time(),
                 'gross_amount' => $this->total,
             ],
             'customer_details' => [

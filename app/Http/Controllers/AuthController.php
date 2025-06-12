@@ -44,7 +44,7 @@ class AuthController extends Controller
 
         if (Auth::check()) {
             // Jika ada, logout user yang saat ini aktif
-            return redirect()->route('beranda')->with('error', 'you have to logout first');
+            return redirect()->route('beranda')->with('error', 'anda sudah login');
         }
 
         return view('auth.login');
