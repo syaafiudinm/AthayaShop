@@ -173,12 +173,10 @@ class Kasir extends Component
                 'first_name' => Auth::user()->name,
                 'email' => Auth::user()->email,
             ],
-            'enabled_payments' => ['gopay', 'bank_transfer']
+            'enabled_payments' => ['gopay']
         ];
-
         // Redirect URL setelah pembayaran selesai (opsional)
         // Pastikan route 'sales.index' ada dan bisa diakses
-        $payload['finish_redirect_url'] = route('sales.index');
 
         $midtrans = new MidtransService();
         $snap = $midtrans->createTransaction($payload);
