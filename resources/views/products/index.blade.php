@@ -120,7 +120,7 @@
                         </div>
                     </div>
                         @empty
-                            <p class="text-center text-blue-200 py-8">Keranjang masih kosong.</p>
+                    <p class="col-span-full text-center text-gray-500 py-10">Product belum ada.</p>
                 @endforelse
             </div>
             @if ($products->isNotEmpty())

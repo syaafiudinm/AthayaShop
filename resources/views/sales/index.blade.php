@@ -23,7 +23,7 @@
 
     {{-- Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach ($sales as $sale)
+        @forelse ($sales as $sale)
             <div class="border border-gray-300 rounded-md shadow p-4 space-y-3 flex flex-col justify-between h-full">
                 <div class="flex justify-between items-center">
                     <div>
@@ -63,8 +63,10 @@
                 >
                     Lihat Detail
                 </button>
+                @empty
+                    <p class="col-span-full text-center text-gray-500 py-10">Order belum ada.</p>
             </div>
-        @endforeach
+        @endforelse
     </div>
     @if ($sales->isNotEmpty())
     <div class="mt-6">
