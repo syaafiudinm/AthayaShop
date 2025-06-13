@@ -66,7 +66,7 @@
                     </div>
                 </button>
 
-                @foreach ($products as $product)
+                @forelse ($products as $product)
                     <div class="p-4 rounded-lg shadow-lg border border-gray-300 relative flex flex-col">
                         <!-- Clickable area for the entire card, excluding buttons -->
                         <div class="cursor-pointer flex-grow" onclick="openDetailModal({
@@ -119,7 +119,9 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                        @empty
+                            <p class="text-center text-blue-200 py-8">Keranjang masih kosong.</p>
+                @endforelse
             </div>
             @if ($products->isNotEmpty())
             <div class="mt-6">
