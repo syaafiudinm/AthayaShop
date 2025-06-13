@@ -43,7 +43,7 @@
                                         <p class="text-gray-600 mb-1 whitespace-nowrap">{{ $category->name }}</p>
                                     </div>
                                 @endforeach
-                            </div>xs
+                            </div>
                         </div>
                     </div>
                 </div>
