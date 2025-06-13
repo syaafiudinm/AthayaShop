@@ -173,7 +173,10 @@ class Kasir extends Component
                 'first_name' => Auth::user()->name,
                 'email' => Auth::user()->email,
             ],
-            'enabled_payments' => ['gopay']
+            'enabled_payments' => ['gopay'],
+            'callsback' => [
+                'finish' => route('sales.index')
+            ]
         ];
         // Redirect URL setelah pembayaran selesai (opsional)
         // Pastikan route 'sales.index' ada dan bisa diakses
