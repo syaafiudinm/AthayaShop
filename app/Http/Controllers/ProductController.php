@@ -25,7 +25,7 @@ class ProductController extends Controller
 
         $search = $request->query('search');
         $category = $request->query('category');
-        
+
         $products = Product::when($search, function ($query, $search) {
             return $query
                     ->where('name', 'like', "%{$search}%")
@@ -36,7 +36,7 @@ class ProductController extends Controller
                     ->orWhereHas('supplier', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%");
                     });
-                    
+
                 })
                 ->when($category && $category !== 'all', function ($query) use ($category) {
                     return $query->where('category_id', $category);
@@ -56,7 +56,7 @@ class ProductController extends Controller
         }
 
         session()->put("submission_token_{$submissionToken}", true);
-        
+
         $validator = Validator::make($request->all(), [
             'category_id' => 'required',
             'supplier_id' => 'required',
@@ -83,18 +83,19 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
-        
+
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             try {
                 $file = $request->file('image');
 
                 // Buat nama file yang unik untuk menghindari konflik di S3
                 $fileName = Str::slug($product->name) . '-' . time() . '.' . $file->getClientOriginalExtension();
-                $path = $fileName; // Tentukan folder di S3
+                $folder = "products";
+                $path = $folder  . '/' . $fileName;
 
                 // Inisialisasi ImageManager
                 $manager = new ImageManager(new Driver());
-                
+
                 // Baca dan proses gambar
                 $image = $manager->read($file);
                 $image->resize(300,200); // Resize gambar, tinggi menyesuaikan aspek rasio
@@ -103,7 +104,8 @@ class ProductController extends Controller
                 $encodedImage = $image->encode();
 
                 // Upload gambar yang telah diproses ke S3
-                Storage::disk('s3')->put($path, $encodedImage, 'public');
+//                Storage::disk('s3')->put($path, $encodedImage, 'public');
+                Storage::disk('s3')->put($path, $encodedImage->__toString(), 'public');
                 // Jika berhasil, baru isi kolom 'image' dengan URL dari S3
                 $product->image = Storage::disk('s3')->url($path);
 
@@ -120,7 +122,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('products')->with('success', 'Product created successfully'); 
+        return redirect()->route('products')->with('success', 'Product created successfully');
     }
 
     public function update(int $id, Request $request){
@@ -149,7 +151,7 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->stock = $request->stock;
-        $product->price = $request->price; 
+        $product->price = $request->price;
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -166,25 +168,25 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('products')->with('success', 'Product updated successfully'); 
+        return redirect()->route('products')->with('success', 'Product updated successfully');
     }
 
     public function destroy(int $id) {
         $product = Product::findOrFail($id);
 
-            $imagePath = public_path('uploads/produk/' . $product->image);
-            $thumbPath = public_path('uploads/produk/thumb/' . $product->image);
+        // Ambil path relatif dari URL S3
+        if ($product->image) {
+            // Contoh image URL: https://athaya-shop-bucket.s3.ap-southeast-2.amazonaws.com/products/namafile.jpg
+            $parsed = parse_url($product->image);
+            $relativePath = ltrim($parsed['path'], '/'); // hasil: products/namafile.jpg
 
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
+            if (Storage::disk('s3')->exists($relativePath)) {
+                Storage::disk('s3')->delete($relativePath);
             }
-
-            if (file_exists($thumbPath)) {
-                unlink($thumbPath);
-            }
+        }
 
         $product->delete();
-        
+
         return redirect()->route('products')->with('success', 'Product deleted successfully!');
     }
 }
