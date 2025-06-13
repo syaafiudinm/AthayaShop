@@ -3,19 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Midtrans\Notification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\Sale;
 use App\Models\Product;
+use Exception;
 
 class MidtransController extends Controller
 {
     public function notification(Request $request)
     {
-        Log::info('Midtrans notification received.', ['payload' => $request->all()]);
-        $orderId = $request->input('order_id', 'N/A');
+        // Terima request JSON
+        $payload = $request->json()->all();
+        $orderId = $payload['order_id'] ?? 'N/A';
+
+        Log::info('Midtrans notification received.', ['payload' => $payload]);
 
         try {
-            $payload = $request->all();
             $serverKey = env('MIDTRANS_SERVER_KEY');
 
             if (!$serverKey) {
@@ -23,14 +27,24 @@ class MidtransController extends Controller
                 return response('Server key not configured', 500);
             }
 
-            // Verifikasi signature
-            $signature = hash('sha512', $payload['order_id'] . $payload['status_code'] . $payload['gross_amount'] . $serverKey);
-            if ($signature !== $payload['signature_key']) {
-                Log::warning('Invalid Midtrans signature.', ['order_id' => $orderId]);
+            // Gunakan string original dari payload
+            $expectedSignature = hash('sha512',
+                $payload['order_id'] .
+                $payload['status_code'] .
+                $payload['gross_amount'] .
+                $serverKey
+            );
+
+            if ($expectedSignature !== $payload['signature_key']) {
+                Log::warning('Invalid Midtrans signature.', [
+                    'order_id' => $orderId,
+                    'expected' => $expectedSignature,
+                    'received' => $payload['signature_key'],
+                ]);
                 return response('Invalid signature', 403);
             }
 
-            $sale = Sale::with('items')->where('order_id', $orderId)->first();
+            $sale = Sale::with('items')->where('order_id', $payload['order_id'])->first();
             if (!$sale) {
                 Log::warning('Sale not found.', ['order_id' => $orderId]);
                 return response('Order not found', 404);
@@ -41,10 +55,12 @@ class MidtransController extends Controller
             }
 
             $transactionStatus = $payload['transaction_status'];
-            if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
+
+            if (in_array($transactionStatus, ['settlement', 'capture'])) {
                 $this->handleSuccessfulPayment($sale);
             } elseif (in_array($transactionStatus, ['cancel', 'deny', 'expire'])) {
                 $sale->update(['status' => 'failed']);
+                Log::info('Transaction marked as failed.', ['order_id' => $orderId, 'status' => $transactionStatus]);
             }
 
             Log::info('Notification processed successfully.', ['order_id' => $orderId]);
@@ -54,8 +70,6 @@ class MidtransController extends Controller
             Log::error('Midtrans notification processing failed.', [
                 'order_id' => $orderId,
                 'error_message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
             return response('Error processing notification', 500);
@@ -65,35 +79,23 @@ class MidtransController extends Controller
     protected function handleSuccessfulPayment(Sale $sale)
     {
         DB::transaction(function () use ($sale) {
-            // Update status penjualan terlebih dahulu
             $sale->update(['status' => 'paid']);
 
-            // Proses setiap item secara terpisah dengan penanganan error sendiri
             foreach ($sale->items as $item) {
-                try {
-                    $product = Product::lockForUpdate()->find($item->product_id);
+                $product = Product::lockForUpdate()->find($item->product_id);
 
-                    if (!$product) {
-                        throw new Exception('Product not found with ID: ' . $item->product_id);
-                    }
-
-                    if ($product->stock < $item->total) {
-                        throw new Exception('Insufficient stock for product ID: ' . $product->id);
-                    }
-
-                    $product->decrement('stock', $item->total);
-
-                } catch (Exception $e) {
-                    // Jika ada error pada satu item, log error tersebut dan batalkan seluruh transaksi
-                    Log::error('Failed to process sale item.', [
-                        'order_id' => $sale->order_id,
-                        'sale_item_id' => $item->id,
-                        'error' => $e->getMessage()
-                    ]);
-                    // Lempar kembali error untuk memicu rollback DB::transaction
-                    throw $e;
+                if (!$product) {
+                    throw new Exception("Product not found: ID {$item->product_id}");
                 }
+
+                if ($product->stock < $item->total) {
+                    throw new Exception("Insufficient stock for product ID: {$product->id}");
+                }
+
+                $product->decrement('stock', $item->total);
             }
         });
+
+        Log::info('Payment processed and stock updated.', ['order_id' => $sale->order_id]);
     }
 }
