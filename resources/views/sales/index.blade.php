@@ -24,7 +24,7 @@
     {{-- Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse ($sales as $sale)
-            <div class="border border-gray-300 rounded-md shadow p-4 space-y-3 flex flex-col justify-between h-full">
+            <div class="border border-gray-300 rounded-md shadow p-4 space-y-3 flex max-sm:flex-col justify-between h-full">
                 <div class="flex justify-between items-center">
                     <div>
                         <h2 class="font-bold">Order #{{ str_pad($sale->id, 5, '0', STR_PAD_LEFT) }}</h2>
