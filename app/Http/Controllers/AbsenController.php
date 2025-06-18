@@ -9,8 +9,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Class AbsenController
+ *
+ * Controller ini bertanggung jawab untuk mengelola semua logika yang terkait dengan absensi pegawai.
+ * Ini mencakup menampilkan data absensi, memverifikasi absensi melalui QR code,
+ * memproses pengajuan absensi manual (seperti sakit atau izin), dan menangani persetujuan
+ * oleh pemilik (owner).
+ *
+ * @package App\Http\Controllers
+ * @property \App\Models\User $user
+ * @property \App\Models\Absen $absen
+ */
+
 class AbsenController extends Controller
 {
+
+    /**
+     * Menampilkan halaman utama absensi dengan daftar data absensi dan statistik.
+     *
+     * Metode ini mengambil semua data absensi, memungkinkan pencarian berdasarkan nama pegawai,
+     * tanggal, waktu check-in, dan status. Metode ini juga menghitung statistik harian
+     * seperti total pegawai, jumlah yang hadir, dan persentase kehadiran.
+     * Data yang diambil kemudian dipaginasi dan dikirim ke view 'absen.index'.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\View\View
+     */
+
     public function index(Request $request){
 
         $search = $request->query('search');
@@ -42,6 +68,17 @@ class AbsenController extends Controller
         return view('absen.index', compact('absens', 'users', 'totalPegawai', 'hadirCount', 'percent', 'tanggal', 'totalAdmin', 'totalKasir'));
     }
 
+    /**
+     * Memverifikasi dan mencatat absensi pegawai melalui pemindaian QR code.
+     *
+     * Metode ini berfungsi sebagai endpoint API untuk validasi QR code.
+     * Ini mencari pengguna berdasarkan token QR, memeriksa apakah pengguna sudah absen
+     * pada hari itu, dan jika belum, mencatat absensi 'Hadir' untuk pengguna tersebut.
+     *
+     * @param string $token Token unik dari QR code pengguna.
+     * @return \Illuminate\Http\JsonResponse
+     */
+
     public function verify($token)
     {
         $witaNow = now('Asia/Makassar');
@@ -70,6 +107,18 @@ class AbsenController extends Controller
         return response()->json(['message' => 'Absensi berhasil!']);
     }
 
+    /**
+     * Menangani persetujuan atau penolakan pengajuan absensi (Sakit/Izin) oleh owner.
+     *
+     * Metode ini hanya dapat diakses oleh pengguna dengan peran 'owner'.
+     * Ini memperbarui kolom 'approval_status' pada catatan absensi menjadi 'Approved' atau 'Rejected'
+     * berdasarkan input dari request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id ID dari record absensi yang akan diproses.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
     public function approval(Request $request, $id)
     {
         $absen = Absen::where('user_id', Auth::user()->id)
@@ -97,30 +146,17 @@ class AbsenController extends Controller
         return back()->with('success', 'Status berhasil diperbarui.');
     }
 
-
-//    public function store(Request $request)
-//    {
-//        $request->validate([
-//            'status' => 'required|in:Hadir,Sakit,Izin',
-//            'dokumen' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-//        ]);
-//
-//        if ($request->hasFile('dokumen')) {
-//            $filePath = $request->file('dokumen')->store('dokumen', 'public');
-//        }
-//
-//        Absen::create([
-//            'user_id' => Auth::user()->id,
-//            'tanggal' => now('Asia/Makassar')->toDateString(),
-//            'check_in' => now('Asia/Makassar')->format('H:i:s'),
-//            'status' => $request->status,
-//            'dokumen' => $filePath,
-//            'approval_status' => in_array($request->status, ['Sakit', 'Izin']) ? 'Pending' : null,
-//        ]);
-//
-//        return redirect()->route('absen')->with('success', 'Absensi berhasil dikirim.');
-//    }
-
+    /**
+     * Menyimpan data absensi baru yang diajukan oleh pegawai.
+     *
+     * Digunakan ketika pegawai melakukan absensi manual, seperti untuk status 'Sakit' atau 'Izin'.
+     * Jika ada dokumen pendukung yang diunggah, file tersebut akan disimpan ke S3 bucket
+     * dan URL-nya akan disimpan di database. Untuk status 'Sakit' atau 'Izin',
+     * status persetujuan ('approval_status') akan diatur ke 'Pending'.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $request->validate([

@@ -10,6 +10,17 @@ use App\Models\Supplier;
 use App\Services\MidtransService;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class Kasir
+ *
+ * Komponen Livewire ini berfungsi sebagai antarmuka Point of Sale (POS) yang lengkap.
+ * Ini menangani penampilan produk, pemfilteran, pengelolaan keranjang belanja (cart),
+ * perhitungan total, dan memproses pembayaran melalui dua metode: tunai (cash)
+ * dan online (Midtrans).
+ *
+ * @package App\Livewire
+ */
+
 class Kasir extends Component
 {
     public $products = [], $categories = [], $suppliers = [];

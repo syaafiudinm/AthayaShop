@@ -9,8 +9,28 @@ use App\Models\Sale;
 use App\Models\Product;
 use Exception;
 
+/**
+ * Class MidtransController
+ *
+ * Controller ini berfungsi sebagai webhook endpoint untuk menangani notifikasi pembayaran
+ * dari Midtrans. Ini bertanggung jawab untuk memvalidasi, memproses, dan memperbarui
+ * status transaksi pembayaran berdasarkan informasi yang diterima dari Midtrans.
+ *
+ * @package App\Http\Controllers
+ */
 class MidtransController extends Controller
 {
+    /**
+     * Menerima dan memproses notifikasi webhook dari Midtrans.
+     *
+     * Metode ini memvalidasi keaslian notifikasi dengan mencocokkan signature key,
+     * mencari transaksi (Sale) yang sesuai di database, dan memperbarui statusnya
+     * (misalnya menjadi 'paid' atau 'failed'). Jika pembayaran berhasil,
+     * metode ini akan memanggil handleSuccessfulPayment untuk mengurangi stok produk.
+     *
+     * @param \Illuminate\Http\Request $request Request yang berisi payload JSON dari Midtrans.
+     * @return \Illuminate\Http\Response
+     */
     public function notification(Request $request)
     {
         // Terima request JSON
@@ -75,6 +95,18 @@ class MidtransController extends Controller
             return response('Error processing notification', 500);
         }
     }
+
+    /**
+     * Menangani logika untuk pembayaran yang berhasil.
+     *
+     * Metode ini dieksekusi di dalam sebuah transaksi database untuk menjamin integritas data.
+     * Ia akan memperbarui status penjualan menjadi 'paid' dan mengurangi stok
+     * untuk setiap produk yang terjual dalam transaksi tersebut.
+     *
+     * @param \App\Models\Sale $sale Model Sale yang pembayarannya telah berhasil.
+     * @return void
+     * @throws \Exception Jika produk tidak ditemukan atau stok tidak mencukupi.
+     */
 
     protected function handleSuccessfulPayment(Sale $sale)
     {

@@ -24,48 +24,55 @@
     {{-- Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse ($sales as $sale)
-            <div class="border border-gray-300 rounded-md shadow p-4 space-y-3 flex max-sm:flex-col justify-between h-full">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="font-bold">Order #{{ str_pad($sale->id, 5, '0', STR_PAD_LEFT) }}</h2>
-                        <p class="text-sm text-gray-500">{{ $sale->user->name }} - Kasir</p>
-                        <p class="text-xs text-gray-400">{{ $sale->created_at->format('l, d F Y') }}</p>
-                    </div>
-                    <span class="text-sm px-2 py-1 rounded bg-blue-100 text-blue-600">
+            <div class="border border-gray-300 rounded-md shadow p-4 space-y-3 flex flex-col justify-between h-full">
+                <div> <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="font-bold">Order #{{ str_pad($sale->id, 5, '0', STR_PAD_LEFT) }}</h2>
+                            <p class="text-sm text-gray-500">{{ $sale->user->name }} - Kasir</p>
+                            <p class="text-xs text-gray-400">{{ $sale->created_at->format('l, d F Y') }}</p>
+                        </div>
+
+                        <span class="flex-shrink-0 ml-4 text-sm px-2 py-1 rounded bg-blue-100 text-blue-600">
                         {{ ucfirst($sale->status) }}
                     </span>
-                </div>
-                <hr>
-                <div class="divide-y text-sm">
-                    @foreach ($sale->items->take(3) as $item)
-                        <div class="flex justify-between py-1">
-                            <span>{{ $item->product->name }}</span>
-                            <span>x{{ $item->total }}</span>
-                            <span>Rp{{ number_format($item->unit_price, 0, ',', '.') }}</span>
-                        </div>
-                    @endforeach
-                    @if ($sale->items->count() > 3)
-                        <p class="text-xs text-gray-500">+{{ $sale->items->count() - 3 }} Barang lainnya</p>
-                    @endif
-                </div>
-                <hr>
-                <div class="pt-2 font-semibold">
-                    <div class="flex justify-between">
-                        <span>Total</span>
-                        <span>Rp{{ number_format($sale->total_price, 0, ',', '.') }}</span>
                     </div>
-                    <div class="text-sm text-gray-600">Metode Pembayaran: {{ ucfirst($sale->payment_method) }}</div>
+                    <hr class="mt-3">
+                    <div class="divide-y text-sm">
+                        @foreach ($sale->items->take(3) as $item)
+                            <div class="flex justify-between py-1">
+                                <span>{{ $item->product->name }}</span>
+                                <div class="flex-shrink-0">
+                                    <span>x{{ $item->total }}</span>
+                                    <span class="inline-block w-24 text-right">Rp{{ number_format($item->unit_price, 0, ',', '.') }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                        @if ($sale->items->count() > 3)
+                            <p class="text-xs text-gray-500 pt-1">+{{ $sale->items->count() - 3 }} Barang lainnya</p>
+                        @endif
+                    </div>
                 </div>
 
-                <button
-                    data-sale-id="{{ $sale->id }}"
-                    class="mt-2 inline-block text-center w-full bg-black text-white py-2 rounded-md text-sm font-medium open-modal"
-                >
-                    Lihat Detail
-                </button>
-                @empty
-                    <p class="col-span-full text-center text-gray-500 py-10">Order belum ada.</p>
+                <div>
+                    <hr>
+                    <div class="pt-2 font-semibold">
+                        <div class="flex justify-between">
+                            <span>Total</span>
+                            <span>Rp{{ number_format($sale->total_price, 0, ',', '.') }}</span>
+                        </div>
+                        <div class="text-sm text-gray-600 font-normal">Metode Pembayaran: {{ ucfirst($sale->payment_method) }}</div>
+                    </div>
+
+                    <button
+                        data-sale-id="{{ $sale->id }}"
+                        class="mt-3 inline-block text-center w-full bg-black text-white py-2 rounded-md text-sm font-medium open-modal"
+                    >
+                        Lihat Detail
+                    </button>
+                </div>
             </div>
+        @empty
+            <p class="col-span-full text-center text-gray-500 py-10">Order belum ada.</p>
         @endforelse
     </div>
     @if ($sales->isNotEmpty())

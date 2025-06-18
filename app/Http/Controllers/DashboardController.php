@@ -10,8 +10,28 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+/**
+ * Class DashboardController
+ *
+ * Controller ini bertanggung jawab untuk mengumpulkan dan menampilkan data agregat
+ * dari berbagai bagian aplikasi ke halaman dashboard utama. Ini berfungsi sebagai
+ * pusat informasi yang merangkum statistik penjualan, kehadiran, dan data penting lainnya.
+ *
+ * @package App\Http\Controllers
+ */
+
 class DashboardController extends Controller
 {
+    /**
+     * Menyiapkan dan menampilkan halaman dashboard utama.
+     *
+     * Metode ini mengambil berbagai data dari database untuk ditampilkan dalam bentuk ringkasan,
+     * seperti total pendapatan, jumlah pesanan, statistik kehadiran harian (hadir, sakit, izin),
+     * serta data penjualan dan produk terkini. Semua data ini kemudian dikirimkan
+     * ke view 'dashboard.index'.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $tanggal = Carbon::now('Asia/Makassar')->toDateString();

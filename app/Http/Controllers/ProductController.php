@@ -14,10 +14,29 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Drivers\Gd\Driver;
 
-
+/**
+ * Class ProductController
+ *
+ * Controller ini mengelola semua operasi CRUD (Create, Read, Update, Delete) untuk produk.
+ * Ini termasuk menampilkan daftar produk, menangani pembuatan produk baru dengan upload
+ * gambar ke S3, memperbarui produk, dan menghapus produk beserta file gambarnya dari S3.
+ *
+ * @package App\Http\Controllers
+ */
 
 class ProductController extends Controller
 {
+    /**
+     * Menampilkan halaman daftar produk dengan filter dan pencarian.
+     *
+     * Metode ini mengambil daftar produk yang dapat difilter berdasarkan nama, deskripsi,
+     * kategori, atau supplier. Ini juga menyediakan data kategori, supplier, dan
+     * token unik untuk form pembuatan produk baru.
+     *
+     * @param \Illuminate\Http\Request $request Untuk menangani query pencarian dan filter.
+     * @return \Illuminate\View\View
+     */
+
     public function index(Request $request){
         $categories = Category::all();
         $suppliers = Supplier::all();
@@ -46,6 +65,18 @@ class ProductController extends Controller
 
         return view('products.index', compact('products', 'categories', 'suppliers', 'submissionToken'));
     }
+
+    /**
+     * Menyimpan produk baru ke database dan mengunggah gambar ke S3.
+     *
+     * Metode ini memvalidasi data produk baru, termasuk gambar. Jika valid,
+     * gambar akan di-resize menggunakan Intervention/Image dan diunggah ke S3.
+     * URL gambar dari S3 kemudian disimpan ke database.
+     * Termasuk mekanisme pencegahan pengiriman ganda.
+     *
+     * @param \Illuminate\Http\Request $request Data dari formulir pembuatan produk.
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function store(Request $request){
 
@@ -125,6 +156,17 @@ class ProductController extends Controller
         return redirect()->route('products')->with('success', 'Product created successfully');
     }
 
+    /**
+     * Memperbarui data produk yang sudah ada.
+     *
+     * Metode ini memvalidasi dan memperbarui atribut produk. Jika gambar baru diunggah,
+     * metode ini akan menyimpannya ke direktori lokal dan membuat thumbnail.
+     *
+     * @param int $id ID dari produk yang akan diperbarui.
+     * @param \Illuminate\Http\Request $request Data baru untuk produk.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
     public function update(int $id, Request $request){
         $product = Product::findOrFail($id);
 
@@ -170,6 +212,16 @@ class ProductController extends Controller
 
         return redirect()->route('products')->with('success', 'Product updated successfully');
     }
+
+    /**
+     * Menghapus produk dari database dan gambar terkait dari S3.
+     *
+     * Metode ini akan mencari produk berdasarkan ID, menghapus file gambar yang terkait
+     * dari S3 (jika ada), lalu menghapus record produk dari database.
+     *
+     * @param int $id ID dari produk yang akan dihapus.
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function destroy(int $id) {
         $product = Product::findOrFail($id);
