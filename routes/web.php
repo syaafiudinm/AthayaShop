@@ -52,12 +52,13 @@ Route::middleware(['auth', 'role:admin,cashier,owner'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('beranda');
     Route::get('/absen', [AbsenController::class, 'index'])->name('absen');
     Route::get('/absen/qr-code', function (){
+
         $user = Auth::user();
         $token = $user->generateQrCode();
         $url = route('absen.verify', ['token' => $token]);
         $qrCodeSvg = QrCode::size(250)->generate($url);
 
-        return view('absen.qrcode', compact('qrCodeSvg'));
+        return view('absen.qrcode', compact('qrCodeSvg', 'user'));
     })->name('absen.qr-code');
     Route::get('/absen/verify/{token}', [AbsenController::class, 'verify'])->name('absen.verify');
     Route::get('/absen/scan', function(){
