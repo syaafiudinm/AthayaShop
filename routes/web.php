@@ -76,3 +76,12 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/midtrans/notification', [MidtransController::class, 'notification']);
+
+Route::get('/sales/success', function () {
+    return view('sales.success'); // Halaman setelah transaksi berhasil
+})->name('sales.success');
+
+Route::get('/sales/pending', function () {
+    return view('sales.pending'); // Halaman jika transaksi tidak selesai
+})->name('sales.pending');
+

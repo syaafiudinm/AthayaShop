@@ -186,11 +186,10 @@ class Kasir extends Component
             ],
             'enabled_payments' => ['gopay'],
             'callsback' => [
-                'finish' => route('sales.index')
+                'finish' => route('sales.success'),
+                'pending' => route('sales.pending'),
             ]
         ];
-        // Redirect URL setelah pembayaran selesai (opsional)
-        // Pastikan route 'sales.index' ada dan bisa diakses
 
         $midtrans = new MidtransService();
         $snap = $midtrans->createTransaction($payload);
