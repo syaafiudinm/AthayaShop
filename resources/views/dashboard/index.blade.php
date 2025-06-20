@@ -82,7 +82,7 @@
                 </div>
                 <div class="bg-[#C7EEFF] p-8 rounded-2xl shadow-lg text-center flex flex-col justify-center border border-gray-200">
                     <p class="font-semibold text-gray-500">Waktu</p>
-                    <p class="text-4xl sm:text-5xl font-bold text-gray-800 my-2">{{ $witaNow }}</p>
+                    <p id="realtime-time" class="text-4xl sm:text-5xl font-bold text-gray-800 my-2"></p>
                     <p class="text-gray-600">
                         <svg class="inline-block w-4 h-4 -mt-1" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
@@ -233,6 +233,22 @@
             const chartIzin = new ApexCharts(document.querySelector("#chartIzin"), optionsIzin);
             chartIzin.render();
         });
+
+        function updateTime() {
+            // Get the current time in WITA timezone (UTC+8)
+            const now = new Date();
+            const options = { timeZone: 'Asia/Makassar', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            const time = new Intl.DateTimeFormat('en-GB', options).format(now);
+
+            // Update the time in the HTML element
+            document.getElementById('realtime-time').innerText = time;
+        }
+
+        // Update the time every second
+        setInterval(updateTime, 1000);
+
+        // Call the function once to display the initial time
+        updateTime();
     </script>
 
 @endsection
