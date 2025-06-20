@@ -82,6 +82,7 @@ class AbsenController extends Controller
     public function verify($token)
     {
         $witaNow = now('Asia/Makassar');
+        $user = Auth::user();
         $user = User::where('qr_code', $token)->first();
 
         if (!$user) {
