@@ -89,6 +89,11 @@ class AbsenController extends Controller
             return response()->json(['message' => 'QR Code tidak valid'], 404);
         }
 
+        if ($user->id !== Auth::id()) {
+            return response()->json(['message' => 'You cannot mark attendance for another user'], 403);
+        }
+
+
         $absen = Absen::where('user_id', $user->id)
             ->whereDate('tanggal', $witaNow->toDateString())
             ->first();
