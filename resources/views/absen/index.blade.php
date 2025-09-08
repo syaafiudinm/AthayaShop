@@ -91,7 +91,7 @@
                         @if (auth()->user()->role === 'owner')
                             <th class="text-center px-6 py-3 text-white font-normal">Informasi</th>
                             <th class="text-center px-6 py-3 text-white font-normal">Status</th>
-                            <th class="text-center px-6 py-3 text-white font-normal rounded-r-lg">Dokumen</th>
+              œ               <th class="text-center px-6 py-3 text-white font-normal rounded-r-lg">Dokumen</th>
                         @endif
                     </tr>
                 </thead>
